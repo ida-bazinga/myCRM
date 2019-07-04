@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.web.ui.docoffice.DocOfficeDataFrame"
+        messagesPack="com.haulmont.thesis.crm.web.ui.docoffice" xmlns:thesis="http://schemas.haulmont.com/thesis/thesis-window.xsd">
+    <dsContext>
+        <collectionDatasource id="docReceivingMethodsDs" class="com.haulmont.thesis.core.entity.DocReceivingMethod" view="_minimal">
+            <query>
+                <![CDATA[select drm from df$DocReceivingMethod drm order by drm.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contactPersonsToDs" class="com.haulmont.thesis.core.entity.ContactPerson" view="_local">
+            <query>
+                <![CDATA[select cp from df$ContactPerson cp where cp.company.id = :custom$addressee order by cp.lastName]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contactPersonsDs" class="com.haulmont.thesis.core.entity.ContactPerson" view="_local">
+            <query>
+                <![CDATA[select cp from df$ContactPerson cp where cp.company.id = :custom$sender order by cp.lastName]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="employeeDs" class="com.haulmont.thesis.core.entity.Employee"
+                              datasourceClass="com.haulmont.thesis.web.ui.docoffice.AddresseeDatasource" view="employee.with.user">
+            <query>
+                <![CDATA[select e from df$Employee e order by e.lastName ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="employeeExecutorsDs" class="com.haulmont.thesis.core.entity.Employee" view="employee.with.user">
+            <query>
+                <![CDATA[select e from df$Employee e order by e.lastName ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="correspondentsDs" class="com.haulmont.thesis.core.entity.Correspondent" view="_local">
+            <query>
+                <![CDATA[select c from df$Correspondent c where c.id is null ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.core.entity.Company"
+                              datasourceClass="com.haulmont.thesis.web.ui.docoffice.AddresseeDatasource" view="_minimal">
+            <query>
+                <![CDATA[select c from df$Company c where c.name like :(?i)custom$searchString order by c.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="departmentsDs" class="com.haulmont.thesis.core.entity.Department"
+                              datasourceClass="com.haulmont.thesis.web.ui.docoffice.AddresseeDatasource" view="_minimal">
+            <query>
+                <![CDATA[select d from df$Department d order by d.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="individualsDs" class="com.haulmont.thesis.core.entity.Individual"
+                              datasourceClass="com.haulmont.thesis.web.ui.docoffice.AddresseeDatasource" view="_minimal">
+            <query>
+                <![CDATA[select i from df$Individual i order by i.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="officeFilesDs" class="com.haulmont.thesis.core.entity.OfficeFile" view="browse-minimal">
+            <query>
+                <![CDATA[select o from df$OfficeFile o order by o.nomenclature.name ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="numeratorsDs" class="com.haulmont.thesis.core.entity.Numerator" view="_local"/>
+    </dsContext>
+    <layout>
+        <vbox id="mainPane" height="100%" spacing="true">
+            <grid id="docOfficeDocKindGrid" spacing="true">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row id="docOfficeDocKindRow">
+                        <label id="docOfficeDocKindLabel" value="msg://docOfficeDocKind" width="115px"/>
+                        <lookupField id="docOfficeDocKind" datasource="cardDs" property="docOfficeDocKind" width="220px"/>
+                    </row>
+                </rows>
+            </grid>
+            <grid id="numbersGrid" spacing="true">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row id="incomeNoRow">
+                        <label id="incomeNoLabel" value="msg://incomeNo" width="115px"/>
+                        <textField id="incomeNo" datasource="cardDs" property="incomeNo" width="220px"/>
+                        <label id="incomeAtLabel" value="msg://at"/>
+                        <dateField id="incomeDate" datasource="cardDs" property="incomeDate" width="105px"/>
+                    </row>
+                    <row id="incomeNoErrorsRow">
+                        <label/>
+                        <label id="incomeNoError" colspan="3" stylename="thesis-error" value="msg://duplicateNoError" visible="false"/>
+                    </row>
+                    <row id="outcomeNoRow">
+                        <label id="outcomeNoLabel" value="msg://outcomeNo" width="115px"/>
+                        <textField id="outcomeNo" datasource="cardDs" property="outcomeNo" width="220px"/>
+                        <label id="outcomeAtLabel" value="msg://at"/>
+                        <dateField id="outcomeDate" datasource="cardDs" property="outcomeDate" width="105px"/>
+                    </row>
+                    <row id="outcomeNoErrorsRow">
+                        <label/>
+                        <label id="outcomeNoError" colspan="3" stylename="thesis-error" value="msg://duplicateNoError" visible="false"/>
+                    </row>
+                    <row id="doubleRegistrationRow">
+                        <label/>
+                        <label id="doubleRegistration" colspan="3" stylename="thesis-warning" value="msg://doubleRegistration" visible="false"/>
+                    </row>
+                    <row id="docNumButtonRow">
+                        <hbox colspan="4" spacing="true">
+                            <button id="docNumButton" icon="icons/getnumber.png"/>
+                            <label id="numerator"/>
+                        </hbox>
+                    </row>
+                    <row>
+                        <hbox margin="true,false,false,false"/>
+                    </row>
+                </rows>
+            </grid>
+            <grid id="officeDataGrid" spacing="true">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row id="officeFileRow">
+                        <label id="officeFileLabel" value="msg://officeFile" width="115px"/>
+                        <lookupPickerField id="officeFile" datasource="docOfficeDataDs" optionsDatasource="officeFilesDs" property="officeFile"
+                                           thesis:overrideBySearchField="false" width="350px"/>
+                    </row>
+                    <row id="addresseesRow">
+                        <iframe id="addresseesFrame" colspan="2" screen="addresseesFrame" width="470px"/>
+                    </row>
+                    <row id="senderRow">
+                        <label id="senderLabel" value="msg://sender" width="115px"/>
+                        <lookupPickerField id="sender" datasource="docOfficeDataDs" optionsDatasource="correspondentsDs" property="sender"
+                                           requiredMessage="msg://senderRequiredMsg" thesis:overrideBySearchField="true" width="350px"/>
+                    </row>
+                    <row id="officeExecutorRow">
+                        <label id="officeExecutorLabel" value="msg://officeExecutor" width="115px"/>
+                        <lookupPickerField id="officeExecutor" datasource="docOfficeDataDs" optionsDatasource="contactPersonsDs"
+                                           property="officeExecutor" thesis:overrideBySearchField="true" width="350px"/>
+                    </row>
+                    <row id="employeeExecutorRow">
+                        <label id="employeeExecutorLabel" value="msg://employeeExecutor" visible="false" width="115px"/>
+                        <lookupPickerField id="employeeExecutor" datasource="docOfficeDataDs" optionsDatasource="employeeExecutorsDs"
+                                           property="employeeExecutor" visible="false" thesis:overrideBySearchField="true" width="350px"/>
+                    </row>
+                    <row id="officeSignedByRow">
+                        <label id="officeSignedByLabel" value="msg://officeSignedBy" width="115px"/>
+                        <lookupPickerField id="officeSignedBy" datasource="docOfficeDataDs" optionsDatasource="contactPersonsDs"
+                                           property="officeSignedBy" thesis:overrideBySearchField="true" width="350px"/>
+                    </row>
+                    <row id="receivingMethodRow">
+                        <label id="receivingMethodLabel" value="msg://receivingMethod" width="115px"/>
+                        <lookupField id="receivingMethod" datasource="docOfficeDataDs" optionsDatasource="docReceivingMethodsDs"
+                                     property="receivingMethod" width="350px"/>
+                    </row>
+                    <row id="postTrackingNumberRow">
+                        <hbox colspan="2" spacing="true">
+                            <label id="postTrackingNumberLabel" value="msg://postTrackingNumber" width="115px"/>
+                            <textField id="postTrackingNumber" datasource="cardDs" property="postTrackingNumber" width="250px"/>
+                            <button id="searchPostTrackingButton" caption="msg://searchPostTrackingButton" description="msg://postTrackButtonDescr"
+                                    width="95px"/>
+                        </hbox>
+                    </row>
+                    <row id="responseToDocRow">
+                        <label id="responseToDocLabel" value="msg://responseToDoc" width="115px"/>
+                        <pickerField id="responseToDoc" datasource="docOfficeDataDs" property="responseToDoc" width="350px">
+                            <actions>
+                                <action id="open"/>
+                                <action id="clear"/>
+                            </actions>
+                        </pickerField>
+                    </row>
+                    <row id="responsePlanDateRow">
+                        <label id="responsePlanDateLabel" value="msg://responsePlanDate" width="115px"/>
+                        <dateField id="responsePlanDate" datasource="docOfficeDataDs" property="responsePlanDate" width="105px"/>
+                    </row>
+                    <row id="responseDateRow">
+                        <label/>
+                        <linkButton id="responseDateButton" visible="false"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+    </layout>
+    <assign name="width" value="350px"/>
+    <assign name="small_width" value="220px"/>
+    <assign name="label_width" value="115px"/>
+    <assign name="date_width" value="105px"/>
+    <assign name="medium_width" value="250px"/>
+    <assign name="button_width" value="95px"/>
+</window>

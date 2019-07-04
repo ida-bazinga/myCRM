@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.projectTeam.ProjectTeamEditor" datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.projectTeam">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.ProjectTeam" view="edit"/>
+        <collectionDatasource id="employeeDs" class="com.haulmont.thesis.core.entity.Employee" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roleInProjectDs" class="com.haulmont.thesis.crm.entity.RoleInProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$RoleInProject e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="documentDs" class="com.haulmont.thesis.core.entity.SimpleDoc" view="_minimal">
+            <query>
+                <![CDATA[select e from df$SimpleDoc e where e.category.id = 'BE6A3328-31C0-0146-3AAD-199B463B6E8F']]>
+                <!--Доверенность 'BE6A3328-31C0-0146-3AAD-199B463B6E8F'-->
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox" margin="true" spacing="true">
+        <vbox id="vBox" stylename="edit-area">
+            <grid id="grid" spacing="true" width="50%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="6.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code" datasource="mainDs" property="code" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://employee"/>
+                        <lookupPickerField id="employee" datasource="mainDs" optionsDatasource="employeeDs" property="employee" required="true"
+                                           width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://roleInProject"/>
+                        <lookupPickerField id="roleInProject" datasource="mainDs" optionsDatasource="roleInProjectDs" property="roleInProject"
+                                           required="true" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://document"/>
+                        <lookupPickerField id="document" datasource="mainDs" optionsDatasource="documentDs" property="document" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://signatory"/>
+                        <lookupField id="signatory" datasource="mainDs" property="signatory" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru" datasource="mainDs" height="200px" property="comment_ru" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://anotherrole_ru"/>
+                        <textArea id="anotherRole" datasource="mainDs" property="anotherRole" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

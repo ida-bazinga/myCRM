@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://ResourceGroupEditor.caption"
+        class="com.haulmont.thesis.crm.web.resource.ResourceGroupEditor" messagesPack="com.haulmont.thesis.crm.web.resource">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Resource" view="group"/>
+        <collectionDatasource id="resourceGroupDs" class="com.haulmont.thesis.crm.entity.Resource" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Resource e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox" height="100%" spacing="true">
+        <vbox id="vBox" spacing="true">            
+            <hbox spacing="true" expand="parentGroup" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/Resource.parent" width="${lWidth}"/>
+                <lookupPickerField id="parent" datasource="mainDs" optionsDatasource="parentGroupDs" property="parent">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="clear"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox spacing="true" expand="name_ru" width="100%">
+                <label value="msg://com.haulmont.thesis.core.entity/Resource.name_ru" width="${lWidth}"/>
+                <textField id="name_ru" datasource="mainDs" property="name" required="true"/>
+            </hbox>
+            <hbox spacing="true" expand="name_en" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/Resource.name_en" width="${lWidth}"/>
+                <textField id="name_en" datasource="mainDs" property="name_en"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="100px"/>
+</window>

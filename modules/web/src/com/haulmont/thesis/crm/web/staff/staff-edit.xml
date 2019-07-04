@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editCaption" class="com.haulmont.thesis.crm.web.staff.StaffEditor"
+        datasource="mainDs" focusComponent="fields" messagesPack="com.haulmont.thesis.crm.web.staff">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Staff" view="edit">
+            <collectionDatasource id="attachmentsDs" property="resourceAttachments"/>
+            <collectionDatasource id="providersDs" property="provider"/>
+        </datasource>
+        <collectionDatasource id="resourceTypeDs" class="com.haulmont.thesis.crm.entity.ResourceType" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ResourceType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="staffGroupDs" class="com.haulmont.thesis.crm.entity.Staff" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Staff e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="unitDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Unit e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="staffContractorDs" class="com.haulmont.thesis.core.entity.Contractor" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Contractor e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vbox" height="100%" spacing="true" width="100%">
+        <vbox id="vbox">
+            <tabSheet id="tabsheet" height="100%">
+                <tab id="mainTab" caption="msg://mainTab" margin="true">
+                    <scrollBox id="fieldsBox" height="100%" width="98%">
+                        <hbox spacing="true" width="100%">
+                            <vbox id="fields" spacing="true" width="500px">
+                                <hbox expand="name_ru" spacing="true" width="100%">
+                                    <label id="nameRuLabel" value="msg://name_ru" width="125px"/>
+                                    <textField id="name_ru" datasource="mainDs" property="name_ru" required="true"/>
+                                </hbox>
+                                <hbox expand="name_en" spacing="true" width="100%">
+                                    <label id="nameEnLabel" value="msg://name_en" width="125px"/>
+                                    <textField id="name_en" datasource="mainDs" property="name_en"/>
+                                </hbox>
+                                <hbox expand="reference" spacing="true" width="100%">
+                                    <label id="referenceLabel" value="msg://reference" width="125px"/>
+                                    <textField id="reference" datasource="mainDs" property="reference"/>
+                                </hbox>
+                                <hbox expand="resourceType" spacing="true" width="100%">
+                                    <label id="resourceTypeLabel" value="msg://resourceType" width="125px"/>
+                                    <lookupField id="resourceType" datasource="mainDs" optionsDatasource="resourceTypeDs" property="resourceType"/>
+                                </hbox>
+                                <hbox expand="inventoryNumber" spacing="true" width="100%">
+                                    <label id="inventoryNumberLabel" value="msg://inventoryNumber" width="125px"/>
+                                    <textField id="inventoryNumber" datasource="mainDs" property="inventoryNumber"/>
+                                </hbox>
+                                <hbox expand="unit" spacing="true" width="100%">
+                                    <label id="unitLabel" value="msg://unit" width="125px"/>
+                                    <lookupField id="unit" datasource="mainDs" optionsDatasource="unitDs" property="unit"/>
+                                </hbox>
+                                <hbox expand="contractor" spacing="true" width="100%">
+                                    <label id="contractorLabel" value="msg://contractor" width="125px"/>
+                                    <searchPickerField id="contractor" datasource="mainDs" optionsDatasource="staffContractorDs" property="contractor"
+                                                       width="100%">
+                                        <actions>
+                                            <action id="clear"/>
+                                            <action id="lookup"/>
+                                            <action id="open"/>
+                                        </actions>
+                                    </searchPickerField>
+                                </hbox>
+                                <hbox expand="parent" spacing="true" width="100%">
+                                    <label id="parentLabel" value="msg://parent" width="125px"/>
+                                    <lookupPickerField id="parent" datasource="mainDs" optionsDatasource="staffGroupDs" property="parent">
+                                        <actions>
+                                            <action id="clear"/>
+                                            <action id="lookup"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </hbox>
+                                <hbox expand="comment_ru" spacing="true" width="100%">
+                                    <label id="commentRuLabel" value="msg://comment_ru" width="125px"/>
+                                    <textArea id="comment_ru" datasource="mainDs" property="comment_ru"/>
+                                </hbox>
+                            </vbox>
+                        </hbox>
+                    </scrollBox>
+                </tab>
+                <tab id="attachmentsTab" caption="msg://attachmentsTab" lazy="true" margin="true">
+                    <iframe id="attachmentsFrame" height="100%" screen="abstractReferenceAttachmentsFrame"/>
+                </tab>
+                <tab id="providers" caption="msg://providersTab" margin="true">
+                    <groupBox id="providersBox" caption="msg://com.haulmont.thesis.crm.entity/Resource.providers" height="100%">
+                        <table id="providersTable" height="100%" multiselect="true" width="100%">
+                            <actions>
+                                <action id="create" openType="DIALOG"/>
+                                <action id="edit" openType="DIALOG"/>
+                                <action id="remove"/>
+                            </actions>
+                            <columns>
+                                <column id="company"/>
+                                <column id="price"/>
+                                <column id="currency"/>
+                            </columns>
+                            <rows datasource="providersDs"/>
+                            <buttonsPanel>
+                                <button action="providersTable.create"/>
+                                <button action="providersTable.edit"/>
+                                <button action="providersTable.remove"/>
+                            </buttonsPanel>
+                        </table>
+                    </groupBox>
+                </tab>
+            </tabSheet>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

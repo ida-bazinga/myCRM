@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption" messagesPack="com.haulmont.thesis.crm.web.ui.cashmachine"
+        class="com.haulmont.thesis.crm.web.ui.cashmachine.CashMachineEditor" datasource="machineDs">
+    <dsContext>
+        <datasource id="machineDs" class="com.haulmont.thesis.crm.entity.CashMachine" view="edit"/>
+    </dsContext>
+
+    <assign name="lWidth" value="110px"/>
+
+    <layout expand="fieldsPanel">
+        <vbox id="fieldsPanel" margin="true" spacing="true" width="450px">
+            <grid id="grid" spacing="true" stylename="edit-area" width="100%">
+                <columns>
+                    <column/>
+                    <column flex="1"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://com.haulmont.thesis.crm.entity/CashMachine.name" width="${lWidth}"/>
+                        <label id="name" datasource="machineDs" property="name" stylename="thesis-bold" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://com.haulmont.thesis.crm.entity/CashMachine.serialNumber" width="${lWidth}"/>
+                        <label id="serialNumber" datasource="machineDs" property="serialNumber" stylename="thesis-bold" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://com.haulmont.thesis.crm.entity/CashMachine.vendor" width="${lWidth}"/>
+                        <label id="vendor" datasource="machineDs" property="vendor" stylename="thesis-bold" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://com.haulmont.thesis.crm.entity/CashMachine.evotorId" width="${lWidth}"/>
+                        <label id="evotorId" datasource="machineDs" property="evotorId" stylename="thesis-bold" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://com.haulmont.thesis.crm.entity/CashMachine.exhibitSpace" width="${lWidth}"/>
+                        <pickerField id="exhibitSpace" datasource="machineDs" property="exhibitSpace" editable="false" width="100%">
+                            <actions>
+                                <action id="open"/>
+                            </actions>
+                        </pickerField>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

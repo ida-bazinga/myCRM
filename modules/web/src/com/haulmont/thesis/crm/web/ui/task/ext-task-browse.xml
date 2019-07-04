@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.task.ExtTaskBrowser"
+        extends="com/haulmont/thesis/web/ui/task/task-browse.xml" messagesPack="com.haulmont.thesis.crm.web.ui.task">
+    <dsContext>
+        <groupDatasource id="cardsDs" class="com.haulmont.thesis.crm.entity.ExtTask" view="edit-crm">
+            <query>
+                <![CDATA[select t from crm$Task t]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[t.id <> :param$exclItem]]>
+                        </c>
+                        <c>
+                            <![CDATA[t.id not in (:param$exclItems)]]>
+                        </c>
+                        <c>
+                            <![CDATA[:param$taskGroupLookup is not null and t.taskGroup is null]]>
+                        </c>
+                        <c>
+                            <![CDATA[:param$SelectPrimaryTask is not null and t.state not in
+                            (',Finished,',',Canceled,',',FinishedByInitiator,')]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="mainLayout">
+            <split id="split">
+                <vbox id="table-panel">
+                    <groupTable id="cardsTable" height="100%">
+                        <columns>
+                            <column id="extCompany"/>
+                            <column id="startDateTime"/>
+                            <column id="categoryTask"/>
+                        </columns>
+                    </groupTable>
+                </vbox>
+            </split>
+            <split id="splitGantt" height="100px"/>
+        </vbox>
+    </layout>
+</window>

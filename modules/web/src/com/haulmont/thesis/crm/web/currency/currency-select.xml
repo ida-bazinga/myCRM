@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.currency.CurrencySelect" datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.currency">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.Currency" view="_local">
+            <query>
+                <![CDATA[select e from crm$Currency e where e.id not in (:custom$currency) and e.code <> '840']]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="buttonsPanel" height="100%" spacing="true" width="100%">
+        <hbox id="currBox" expand="currency" spacing="true" width="100%">
+            <label value="msg://name_ru" width="100px"/>
+            <lookupField id="currency" captionProperty="fullName_ru" optionsDatasource="mainDs"/>
+        </hbox>
+        <hbox id="info" spacing="true" align="BOTTOM_CENTER">
+            <label value="При смене валюты, услуги без цен в выбраной валюте будут удалены! Скидки и наценки обнулятся!" width="250px" stylename="thesis-green-bold"/>
+        </hbox>
+        <buttonsPanel id="buttonsPanel" spacing="true" align="MIDDLE_LEFT" width="100%">
+            <button id="selectButton" caption="Выбрать" invoke="selectButton" width="100%"/>
+            <button id="closeButton" caption="Закрыть" invoke="closeButton" width="100%"/>
+        </buttonsPanel>
+    </layout>
+</window>

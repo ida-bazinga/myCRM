@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://captionEditor"
+        class="com.haulmont.thesis.crm.web.facilityManagment.FacilityManagmentEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.facilityManagment">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.FacilityManagment"/>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select p from crm$Project p where @between(p.deinstallationDatePlan, now-6, now+60, month) and p.isGroup = false and p.name like :(?i)custom$searchString order by p.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="employeeDs"
+                              class="com.haulmont.thesis.core.entity.Employee"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e where e.user.active = true order by e.lastName ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomDs" class="com.haulmont.thesis.crm.entity.Room" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Room e where e.isGroup = false and e.useLoadingInfo = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox"
+              spacing="true">
+            <hbox expand="name" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/FacilityManagment.name"
+                       width="100px"/>
+                <textField id="name"
+                           datasource="mainDs"
+                           property="name"/>
+            </hbox>
+            <hbox expand="startDate"
+                  width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/FacilityManagment.startDate"
+                       width="100px"/>
+                <dateField id="startDate"
+                           resolution="DAY"
+                           datasource="mainDs"
+                           property="startDate"/>
+            </hbox>
+            <hbox expand="endDate"
+                  width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/FacilityManagment.endDate"
+                       width="100px"/>
+                <dateField id="endDate"
+                           resolution="DAY"
+                           datasource="mainDs"
+                           property="endDate"/>
+            </hbox>
+            <hbox expand="facilityManagmentType"
+                  width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/FacilityManagment.facilityManagmentType"
+                       width="100px"/>
+                <lookupField id="facilityManagmentType"
+                             datasource="mainDs"
+                             property="facilityManagmentType"/>
+            </hbox>
+            <hbox expand="project"
+                  width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/FacilityManagment.project"
+                       width="100px"/>
+                <searchPickerField id="project" datasource="mainDs"
+                               optionsDatasource="projectsDs" property="project">
+                    <actions>
+                        <action id="clear"/>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </searchPickerField>
+            </hbox>
+            <hbox expand="room"
+                  width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/FacilityManagment.room"
+                       width="100px"/>
+                <lookupPickerField id="room"
+                             datasource="mainDs"
+                             optionsDatasource="roomDs"
+                             property="room">
+                    <actions>
+                        <action id="open"/>
+                    </actions>
+            </lookupPickerField>
+            </hbox>
+            <hbox expand="employee"
+                  width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/FacilityManagment.employee"
+                       width="100px"/>
+                <lookupPickerField id="employee"
+                              datasource="mainDs"
+                              optionsDatasource="employeeDs"
+                              property="employee">
+                    <actions>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

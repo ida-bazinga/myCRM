@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.commkind.CommKindBrowser" extends="/com/haulmont/thesis/crm/web/ui/basic/browse/base-lookup-browse.xml"
+        messagesPack="com.haulmont.thesis.crm.web.ui.commkind" xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
+    <dsContext>
+        <groupDatasource id="rowsDs" class="com.haulmont.thesis.crm.entity.CommKind">
+            <query>
+                <![CDATA[select e from crm$CommKind e order by e.name_ru]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="operatorsDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox>
+            <vbox id="tablePanel">
+                <groupTable id="rowsTable">
+                    <columns>
+                        <group>
+                            <column id="communicationType" ext:index="0"/>
+                        </group>
+                        <column id="linkTemplate" ext:index="3"/>
+                    </columns>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

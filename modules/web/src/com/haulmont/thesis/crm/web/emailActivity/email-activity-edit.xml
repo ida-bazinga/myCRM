@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.emailActivity.EmailActivityEditor"
+        datasource="cardDs"
+        messagesPack="com.haulmont.thesis.crm.web.emailActivity">
+    <dsContext>
+        <datasource id="cardDs"
+                    class="com.haulmont.thesis.crm.entity.EmailActivity"
+                    view="edit"/>
+        <collectionDatasource id="resultDs" class="com.haulmont.thesis.crm.entity.ActivityRes" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ActivityRes e left join e.campaignKinds ck
+                 where (ck.id = :ds$cardDs.campaign.kind.id or (e.useAllKinds = true and e.entityType = 'crm$EmailActivity'))
+                 order by e.name_ru ]]>
+            </query>
+        </collectionDatasource>
+
+        <collectionDatasource id="campaignDs" class="com.haulmont.thesis.crm.entity.BaseCampaign" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$EmailCampaign e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where @between(e.deinstallationDatePlan, now-6, now+60, month) and e.isGroup = false order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companyDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e where e.name like :(?i)custom$searchString order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contactPersonsDs" class="com.haulmont.thesis.crm.entity.ExtContactPerson" view="with-company-and-comm">
+            <query>
+                <![CDATA[select e from df$ContactPerson e where e.company.id = :ds$cardDs.company.id]]>
+                <filter>
+                    <or>
+                        <c join=", crm$Communication co">
+                            <![CDATA[co.contactPerson.id = e.id and co.commKind.communicationType = @enum(com.haulmont.thesis.crm.entity.CommunicationTypeEnum.email)]]>
+                        </c>
+                    </or>
+                </filter>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox width="100%" spacing="true">
+            <hbox expand="create" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseActivity.createTime" width="140px"/>
+                <label id="create" datasource="cardDs" property="createTs"/>
+            </hbox>
+            <hbox expand="result" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseActivity.result" width="140px"/>
+                <lookupField id="result" datasource="cardDs" property="result" optionsDatasource="resultDs" required="true"/>
+            </hbox>
+            <hbox expand="project" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseActivity.project" width="140px"/>
+                <lookupField id="project" datasource="cardDs" property="project" optionsDatasource="projectDs" required="true"/>
+            </hbox>
+            <hbox expand="campaign" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseActivity.campaign" width="140px"/>
+                <lookupField id="campaign" datasource="cardDs" property="campaign" optionsDatasource="campaignDs" required="true"/>
+            </hbox>
+            <hbox expand="company" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseActivity.company" width="140px"/>
+                <searchPickerField id="company" datasource="cardDs" property="company" optionsDatasource="companyDs" required="true">
+                    <actions>
+                        <action id="clear"/>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </searchPickerField>
+            </hbox>
+            <hbox expand="contactPerson" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseActivity.contactPerson" width="140px"/>
+                <lookupPickerField id="contactPerson" datasource="cardDs" property="contactPerson" optionsDatasource="contactPersonsDs" required="true">
+                    <actions>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox expand="address" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseActivity.address" width="140px"/>
+                <textField id="address" datasource="cardDs" property="address" required="true"/>
+            </hbox>
+            <hbox expand="description" width="100%" spacing="true">
+                <label value="msg://com.haulmont.thesis.core.entity/Card.description" width="140px"/>
+                <textArea id="description" datasource="cardDs" property="description"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

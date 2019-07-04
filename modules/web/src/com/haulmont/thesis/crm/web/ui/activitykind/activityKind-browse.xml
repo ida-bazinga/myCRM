@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.activitykind.ActivityKindBrowser" lookupComponent="activityKindsTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.activitykind">
+    <dsContext>
+        <collectionDatasource id="activityKindsDs" class="com.haulmont.thesis.crm.entity.ActivityKind" view="browse">
+            <query>
+                <![CDATA[select e from crm$ActivityKind e order by e.name]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.entityType = :param$type and e.id <> :param$kindId]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+
+    <layout>
+        <vbox expand="activityKindsTable" height="100%" spacing="true">
+            <table id="activityKindsTable" editable="false" width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                    <action id="change"/>
+                </actions>
+                <columns>
+                    <column id="code"/>
+                    <column id="name"/>
+                    <column id="entityTypeName"/>
+                    <column id="direction"/>
+                    <column id="description"/>
+                </columns>
+                <rows datasource="activityKindsDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel" alwaysVisible="false">
+                    <button id="createBtn" action="activityKindsTable.create"/>
+                    <button id="editBtn" action="activityKindsTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn" action="activityKindsTable.remove" icon="icons/remove.png"/>
+                    <button id="refreshBtn" action="activityKindsTable.refresh" icon="icons/refresh.png"/>
+                    <button id="accessProcessesButton" caption="msg://accessProcesses" invoke="OpenProcsEditor" visible="false"/>
+                    <button id="accessReportsButton" caption="msg://accessReports" invoke="OpenReportsEditor" visible="false"/>
+                </buttonsPanel>
+            </table>
+        </vbox>
+    </layout>
+</window>

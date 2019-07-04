@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.productState.ProductStateEditor"
+        datasource="mainDs"
+        focusComponent="fields"
+        messagesPack="com.haulmont.thesis.crm.web.productState">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.ProductState"
+                    view="_local"/>
+    </dsContext>
+    <layout expand="vbox"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <vbox id="vbox">
+            <fieldGroup id="fields"
+                        datasource="mainDs"
+                        width="50%">
+                <column width="100%">
+                    <field id="code"/>
+                    <field id="name_ru"/>
+                    <field id="comment_ru"/>
+                </column>
+            </fieldGroup>
+        </vbox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

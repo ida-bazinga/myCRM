@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.position.ExtPositionEditor" datasource="positionDs"
+        messagesPack="com.haulmont.thesis.crm.web.position">
+    <dsContext>
+        <datasource id="positionDs" class="com.haulmont.thesis.crm.entity.ExtPosition" view="_local"/>
+    </dsContext>
+    <layout expand="windowActions">
+        <vbox id="vBox" spacing="true" width="${width}">
+            <hbox expand="name" spacing="true" width="100%">
+                <label id="nameLabel" value="msg://com.haulmont.thesis.core.entity/Position.name" width="${lWidth}"/>
+                <textField id="name" datasource="positionDs" property="name" required="true"/>
+            </hbox>
+            <hbox expand="genName" spacing="true" width="100%">
+                <label id="genNameLabel" value="msg://com.haulmont.thesis.crm.entity/ExtPosition.genName"
+                       width="${lWidth}"/>
+                <textField id="genName" datasource="positionDs" property="genName"/>
+            </hbox>
+            <hbox expand="datName" spacing="true" width="100%">
+                <label id="datNameLabel" value="msg://com.haulmont.thesis.crm.entity/ExtPosition.datName"
+                       width="${lWidth}"/>
+                <textField id="datName" datasource="positionDs" property="datName"/>
+            </hbox>
+            <hbox expand="latin" spacing="true" width="100%">
+                <label id="latinLabel" value="msg://com.haulmont.thesis.crm.entity/ExtPosition.latin"
+                       width="${lWidth}"/>
+                <textField id="latin" datasource="positionDs" property="latin"/>
+            </hbox>
+            <hbox expand="isDeptChief" spacing="true" width="100%">
+                <label id="isDeptChiefLabel" width="${lWidth}"/>
+                <checkBox id="isDeptChief" datasource="positionDs" property="isDeptChief"
+                        caption="msg://com.haulmont.thesis.crm.entity/ExtPosition.isDeptChief"/>
+            </hbox>
+            <hbox spacing="true">
+                <button id="morpherBtn" caption="msg://getMorfer" invoke="morph" visible="false"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="width" value="600px"/>
+    <assign name="lWidth" value="150px"/>
+</window>

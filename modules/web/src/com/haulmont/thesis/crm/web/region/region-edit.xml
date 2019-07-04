@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editorCaption" class="com.haulmont.thesis.crm.web.region.RegionEditor"
+        datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.region">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Region" view="edit"/>
+        <collectionDatasource id="countryDs" class="com.haulmont.thesis.crm.entity.Country" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Country e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="addressPartTypeDs" class="com.haulmont.thesis.crm.entity.AddressPartType" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$AddressPartType e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="federalDistrictDs" class="com.haulmont.thesis.crm.entity.FederalDistrict" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$FederalDistrict e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="commentBox3" spacing="true">
+            <hbox id="codeBox">
+                <label value="msg://code" width="100px"/>
+                <textField id="code" datasource="mainDs" property="code" width="50px"/>
+            </hbox>
+            <hbox id="countryBox" expand="country" width="100%">
+                <label value="msg://country" width="100px"/>
+                <lookupPickerField id="country" datasource="mainDs" optionsDatasource="countryDs" property="country" required="true">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox id="partTypeBox" expand="addressPartType" width="100%">
+                <label value="msg://addressPartType" width="100px"/>
+                <lookupPickerField id="addressPartType" datasource="mainDs" optionsDatasource="addressPartTypeDs" property="addressPartType"
+                                   required="true">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox id="nameBox" expand="name_ru" width="100%">
+                <label value="msg://name_ru" width="100px"/>
+                <textField id="name_ru" datasource="mainDs" property="name_ru" required="true"/>
+            </hbox>
+            <hbox id="fullNameBox" expand="fullName_ru" width="100%">
+                <label value="msg://fullName" width="100px"/>
+                <textField id="fullName_ru" datasource="mainDs" property="fullName_ru"/>
+            </hbox>
+            <hbox id="fdistrictBox" expand="federalDistrict" width="100%">
+                <label value="msg://federalDistrict" width="100px"/>
+                <lookupField id="federalDistrict" datasource="mainDs" optionsDatasource="federalDistrictDs" property="federalDistrict"
+                                   required="true">
+                </lookupField>
+            </hbox>
+            <hbox id="commentBox3" expand="comment_ru" width="100%">
+                <label value="msg://comment_ru" width="100px"/>
+                <textArea id="comment_ru" datasource="mainDs" property="comment_ru" rows="3"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="100px"/>
+</window>

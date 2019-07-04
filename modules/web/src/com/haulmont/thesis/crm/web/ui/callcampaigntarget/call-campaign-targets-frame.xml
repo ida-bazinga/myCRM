@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.callcampaigntarget.CallCampaignTargetsFrame"
+        messagesPack="com.haulmont.thesis.crm.web.ui.callcampaigntarget">
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="targetsTable" datasource="targetsDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs|Code|parent|priority|softphoneSession|isGroup" include=".*"/>
+                <custom caption="msg://targetsInWork" name="campaignStatus">
+                    <![CDATA[e.campaign.state = 'inWork']]>
+                </custom>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <treeTable id="targetsTable" height="100%" multiselect="true" presentations="true" reorderingAllowed="false" width="100%">
+                    <actions>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="campaign"/>
+                        <column id="campaign.locState" align="CENTER" caption="msg://campState" collapsed="true"/>
+                        <column id="priority" align="CENTER" width="70px" collapsed="true"/>
+                        <column id="company" caption="msg://company" width="140px"/>
+                        <column id="communication.contactPerson.fullName" caption="msg://contact" width="140px"/>
+                        <column id="communication" caption="msg://phoneNumber" width="100px" sortable="false"/>
+                        <column id="state" align="CENTER" width="70px"/>
+                        <column id="operator"/>
+                        <column id="countTries" align="CENTER" caption="msg://tries" width="60px"/>
+                        <column id="countFailedTries" collapsed="true"/>
+                        <column id="lastActivity.result" caption="msg://lastResult"/>
+                        <column id="lastActivity.endTimeFact" caption="msg://lastCallTime"/>
+                        <column id="lastActivity.owner" caption="msg://lastOperator"/>
+                        <column id="lastActivity.communication" caption="msg://lastCommunication"/>
+                        <column id="lastActivity.details"  caption="msg://lastDetails" collapsed="true"/>
+                        <column id="nextCallTime" caption="msg://nextCallTime"/>
+                        <column id="nextContact" caption="msg://nextContact"/>
+                        <column id="nextOwner" caption="msg://nextOperator"/>
+                        <column id="nextCommunication" caption="msg://nextCommunication"/>
+                    </columns>
+                    <rows datasource="targetsDs"/>
+                    <rowsCount/>
+                    <tableSettings id="tableSettings"/>
+                    <buttonsPanel>
+                        <button id="editBtn" action="targetsTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="targetsTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="targetsTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </treeTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

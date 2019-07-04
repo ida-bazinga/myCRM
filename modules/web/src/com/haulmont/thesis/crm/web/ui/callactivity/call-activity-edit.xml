@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.ui.callactivity.CallActivityEditor" datasource="cardDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.callactivity">
+    <dsContext>
+        <datasource id="cardDs" class="com.haulmont.thesis.crm.entity.CallActivity" view="edit"/>
+        <collectionDatasource id="allCompanyDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e where e.name like :(?i)custom$searchString order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select p from tm$Project p where p.isGroup = false and p.name like :(?i)custom$searchString order by p.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="allCampaignsDs" class="com.haulmont.thesis.crm.entity.CallCampaign" view="activity-edit">
+            <query>
+                <![CDATA[select e from crm$CallCampaign e order by e.date desc]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.kind.code not in (:custom$excludeCode)]]>
+                        </c>
+                        <c>
+                            <![CDATA[e.kind.code in (:custom$includeCode)]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="activityResultDs" class="com.haulmont.thesis.crm.entity.ActivityRes" view="edit">
+            <query>
+                <![CDATA[select e from crm$ActivityRes e left join e.campaignKinds ck
+                 where (ck.id = :ds$cardDs.campaign.kind.id or (e.useAllKinds = true and e.entityType = 'crm$CallActivity'))
+                 order by e.name_ru ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contactPersonsDs" class="com.haulmont.thesis.crm.entity.ExtContactPerson" view="with-company-and-comm">
+            <query>
+                <![CDATA[select e from df$ContactPerson e where e.company.id = :ds$cardDs.company.id]]>
+                <filter>
+                    <or>
+                        <c join=", crm$Communication co">
+                            <![CDATA[co.contactPerson.id = e.id and co.commKind.communicationType = @enum(com.haulmont.thesis.crm.entity.CommunicationTypeEnum.phone)]]>
+                        </c>
+                    </or>
+                </filter>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="communicationsDs" class="com.haulmont.thesis.crm.entity.Communication" view="with-contact">
+            <query>
+                <![CDATA[select e from crm$Communication e where e.contactPerson.id = :ds$cardDs.contactPerson
+                 and e.commKind.communicationType = @enum(com.haulmont.thesis.crm.entity.CommunicationTypeEnum.phone)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="recallCommunicationsDs" class="com.haulmont.thesis.crm.entity.Communication" view="with-contact">
+            <query>
+                <![CDATA[select e from crm$Communication e where e.contactPerson.id = :custom$contactForRecall.id
+                 and e.commKind.communicationType = @enum(com.haulmont.thesis.crm.entity.CommunicationTypeEnum.phone)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="lastActivities" class="com.haulmont.thesis.crm.entity.CallActivity" view="last-contact-activities" maxResults="10"
+                              allowCommit="false">
+            <query>
+                <![CDATA[select e from crm$CallActivity e where e.contactPerson is not null and e.contactPerson.id = :ds$cardDs.contactPerson
+                 order by e.createTime desc]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="lWidth" value="120px"/>
+    <assign name="width_spacer" value="10px"/>
+    <layout>
+        <vbox expand="hBox1" height="100%" spacing="true">
+            <hbox id="hBox1" expand="contentBox" spacing="true" width="100%">
+                <vbox id="contentBox" expand="content" height="100%" spacing="true">
+                    <hbox id="campaignNameBox" expand="campaignName" spacing="true" width="100%">
+                        <label id="campaignNameLabel" value="msg://com.haulmont.thesis.crm.entity/CallCampaign"/>
+                        <label id="campaignName" datasource="cardDs" property="campaign.name"/>
+                    </hbox>
+                    <groupBox id="content">
+                        <scrollBox id="scrollBox1" height="100%" spacing="true">
+                            <label id="contentLabel" datasource="cardDs" htmlEnabled="true" property="campaign.content" width="100%"/>
+                        </scrollBox>
+                    </groupBox>
+                </vbox>
+                <vbox id="fieldsPane" expand="gridPane" height="100%" spacing="true" width="AUTO">
+                    <vbox id="header">
+                        <grid align="MIDDLE_CENTER" spacing="true">
+                            <columns count="7"/>
+                            <rows>
+                                <row>
+                                    <label align="MIDDLE_CENTER" value="msg://startTime"/>
+                                    <label width="10px"/>
+                                    <label align="MIDDLE_CENTER" value="msg://connectionStartTime"/>
+                                    <label width="10px"/>
+                                    <label align="MIDDLE_CENTER" value="msg://connectionEndTime"/>
+                                    <label width="10px"/>
+                                    <label align="MIDDLE_CENTER" value="msg://endTime"/>
+                                </row>
+                                <row>
+                                    <label id="startTime" align="MIDDLE_CENTER" datasource="cardDs" property="createTime" stylename="thesis-bold">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm:ss"/>
+                                    </label>
+                                    <label align="MIDDLE_CENTER" value="|" width="AUTO"/>
+                                    <label id="connStartTime" datasource="cardDs" property="connectionStartTime" stylename="thesis-bold">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="HH:mm:ss"/>
+                                    </label>
+                                    <label align="MIDDLE_CENTER" value="|" width="AUTO"/>
+                                    <label id="connEndTime" align="MIDDLE_CENTER" datasource="cardDs" property="connectionEndTime" stylename="thesis-bold">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="HH:mm:ss"/>
+                                    </label>
+                                    <label align="MIDDLE_CENTER" value="|" width="AUTO"/>
+                                    <label id="endTime" align="MIDDLE_CENTER" datasource="cardDs" property="endTimeFact" stylename="thesis-bold">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm:ss"/>
+                                    </label>
+                                </row>
+                                <row>
+                                    <label align="MIDDLE_CENTER" stylename="thesis-bold" value="msg://preparationSeconds"/>
+                                    <label id="prepSeconds0" align="MIDDLE_CENTER" datasource="cardDs" property="preparationSeconds">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                                    </label>
+                                    <label align="MIDDLE_CENTER" stylename="thesis-bold" value="msg://connectingSeconds"/>
+                                    <label id="connSeconds" align="MIDDLE_CENTER" datasource="cardDs" property="connectingSeconds">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                                    </label>
+                                    <label align="MIDDLE_CENTER" stylename="thesis-bold" value="msg://editingSeconds"/>
+                                    <label id="editingSeconds" align="MIDDLE_CENTER" datasource="cardDs" property="editingSeconds">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                                    </label>
+                                    <hbox align="TOP_CENTER" spacing="true">
+                                        <label align="MIDDLE_CENTER" stylename="thesis-bold" value="msg://totalSeconds"/>
+                                        <label id="totalSeconds" align="MIDDLE_CENTER" datasource="cardDs" property="totalSeconds">
+                                            <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                                        </label>
+                                    </hbox>
+                                </row>
+                            </rows>
+                        </grid>
+                        <vbox id="separator" margin="false,false,true,false" stylename="thesis-top-separator"/>
+                    </vbox>
+                    <split id="gridPane" orientation="vertical" width="100%">
+                        <grid id="fields" spacing="true" width="100%" >
+                            <columns>
+                                <column/>
+                                <column flex="1.0"/>
+                            </columns>
+                            <rows>
+                                <row id="parentRow">
+                                    <label id="parentCardLabel" value="msg://com.haulmont.workflow.core.entity/Card.parentCard"/>
+                                    <pickerField id="parentCard" datasource="cardDs" editable="false" property="parentCard" width="100%">
+                                        <actions>
+                                            <action id="open"/>
+                                        </actions>
+                                    </pickerField>
+                                </row>
+                                <row id="campaignRow">
+                                    <label id="campaignLabel" value="msg://com.haulmont.thesis.crm.entity/BaseActivity.campaign"/>
+                                    <lookupPickerField id="campaign" datasource="cardDs" optionsDatasource="allCampaignsDs" property="campaign"
+                                                       width="100%">
+                                        <actions>
+                                            <action id="clear"/>
+                                            <action id="open"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </row>
+                                <row id="projectRow">
+                                    <label id="projectLabel" value="msg://com.haulmont.thesis.crm.entity/BaseActivity.project"/>
+                                    <searchPickerField id="project" datasource="cardDs" optionsDatasource="projectsDs" property="project" width="100%">
+                                        <actions>
+                                            <action id="clear"/>
+                                            <action id="open"/>
+                                        </actions>
+                                    </searchPickerField>
+                                </row>
+                                <row id="companyRow">
+                                    <label id="companyLabel" value="msg://com.haulmont.thesis.crm.entity/ExtCompany"/>
+                                    <searchPickerField id="company" datasource="cardDs" optionsDatasource="allCompanyDs" property="company" width="100%">
+                                        <actions>
+                                            <action id="clear"/>
+                                            <action id="lookup"/>
+                                            <action id="open"/>
+                                        </actions>
+                                    </searchPickerField>
+                                </row>
+                                <row id="contactRow">
+                                    <label id="contactPersonLabel" value="msg://com.haulmont.thesis.crm.entity/ExtContactPerson"/>
+                                    <lookupPickerField id="contactPerson" captionProperty="fullName" datasource="cardDs"
+                                                 optionsDatasource="contactPersonsDs" property="contactPerson" width="100%">
+                                        <actions>
+                                            <action id="open"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </row>
+                                <row id="communicationRow">
+                                    <label id="communicationLabel" value="msg://com.haulmont.thesis.crm.entity/Communication"/>
+                                    <lookupPickerField id="communication" captionProperty="maskedAddress" datasource="cardDs"
+                                                       optionsDatasource="communicationsDs" property="communication" width="100%">
+                                        <actions>
+                                            <action id="clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </row>
+                                <row id="addressRow">
+                                    <label id="addressLabel" value="msg://phoneNumber"/>
+                                    <label id="address" datasource="cardDs" property="address" stylename="thesis-bold" width="100%"/>
+                                    <!--<label id="addressBoxLabel" value="msg://phoneNumber"/>
+                                    <hbox id="addressBox" expand="address" spacing="true" width="100%">
+                                        <label id="address" datasource="cardDs" property="address" stylename="thesis-bold"/>
+                                        <button id="addCommunicationBtn" stylename="link"/>
+                                    </hbox>-->
+                                </row>
+                                <row id="resultRow">
+                                    <label id="resultLabel" value="msg://com.haulmont.thesis.crm.entity/BaseActivity.result"/>
+                                    <lookupField id="result" datasource="cardDs" optionsDatasource="activityResultDs" property="result" width="100%"/>
+                                </row>
+                                <row id="contactToRecallRow">
+                                    <label id="contactToRecallLabel" value="msg://contactToRecall"/>
+                                    <lookupPickerField id="contactToRecall" captionProperty="fullName" optionsDatasource="contactPersonsDs"
+                                                       width="100%">
+                                        <actions>
+                                            <action id="clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </row>
+                                <row id="phoneToRecallRow">
+                                    <label id="phoneToRecallLabel" value="msg://phoneToRecall"/>
+                                    <lookupPickerField id="phoneToRecall" optionsDatasource="recallCommunicationsDs" width="100%">
+                                        <actions>
+                                            <action id="clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </row>
+                                <row id="timeToRecallRow">
+                                    <label id="timeToRecallLabel" value="msg://timeToRecall"/>
+                                    <dateField id="timeToRecall"/>
+                                </row>
+                                <row id="endTimePlanRow">
+                                    <label id="endTimePlanLabel" value="msg://timeToRecall"/>
+                                    <dateField id="endTimePlan" datasource="cardDs" property="endTimePlan"/>
+                                </row>
+                                <row id="detailsRow" flex="1.0">
+                                    <label id="detailsLabel" value="msg://com.haulmont.thesis.crm.entity/BaseActivity.details"/>
+                                    <textArea id="details" datasource="cardDs" property="details" rows="7" width="100%"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <vbox id="lastActivityBox" expand="lastActivitiesTable" height="100%" margin="true,false,false,false" spacing="true"  width="100%">
+                            <label value="msg://lastActivities" />
+                            <table id="lastActivitiesTable" columnControlVisible="false" reorderingAllowed="false" sortable="false" width="100%" presentations="true">
+                                <columns>
+                                    <column id="createTime" align="CENTER" width="100px">
+                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm"/>
+                                    </column>
+                                    <column id="owner" width="110px"/>
+                                    <column id="result" width="110px"/>
+                                    <column id="details" maxTextLength="50"/>
+                                </columns>
+                                <rows datasource="lastActivities"/>
+                            </table>
+                        </vbox>
+                    </split>
+                </vbox>
+            </hbox>
+            <hbox expand="spacer" spacing="true" width="100%">
+                <iframe id="windowActions" screen="editWindowActions" width="AUTO"/>
+                <ctiButtonsPanel id="ctiButtonsPanel" width="AUTO"/>
+                <label id="spacer"/>
+                <label id="infoStatusLabel" align="BOTTOM_RIGHT" htmlEnabled="true"/>
+            </hbox>
+        </vbox>
+    </layout>
+</window>

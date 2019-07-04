@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://windowCaption"
+        class="com.haulmont.thesis.crm.web.ui.loadingInfo.ProjectRoomLoadingsWindow" messagesPack="com.haulmont.thesis.crm.web.ui.loadingInfo">
+    <dsContext>
+        <collectionDatasource id="roomsDs" class="com.haulmont.thesis.crm.entity.Room" view="with-conflict-room">
+            <query>
+                <![CDATA[select e from crm$Room e where e.useLoadingInfo = true]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.root.id = :custom$rootRoom]]>
+                        </c>
+                        <c>
+                            <![CDATA[e.resourceType.id in :custom$selectedTypes]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="chartPanel" height="100%" spacing="true">
+            <hbox expand="filterText" spacing="true" width="100%">
+                <button id="printBtn" action="printChart"/>
+                <button id="refreshBtn" icon="icons/refresh.png" invoke="refreshChart"/>
+                <label id="startDateLabel" align="MIDDLE_LEFT" value="msg://startDate"/>
+                <dateField id="startDate" dateFormat="dd.MM.yyyy" required="true" width="105px"/>
+                <label id="endDateLabel" align="MIDDLE_LEFT" value="msg://endDate"/>
+                <dateField id="endDate" dateFormat="dd.MM.yyyy" required="true" width="105px"/>
+                <label id="filterTextLabel" align="MIDDLE_LEFT" value="msg://filterText"/>
+                <textField id="filterText" editable="false"/>
+                <button id="selectRooms"/>
+                <checkBox id="showOptions"/>
+                <label id="showOptionsLabel" align="MIDDLE_LEFT" value="msg://isShowOptions" />
+            </hbox>
+            <vbox id="chartPanel" expand="roomLoadingChart" spacing="true">
+                <scheduleChart id="roomLoadingChart"/>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

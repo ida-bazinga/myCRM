@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee     http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+    <context-param>
+        <description>Vaadin production mode</description>
+        <param-name>productionMode</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <!-- Application properties config files -->
+    <context-param>
+        <param-name>appPropertiesConfig</param-name>
+        <param-value>classpath:cuba-web-app.properties
+            classpath:thesis-web-app.properties
+            classpath:web-app.properties
+            /WEB-INF/local.app.properties
+            file:${catalina.home}/conf/app/local.web-app.properties</param-value>
+    </context-param>
+    <listener>
+        <listener-class>com.haulmont.thesis.web.sys.ThesisWebAppContextLoader</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.vaadin.server.communication.JSR356WebsocketInitializer</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>crm_servlet</servlet-name>
+        <servlet-class>com.haulmont.thesis.crm.web.sys.CrmApplicationServlet</servlet-class>
+        <!--
+        <init-param>
+            <param-name>heartbeatInterval</param-name>
+            <param-value>15</param-value>
+        </init-param>
+        -->
+        <init-param>
+            <description>Application class</description>
+            <param-name>application</param-name>
+            <param-value>com.haulmont.thesis.crm.web.CrmApp</param-value>
+        </init-param>
+        <init-param>
+            <description>Application widgetset</description>
+            <param-name>widgetset</param-name>
+            <param-value>com.haulmont.thesis.web.toolkit.ui.ThesisWidgetset</param-value>
+        </init-param>
+        <init-param>
+            <description>Cuba Vaadin UI</description>
+            <param-name>UI</param-name>
+            <param-value>com.haulmont.thesis.crm.web.CrmAppUI</param-value>
+            <!--<param-value>com.haulmont.thesis.web.ThesisAppUI</param-value>-->
+        </init-param>
+        <init-param>
+            <param-name>UIProvider</param-name>
+            <param-value>com.haulmont.cuba.web.sys.CubaUIProvider</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useWebSocketAndServlet3</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>com.haulmont.thesis.web.sys.ThesisDispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <!-- SoftPhone web-service servlet -->
+    <servlet>
+        <description>servlet for  integration 3cx softphone app</description>
+        <servlet-name>softphone_servlet</servlet-name>
+        <servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
+        <!-- limit classpath scanning to speed up starting, not mandatory -->
+        <init-param>
+            <param-name>org.atmosphere.cpr.packages</param-name>
+            <param-value>com.haulmont.thesis.crm.web.softphone</param-value>
+        </init-param>
+        <!--<init-param>
+            <param-name>org.atmosphere.interceptor.HeartbeatInterceptor.clientHeartbeatFrequencyInSeconds</param-name>
+            <param-value>10</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.interceptor.HeartbeatInterceptor.paddingChar</param-name>
+            <param-value>tHeSiS</param-value>
+        </init-param>-->
+        <init-param>
+            <param-name>org.atmosphere.useWebSocket</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.websocket.messageContentType</param-name>
+            <param-value>application/json</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/dispatch/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>crm_servlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>softphone_servlet</servlet-name>
+        <url-pattern>/softphone/*</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>DeviceFilter</filter-name>
+        <filter-class>com.haulmont.thesis.web.sys.DeviceFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter>
+        <filter-name>CubaHttpFilter</filter-name>
+        <filter-class>com.haulmont.cuba.web.sys.CubaHttpFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <!-- Blocking Browsers that use old WebSocket Specification
+    https://github.com/Atmosphere/atmosphere/wiki/Blocking-Browsers-that-use-old-WebSocket-Specification -->
+    <filter>
+        <filter-name>WebSocketHandshakeFilter</filter-name>
+        <filter-class>org.atmosphere.websocket.WebSocketHandshakeFilter</filter-class>
+        <init-param>
+            <param-name>org.atmosphere.websocket.bannedVersion</param-name>
+            <param-value>-1</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>WebSocketHandshakeFilter</filter-name>
+        <servlet-name>softphone_servlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>DeviceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CubaHttpFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>

@@ -1,0 +1,14 @@
+@import "halo-defaults";
+@import "halo-thesis-defaults";
+@import "halo-thesis";
+@import "halo-tExpoCRM-defaults";
+@import "halo-tExpoCRM";
+
+
+ @include halo-tExpoCRM;
+
+
+// hide Vaadin warning about theme version
+.v-theme-version {
+  display: none;
+}

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.address.AddressEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.address"
+        xmlns:chart="http://schemas.haulmont.com/charts/charts.xsd">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.Address"
+                    view="edit"/>
+        <collectionDatasource id="countryDs"
+                              class="com.haulmont.thesis.crm.entity.Country"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Country e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="regionDs"
+                              class="com.haulmont.thesis.crm.entity.Region"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Region e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="regionDistrictDs"
+                              class="com.haulmont.thesis.crm.entity.RegionDistrict"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$RegionDistrict e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="cityDs"
+                              class="com.haulmont.thesis.crm.entity.City"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$City e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="width"
+            value="50%"/>
+    <layout height="100%"
+            margin="true"
+            spacing="true"
+            width="100%" expand="scrollBox">
+
+        <scrollBox id="scrollBox" height="100%"
+                   width="100%"
+                   spacing="true">
+
+            <groupBox id="groupSearchAddress"
+                      caption="msg://validDadata"
+                      collapsable="true"
+                      collapsed="true"
+                      orientation="vertical"
+                      spacing="true">
+                <textField id="addressDadata"
+                           width="100%"/>
+                <button id="validDadata"
+                        align="TOP_RIGHT"
+                        caption="msg://validDadata"
+                        invoke="cleanAddress"
+                        width="250px"/>
+            </groupBox>
+            <groupBox id="groupFirst"
+                      caption="msg://groupFirst"
+                      collapsable="true"
+                      collapsed="false"
+                      orientation="vertical"
+                      spacing="true">
+                <hbox expand="code"
+                      width="100%">
+                    <label id="code_ruLabel"
+                           value="msg://code"
+                           width="140px"/>
+                    <textField id="code"
+                               datasource="mainDs"
+                               enable="false"
+                               property="code"/>
+                </hbox>
+                <hbox expand="country"
+                      width="100%">
+                    <label value="msg://country"
+                           width="140px"/>
+                    <searchPickerField id="country"
+                                       datasource="mainDs"
+                                       optionsDatasource="countryDs"
+                                       property="country"
+                                       required="true">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="lookup"/>
+                            <action id="open"/>
+                        </actions>
+                    </searchPickerField>
+                </hbox>
+                <hbox expand="name_ru"
+                      width="100%">
+                    <label id="name_ru_ruLabel"
+                           value="msg://name_ru"
+                           width="140px"/>
+                    <textField id="name_ru"
+                               datasource="mainDs"
+                               description="msg://infoName"
+                               property="name_ru"/>
+                </hbox>
+                <hbox expand="addressFirstDoc"
+                      width="100%">
+                    <label id="addressFirstDoc_ruLabel"
+                           value="msg://addressFirstDoc"
+                           width="140px"/>
+                    <textField id="addressFirstDoc"
+                               datasource="mainDs"
+                               description="msg://infoNameEgrul"
+                               property="addressFirstDoc"/>
+                </hbox>
+            </groupBox>
+            <groupBox id="groupSecond"
+                      caption="msg://groupSecond"
+                      collapsable="true"
+                      collapsed="false"
+                      orientation="vertical"
+                      spacing="true">
+                <hbox id="hboxRegion"
+                      expand="region"
+                      width="100%">
+                    <label value="msg://region"
+                           width="140px"/>
+                    <searchPickerField id="region"
+                                       datasource="mainDs"
+                                       optionsDatasource="regionDs"
+                                       property="region">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="lookup"/>
+                            <action id="open"/>
+                        </actions>
+                    </searchPickerField>
+                </hbox>
+                <hbox id="hboxRegionDistrict"
+                      expand="regionDistrict"
+                      width="100%">
+                    <label value="msg://regionDistrict"
+                           width="140px"/>
+                    <searchPickerField id="regionDistrict"
+                                       datasource="mainDs"
+                                       optionsDatasource="regionDistrictDs"
+                                       property="regionDistrict">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="lookup"/>
+                            <action id="open"/>
+                        </actions>
+                    </searchPickerField>
+                </hbox>
+                <hbox id="hboxCity"
+                      expand="city"
+                      width="100%">
+                    <label value="msg://city"
+                           width="140px"/>
+                    <searchPickerField id="city"
+                                       datasource="mainDs"
+                                       optionsDatasource="cityDs"
+                                       property="city">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="lookup"/>
+                            <action id="open"/>
+                        </actions>
+                    </searchPickerField>
+                </hbox>
+                <hbox id="hboxAddress_ru"
+                      expand="address_ru"
+                      width="100%">
+                    <label id="address_ruLabel"
+                           value="msg://address_ru"
+                           width="140px"/>
+                    <textField id="address_ru"
+                               datasource="mainDs"
+                               property="address_ru"/>
+                </hbox>
+                <hbox id="hboxParentObject"
+                      expand="parentObject"
+                      width="100%">
+                    <label value="msg://parentObject"
+                           width="140px"/>
+                    <searchPickerField id="parentObject"
+                                       datasource="mainDs"
+                                       property="parentObject">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="lookup"/>
+                            <action id="open"/>
+                        </actions>
+                    </searchPickerField>
+                </hbox>
+                <hbox id="hboxZip"
+                      expand="zip"
+                      width="100%">
+                    <label value="msg://zip"
+                           width="140px"/>
+                    <textField id="zip"
+                               datasource="mainDs"
+                               property="zip"/>
+                </hbox>
+                <hbox id="hboxOkato"
+                      expand="okato"
+                      width="100%">
+                    <label value="msg://okato"
+                           width="140px"/>
+                    <textField id="okato"
+                               datasource="mainDs"
+                               property="okato"/>
+                </hbox>
+                <hbox id="hboxComment_ru"
+                      expand="comment_ru"
+                      width="100%">
+                    <label value="msg://comment_ru"
+                           width="140px"/>
+                    <textArea id="comment_ru"
+                              datasource="mainDs"
+                              height="50px"
+                              property="comment_ru"/>
+                </hbox>
+            </groupBox>
+            <groupBox id="groupMapViewer"
+                      caption="Показать на карте"
+                      collapsable="true"
+                      collapsed="false"
+                      orientation="vertical"
+                      spacing="true">
+                <hbox width="100%">
+                    <label value="Координаты: широта"/>
+                    <label datasource="mainDs" property="geoLat"/>
+                    <label value="/"/>
+                    <label value="Координаты: долгота"/>
+                    <label datasource="mainDs" property="geoLon"/>
+                </hbox>
+
+                <hbox height="200px"
+                      width="100%">
+                    <chart:mapViewer id="mapViewer"
+                                     height="100%"
+                                     width="100%"/>
+                </hbox>
+
+            </groupBox>
+        </scrollBox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

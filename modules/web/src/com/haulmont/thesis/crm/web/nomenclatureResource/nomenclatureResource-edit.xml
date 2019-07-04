@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.nomenclatureResource.NomenclatureresourceEdit" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.nomenclatureResource">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.NomenclatureResource" view="edit"/>
+        <collectionDatasource id="resourceDs" class="com.haulmont.thesis.crm.entity.Resource" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Resource e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox" margin="true" spacing="true">
+        <vbox id="vBox" stylename="edit-area">
+            <grid id="grid" spacing="true" width="100%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="6.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://nomenclature"/>
+                        <pickerField id="nomenclature" datasource="mainDs" property="nomenclature" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </pickerField>
+                    </row>
+                    <row>
+                        <label value="msg://resource"/>
+                        <lookupPickerField id="resource" datasource="mainDs" optionsDatasource="resourceDs" property="resource" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://quantity"/>
+                        <textField id="quantity" datasource="mainDs" property="quantity" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

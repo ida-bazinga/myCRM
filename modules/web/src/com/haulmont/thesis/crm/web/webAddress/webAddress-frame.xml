@@ -1,0 +1,25 @@
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://frameCaption"
+        class="com.haulmont.thesis.crm.web.webAddress.WebAddressFrame"
+        messagesPack="com.haulmont.thesis.crm.web.webAddress">
+
+    <dsContext/>
+
+    <layout>
+        <vbox height="100%" margin="true, false, false, false" spacing="true" expand="websTable">
+            <table id="websTable" editable="false" sortable="true" width="100%">
+                <buttonsPanel align="MIDDLE_LEFT">
+                    <button action="websTable.create" icon=""/>
+                    <button action="websTable.edit" icon="icons/edit.png"/>
+                    <button action="websTable.remove" icon="icons/remove.png"/>
+                </buttonsPanel>
+                <columns>
+
+                    <column id="name_ru" caption="msg://name"/>
+
+                </columns>
+                <rows datasource="webDs"/>
+            </table>
+        </vbox>
+    </layout>
+</window>

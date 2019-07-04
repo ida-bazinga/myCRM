@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://captionCompanyFind"
+        class="com.haulmont.thesis.crm.web.company.ExtCompanyFind"
+        focusComponent="findTable"
+        messagesPack="com.haulmont.thesis.crm.web.company">
+    <dsContext>
+        <collectionDatasource id="mainDs"
+                              class="com.haulmont.thesis.crm.entity.ExtCompany"
+                              view="edit">
+            <query>
+                <![CDATA[select e from df$Company e where e.inn='00000']]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout height="100%"
+            spacing="true"
+            width="100%">
+        <vbox id="main"
+              expand="findTable"
+              height="100%"
+              spacing="true">
+            <groupBox id="groupBoxInn"
+                      caption="Автоматическое заполнение реквизитов по ИНН"
+                      expand="searchInn"
+                      orientation="horizontal"
+                      spacing="true">
+                <textField id="searchInn"
+                           inputPrompt="Начните отсюда -&gt; ИНН"/>
+                <button id="searchSimpleInn"/>
+            </groupBox>
+            <groupBox id="groupBoxAll"
+                      caption="Поиск по дополнительным реквизитам"
+                      spacing="true">
+                <textField id="searchName"
+                           inputPrompt="Название"
+                           width="100%"/>
+                <textField id="searchPhone"
+                           inputPrompt="Телефон"
+                           width="100%"/>
+                <textField id="searchMail"
+                           inputPrompt="E-mail"
+                           width="100%"/>
+                <textField id="searchWeb"
+                           inputPrompt="Web-адрес"
+                           width="100%"/>
+                <button id="searchSimple"/>
+            </groupBox>
+            <groupTable id="findTable"
+                        multiselect="true"
+                        width="100%">
+                <actions>
+                    <action id="edit"/>
+                    <action id="selectDuplicateCompany"/>
+                </actions>
+                <columns>
+                    <column id="name" maxTextLength="50"/>
+                    <column id="inn"/>
+                    <column id="webAddress"/>
+                    <column id="extLegalAddress"
+                            collapsed="true"
+                            maxTextLength="40"/>
+                    <column id="extFactAddress"
+                            collapsed="true"
+                            maxTextLength="40"/>
+                    <column id="extPostalAddress"
+                            collapsed="true"
+                            maxTextLength="40"/>
+                    <column id="alternativeName"
+                            caption="msg://alternativeName"
+                            collapsed="true"
+                            maxTextLength="40"/>
+                    <column id="notes"
+                            collapsed="true"
+                            maxTextLength="50"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button id="editFindBtn"
+                            action="findTable.edit"
+                            icon="icons/edit.png"/>
+                    <button id="selectDuplicateCompany"
+                            description="Пометить как дубли"
+                            icon="icons/user-group-small.png"
+                            invoke="duplicateCompany"/>
+                </buttonsPanel>
+            </groupTable>
+            <vbox id="footer"
+                  expand="lbInfo"
+                  spacing="true">
+                <buttonsPanel>
+                    <button id="closeButton"
+                            caption="Закрыть"
+                            invoke="closeButton"/>
+                    <button id="createButton"
+                            caption="msg://actions.Create"
+                            invoke="createButton"/>
+                </buttonsPanel>
+                <label id="lbInfo"
+                       stylename="thesis-green-bold"
+                       value="Информация по поиску на дубли"/>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.equipment.EquipmentEditor" datasource="mainDs" focusComponent="vbox"
+        messagesPack="com.haulmont.thesis.crm.web.equipment">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Equipment" view="edit">
+            <collectionDatasource id="providersDs" property="provider"/>
+            <collectionDatasource id="attachmentsDs" property="resourceAttachments"/>
+            <collectionDatasource id="propertyDs" property="resourceProperty"/>
+            <collectionDatasource id="historyDs" property="resourceHistory"/>
+        </datasource>
+        <collectionDatasource id="resourceTypesDs" class="com.haulmont.thesis.crm.entity.ResourceType" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ResourceType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="suppliersDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ResourceType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="parentDs" class="com.haulmont.thesis.crm.entity.Equipment" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Equipment e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="equipmentStateDs" class="com.haulmont.thesis.crm.entity.EquipmentState" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$EquipmentState e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="unitDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Unit e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="ownerDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="stateDs" class="com.haulmont.thesis.crm.entity.EquipmentState" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$EquipmentState e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="providerDs" class="com.haulmont.thesis.crm.entity.Provider" view="_local">
+            <query>
+                <![CDATA[select e from crm$Provider e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="currencyDs" class="com.haulmont.thesis.crm.entity.Currency" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Currency e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vbox" spacing="true">
+        <vbox id="vbox">
+            <split id="split" height="700px" orientation="vertical" width="100%">
+                <tabSheet id="tabsheet" height="100%">
+                    <tab id="mainTab" caption="msg://mainTab" margin="true,false,false,false">
+                        <scrollBox id="fieldsBox" height="100%" width="98%">
+                            <hbox expand="fields" spacing="true" width="100%">
+                                <vbox id="fields" spacing="true" width="500px">
+                                    <hbox expand="name_ru" spacing="true" width="100%">
+                                        <label id="nameRuLabel" value="msg://name_ru" width="125px"/>
+                                        <textField id="name_ru" datasource="mainDs" property="name_ru" required="true"/>
+                                    </hbox>
+                                    <hbox expand="name_en" spacing="true" width="100%">
+                                        <label id="nameEnLabel" value="msg://name_en" width="125px"/>
+                                        <textField id="name_en" datasource="mainDs" property="name_en"/>
+                                    </hbox>
+                                    <hbox expand="serialNumber" spacing="true" width="100%">
+                                        <label id="serialNumberLabel" value="msg://serialNumber" width="125px"/>
+                                        <textField id="serialNumber" datasource="mainDs" property="serialNumber"/>
+                                    </hbox>
+                                    <hbox expand="reference" spacing="true" width="100%">
+                                        <label id="referenceLabel" value="msg://reference" width="125px"/>
+                                        <textField id="reference" datasource="mainDs" property="reference"/>
+                                    </hbox>
+                                    <hbox expand="resourceType" spacing="true" width="100%">
+                                        <label id="resourceTypeLabel" value="msg://resourceType" width="125px"/>
+                                        <lookupField id="resourceType" datasource="mainDs" optionsDatasource="resourceTypesDs" property="resourceType"/>
+                                    </hbox>
+                                    <hbox expand="inventoryNumber" spacing="true" width="100%">
+                                        <label id="inventoryNumberLabel" value="msg://inventoryNumber" width="125px"/>
+                                        <textField id="inventoryNumber" datasource="mainDs" property="inventoryNumber"/>
+                                    </hbox>
+                                    <hbox expand="state" spacing="true" width="100%">
+                                        <label id="stateLabel" value="msg://state" width="125px"/>
+                                        <lookupField id="state" datasource="mainDs" optionsDatasource="stateDs" property="state"/>
+                                    </hbox>
+                                    <hbox expand="unit" spacing="true" width="100%">
+                                        <label id="unitLabel" value="msg://unit" width="125px"/>
+                                        <lookupField id="unit" datasource="mainDs" optionsDatasource="unitDs" property="unit"/>
+                                    </hbox>
+                                    <hbox expand="numberMto" spacing="true" width="100%">
+                                        <label id="numberMtoLabel" value="msg://numberMto" width="125px"/>
+                                        <textField id="numberMto" datasource="mainDs" property="numberMto"/>
+                                    </hbox>
+                                    <hbox expand="barcodeMto" spacing="true" width="100%">
+                                        <label id="barcodeMtoLabel" value="msg://barcodeMto" width="125px"/>
+                                        <textField id="barcodeMto" datasource="mainDs" property="barcodeMto"/>
+                                    </hbox>
+                                    <hbox expand="owner" spacing="true" width="100%">
+                                        <label id="ownerLabel" value="msg://owner" width="125px"/>
+                                        <lookupPickerField id="owner" datasource="mainDs" optionsDatasource="ownerDs" property="owner">
+                                            <actions>
+                                                <action id="clear"/>
+                                                <action id="lookup"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </hbox>
+                                    <groupBox id="providerBox" caption="msg://providerBox" collapsed="true" spacing="true">
+                                        <hbox expand="providerCompany" spacing="true" width="100%">
+                                            <label id="providerLabel" value="msg://providerLabel" width="125px"/>
+                                            <searchPickerField id="providerCompany" datasource="mainDs" optionsDatasource="companiesDs" property="providerCompany">
+                                                <actions>
+                                                    <action id="clear"/>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </searchPickerField>
+                                        </hbox>
+                                        <hbox expand="price" spacing="true" width="100%">
+                                            <label value="msg://price" width="100px"/>
+                                            <textField id="price" datasource="mainDs" property="price"/>
+                                            <label value="msg://currency" width="80px"/>
+                                            <lookupField id="currency" datasource="mainDs" optionsDatasource="currencyDs" property="currency"
+                                                         width="100px"/>
+                                        </hbox>
+                                    </groupBox>
+                                    <hbox spacing="true" width="100%">
+                                        <label id="warrantyExpirationDate" value="msg://warrantyExpirationDateLabel" width="175px"/>
+                                        <dateField id="datefield_1" align="MIDDLE_LEFT" datasource="mainDs" dateFormat="dd.MM.yyyy HH:mm"
+                                                   property="warrantyExpirationDate" resolution="MIN" width="175px"/>
+                                    </hbox>
+                                    <hbox spacing="true" width="100%">
+                                        <label id="writeOffsDate" value="msg://writeOffsDate" width="175px"/>
+                                        <dateField id="datefield_2" align="MIDDLE_LEFT" datasource="mainDs" dateFormat="dd.MM.yyyy HH:mm"
+                                                   property="writeOffsDate" resolution="MIN" width="175px"/>
+                                    </hbox>
+                                    <hbox expand="model" spacing="true" width="100%">
+                                        <label id="modelLabel" value="msg://model" width="125px"/>
+                                        <textField id="model" datasource="mainDs" property="model"/>
+                                    </hbox>
+                                    <hbox expand="parent" spacing="true" width="100%">
+                                        <label id="parentLabel" value="msg://parent" width="125px"/>
+                                        <lookupPickerField id="parent" datasource="mainDs" optionsDatasource="parentDs" property="parent">
+                                            <actions>
+                                                <action id="clear"/>
+                                                <action id="lookup"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </hbox>
+                                    <hbox expand="comment_ru" spacing="true" width="100%">
+                                        <label id="commentRuLabel" value="msg://comment_ru" width="125px"/>
+                                        <textArea id="comment_ru" datasource="mainDs" property="comment_ru"/>
+                                    </hbox>
+                                </vbox>
+                                <iframe id="embeddedImageFrame" screen="avatarImageFrame" width="210px"/>
+                            </hbox>
+                        </scrollBox>
+                    </tab>
+                    <tab id="historyTab" caption="msg://historyTab" margin="true">
+                        <vbox id="historyBox" height="100%" margin="true,false,false,false">
+                            <groupTable id="historyTable" height="100%" width="100%">
+                                <actions>
+                                    <action id="create" openType="DIALOG"/>
+                                    <action id="edit" openType="DIALOG"/>
+                                    <action id="remove"/>
+                                    <action id="refresh"/>
+                                </actions>
+                                <columns>
+                                    <column id="comment_ru"/>
+                                    <column id="type"/>
+                                    <column id="date"/>
+                                    <column id="owner"/>
+                                    <column id="sender"/>
+                                    <column id="addressee"/>
+                                    <column id="sourceDestination"/>
+                                    <column id="destination"/>
+                                    <column id="informationDate"/>
+                                    <column id="transferDate"/>
+                                    <column id="card"/>
+                                </columns>
+                                <rows datasource="historyDs"/>
+                                <rowsCount/>
+                                <buttonsPanel>
+                                    <button id="historyCreateBtn" action="historyTable.create" caption="msg://actions.Create"/>
+                                    <button id="historyAddBtn" action="historyTable.edit" icon="icons/edit.png"/>
+                                    <button id="historyRemoveBtn" action="historyTable.remove" icon="icons/remove.png"/>
+                                    <button id="historyRefreshBtn" action="historyTable.refresh" icon="icons/refresh.png"/>
+                                </buttonsPanel>
+                            </groupTable>
+                        </vbox>
+                    </tab>
+                    <tab id="attachmentsTab" caption="msg://attachmentsTab" lazy="true">
+                        <iframe id="attachmentsFrame" height="100%" screen="abstractReferenceAttachmentsFrame"/>
+                    </tab>
+                </tabSheet>
+                <tabSheet id="propertiesTabsheet" height="100%">
+                    <tab id="propertyTab" caption="msg://propertyTab" margin="true">
+                        <groupTable id="propertyTable" aggregatable="true" height="100%" multiselect="true" presentations="true"
+                                    showTotalAggregation="false" width="100%">
+                            <actions>
+                                <action id="create" openType="DIALOG"/>
+                                <action id="edit" openType="DIALOG"/>
+                                <action id="remove"/>
+                                <action id="expand"/>
+                            </actions>
+                            <columns>
+                                <column id="propName"/>
+                                <column id="propValue"/>
+                                <column id="resource"/>
+                            </columns>
+                            <rows datasource="propertyDs"/>
+                            <buttonsPanel>
+                                <button id="createBtn" action="propertyTable.create"/>
+                                <button id="editBtn" action="propertyTable.edit" icon="icons/edit.png"/>
+                                <button id="removeBtn" action="propertyTable.remove" icon="icons/remove.png"/>
+                                <button id="expandBtn" action="propertyTable.expand"/>
+                            </buttonsPanel>
+                        </groupTable>
+                    </tab>
+                </tabSheet>
+            </split>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://templateBrowserCaption"
+        class="com.haulmont.thesis.crm.web.bookingEvent.BookingEventBrowse"
+        extends="com/haulmont/thesis/crm/web/bookingEvent/bookingEvent-browse.xml">
+    <dsContext>
+        <groupDatasource id="cardsDs"
+                         datasourceClass="com.haulmont.thesis.web.ui.DocDatasource">
+            <query>
+                <![CDATA[select distinct d from crm$BookingEvent d where d.template = true and d.versionOf is null order by d.templateName]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="themesesDs"
+                              class="com.haulmont.thesis.crm.entity.ProjectTheme"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectTheme e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="exhibitSpacesDs"
+                              class="com.haulmont.thesis.crm.entity.ExhibitSpace"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ExhibitSpace e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs"
+                              class="com.haulmont.thesis.crm.entity.ExtCompany"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="split"
+            spacing="true">
+        <!--
+        <hbox>
+            <filter id="genericFilter"/>
+        </hbox>
+        -->
+        <split id="split">
+            <vbox id="table-panel">
+                <groupTable id="cardsTable">
+                    <actions>
+                        <action id="deleteNotification"
+                                visible="false"/>
+                        <action id="showLink"
+                                visible="false"/>
+                        <action id="createDoc"/>
+                    </actions>
+                    <columns>
+                        <column id="important"
+                                visible="false"/>
+                        <column id="locState"
+                                visible="false"/>
+                        <column id="proc.name"
+                                visible="false"/>
+                        <column id="number"
+                                visible="false"/>
+                        <column id="date"
+                                visible="false"/>
+                        <column id="templateName"
+                                caption="msg://templateName"
+                                visible="true"/>
+                        <column id="substitutedCreator"
+                                caption="msg://creator"/>
+                    </columns>
+                    <buttonsPanel id="buttonsPanel">
+                        <button id="refreshBtn"
+                                visible="false"/>
+                        <button id="createDocBtn"
+                                visible="true"/>
+                        <button action="cardsTable.excel"
+                                visible="false"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </split>
+    </layout>
+</window>

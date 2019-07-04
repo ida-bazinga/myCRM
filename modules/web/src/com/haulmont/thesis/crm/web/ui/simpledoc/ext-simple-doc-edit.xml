@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd"
+        class="com.haulmont.thesis.web.ui.simpledoc.SimpleDocEditor"
+        extends="com/haulmont/thesis/web/ui/simpledoc/simple-doc-edit.xml"
+        messagesPack="com.haulmont.thesis.web.ui.simpledoc">
+    <dsContext>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select p from crm$Project p where @between(p.deinstallationDatePlan, now-6, now+60, month) and p.isGroup = false and p.name like :(?i)custom$searchString order by p.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <split id="split">
+            <hbox id="mainPane">
+                <tabSheet id="tabsheet">
+                    <tab id="mainTab">
+                        <groupBox id="docInfoGroupBox">
+                            <scrollBox id="infoScrollBox">
+                                <vbox id="infoVBox">
+
+                                        <grid id="docInfo">
+                                            <rows>
+                                                <row ext:index="3">
+                                                    <label id="projectLabel" value="msg://project" width="100px"/>
+                                                    <searchPickerField id="project" datasource="cardDs" colspan="3"
+                                                                       optionsDatasource="projectsDs" property="project" width="539px">
+                                                        <actions>
+                                                            <action id="clear"/>
+                                                            <action id="lookup"/>
+                                                            <action id="open"/>
+                                                        </actions>
+                                                    </searchPickerField>
+                                                </row>
+                                            </rows>
+                                        </grid>
+
+                                        <scrollBox height="100px"/>
+
+
+                                </vbox>
+                            </scrollBox>
+                        </groupBox>
+                    </tab>
+                </tabSheet>
+            </hbox>
+        </split>
+    </layout>
+</window>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://CampaignTargetsBrowserCaption"
+        class="com.haulmont.thesis.crm.web.callCampaignTarget.CallCampaignTargetBrowser" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.callCampaignTarget">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.CallCampaignTarget" maxResults="30" view="edit">
+            <query>
+                <![CDATA[select e from crm$CallCampaignTarget e ]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <custom caption="msg://targetsInWork" name="campaignStatus">e.outboundCampaign.status.code = &apos;inProgress&apos;</custom>
+                <properties exclude="id|createdBy|createTs|Code" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <groupTable id="mainTable" height="100%" multiselect="true" presentations="true" width="100%">
+                    <actions>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="outboundCampaign"/>
+                        <column id="company"/>
+                        <column id="status"/>
+                        <column id="numberOfTries"/>
+                        <column id="lastCallResult"/>
+                        <column id="lastCallPhone"/>
+                        <column id="lastCallDate"/>
+                        <column id="nextCallDate"/>
+                        <column id="nextCallPhone"/>
+                        <column id="nextCallOperator"/>
+                        <column id="comment_ru" collapsed="true"/>
+                        <column id="numberOfFailedTries" collapsed="true"/>
+                        <column id="lastCallOperator" collapsed="true"/>
+                        <column id="nextCallContact" collapsed="true"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

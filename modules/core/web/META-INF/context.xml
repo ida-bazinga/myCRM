@@ -1,0 +1,21 @@
+<Context>
+    <!-- Database connection -->
+    <Resource driverClassName="net.sourceforge.jtds.jdbc.Driver"
+              maxIdle="2"
+              maxTotal="50"
+              maxWaitMillis="5000"
+              name="jdbc/CubaDS"
+              password="cuba"
+              type="javax.sql.DataSource"
+              url="jdbc:jtds:sqlserver://localhost/thesis"
+              username="cuba"
+              validationQuery="select 1"/>
+    <!-- Switch off session serialization -->
+    <Manager className="org.apache.catalina.session.PersistentManager"
+             debug="0"
+             distributable="false"
+             saveOnRestart="false">
+        <Store className="org.apache.catalina.session.FileStore"/>
+    </Manager>
+
+</Context>

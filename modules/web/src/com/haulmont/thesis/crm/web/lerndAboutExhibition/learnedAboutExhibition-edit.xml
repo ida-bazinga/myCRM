@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.lerndAboutExhibition.LearnedaboutexhibitionEdit"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.lerndAboutExhibition">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.LearnedAboutExhibition"
+                    view="edit"/>
+    </dsContext>
+    <layout expand="windowActions"
+            height="100%"
+            margin="true"
+            spacing="true"
+            width="100%">
+        <hbox expand="name_ru"
+              spacing="true"
+              width="100%">
+            <label id="name_ru_label"
+                   value="msg://name_ru"
+                   width="140px"/>
+            <textField id="name_ru"
+                       datasource="mainDs"
+                       property="name_ru"/>
+        </hbox>
+        <hbox expand="name_en"
+              spacing="true"
+              width="100%">
+            <label id="name_en_label"
+                   value="msg://name_en"
+                   width="140px"/>
+            <textField id="name_en"
+                       datasource="mainDs"
+                       property="name_en"/>
+        </hbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

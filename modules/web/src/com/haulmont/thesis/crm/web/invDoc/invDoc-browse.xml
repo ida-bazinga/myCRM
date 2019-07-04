@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.invDoc.InvDocBrowser"
+        lookupComponent="cardsTable"
+        messagesPack="com.haulmont.thesis.crm.web.invDoc">
+    <dsContext>
+        <groupDatasource id="cardsDs"
+                         class="com.haulmont.thesis.crm.entity.InvDoc"
+                         datasourceClass="com.haulmont.thesis.web.ui.DocDatasource"
+                         view="browse">
+            <query>
+                <![CDATA[select distinct d from crm$InvDoc d where d.template = false and d.versionOf is null]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout expand="split"
+            spacing="true">
+        <hbox spacing="true"
+              width="100%">
+            <filter id="genericFilter"
+                    applyTo="cardsTable"
+                    datasource="cardsDs"
+                    stylename="edit-area">
+                <custom caption="Контрагент"
+                        name="company"
+                        paramClass="java.lang.String">d.company.name like ? or d.company.fullName like ?</custom>
+                <properties exclude="company|procFamily|template|important|templateName|createdBy|createTs|regNo|jbpmProcessId|id|locState|state|extraFields|currentActorsFullString|currentActorsString|addressees|executor|signedBy|category|executor|versionOf|deleteTs|budgetDoc"
+                            include=".*"/>
+            </filter>
+        </hbox>
+        <split id="split"
+               orientation="vertical"
+               pos="60"
+               width="100%">
+            <vbox id="table-panel"
+                  height="100%"
+                  spacing="true">
+                <groupTable id="cardsTable"
+                            height="100%"
+                            presentations="true"
+                            width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="saveAsTemplate"
+                                visible="false"/>
+                        <action id="deleteNotification"/>
+                        <action id="openNewTab"/>
+                        <action id="showLink"/>
+                        <action id="expand"/>
+                    </actions>
+                    <columns>
+                        <column id="hasAttachments"
+                                caption="msg://com.haulmont.workflow.core.entity/Card.hasAttachments"
+                                width="30">
+                            <formatter class="com.haulmont.thesis.gui.components.formatter.HasAttachmentsFormatter"/>
+                        </column>
+                        <column id="important"
+                                caption="msg://com.haulmont.thesis.core.entity/TsCard.important"
+                                width="30">
+                            <formatter class="com.haulmont.thesis.gui.components.formatter.ImportantDocFormatter"/>
+                        </column>
+                        <column id="currentActorsString"
+                                caption="msg://currentActors"
+                                maxTextLength="40"/>
+                        <column id="locState"
+                                caption="msg://com.haulmont.workflow.core.entity/Card.state"/>
+                        <column id="proc.name"
+                                caption="msg://procName"
+                                collapsed="true"/>
+                        <column id="docOfficeData.officeFile"
+                                caption="msg://officeFile"  collapsed="true"/>
+                        <column id="resolution"
+                                caption="msg://resolution"
+                                collapsed="true"
+                                maxTextLength="25"/>
+                        <column id="number"/>
+                        <column id="date"/>
+                        <column id="theme"/>
+                        <column id="company"/>
+                        <column id="project"/>
+                        <column id="fullSum"/>
+                        <column id="taxSum"/>
+                        <column id="tax"/>
+                        <column id="owner"/>
+                        <column id="docKind" collapsed="true"/>
+                        <column id="integrationResolver.posted" collapsed="true"/>
+                        <column id="integrationResolver.sumPayment" collapsed="true"/>
+                        <column id="integrationResolver.stateDocSales" collapsed="true"/>
+                    </columns>
+                    <rows datasource="cardsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel">
+                        <popupButton id="createButton"
+                                     caption="msg://actions.Create"/>
+                        <label stylename="thesis-buttonspanel-vertical-separator"/>
+                        <button id="editBtn"
+                                action="cardsTable.edit"
+                                icon="icons/edit.png"/>
+                        <button id="removeBtn"
+                                icon="icons/remove.png"
+                                invoke="onRemovebtnClick"/>
+                        <button id="excel"
+                                action="cardsTable.excel"
+                                description="msg://actions.Excel"
+                                icon="icons/excel.png"/>
+                        <button id="refreshBtn"
+                                action="cardsTable.refresh"
+                                icon="icons/refresh.png"/>
+                        <button id="saveAsTemplateBtn"
+                                icon="icons/save_as_template.png"
+                                visible="false"/>
+                        <button id="createDocBtn"
+                                visible="false"/>
+                        <button id="expandBtn"
+                                action="cardsTable.expand"/>
+                        <popupButton id="printButton"
+                                     description="msg://print"
+                                     icon="icons/reports-print.png"/>
+                        <!--
+                        <popupButton id="additionalCreateBtn"
+                                     caption="msg://additionalCreate"/>
+                        -->
+                    </buttonsPanel>
+                    <tableSettings id="tableSettings"/>
+                </groupTable>
+            </vbox>
+            <tabSheet id="cardDetailsTabSheet"
+                      height="100%">
+                <tab id="resolutionsTab"
+                     caption="msg://resolutions"
+                     margin="true">
+                    <iframe id="resolutionsFrame"
+                            height="100%"
+                            screen="resolutionsFrame"/>
+                </tab>
+                <tab id="hierarchyTab"
+                     caption="msg://hierarchy">
+                    <iframe id="cardTreeFrame"
+                            height="100%"
+                            screen="cardTreeFrame"/>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.equipmentState.EquipmentstateLookup" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.equipmentState">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.EquipmentState" view="_local">
+            <query>
+                <![CDATA[select e from crm$EquipmentState e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="mainTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs|isGroup" include=".*"/>
+            </filter>
+            <table id="mainTable" presentations="true" width="100%">
+                <actions>
+                    <action id="refresh"/>
+                </actions>
+                <columns>
+                    <column id="code"/>
+                    <column id="name_ru"/>
+                    <column id="comment_ru" collapsed="true"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </table>
+        </vbox>
+    </layout>
+</window>

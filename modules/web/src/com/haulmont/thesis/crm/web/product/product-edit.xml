@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption" class="com.haulmont.thesis.crm.web.product.ProductEditor"
+        datasource="mainDs" focusComponent="mainTab" messagesPack="com.haulmont.thesis.crm.web.product">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Product" view="edit-minimal-costs">
+            <collectionDatasource id="productCostsDs" property="costs"/>
+        </datasource>
+        <collectionDatasource id="nomenclatureDs" class="com.haulmont.thesis.crm.entity.Nomenclature" view="edit-forProduct">
+            <query>
+                <![CDATA[select e from crm$Nomenclature e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="characteristicsDs" class="com.haulmont.thesis.crm.entity.Characteristic" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Characteristic e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="exhibitSpacesDs" class="com.haulmont.thesis.crm.entity.ExhibitSpace" view="_local">
+            <query>
+                <![CDATA[select e from crm$ExhibitSpace e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.core.entity.Project" view="_local">
+            <query>
+                <![CDATA[select e from tm$Project e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="productTypesDs" class="com.haulmont.thesis.crm.entity.ProductType" view="_local">
+            <query>
+                <![CDATA[select e from crm$ProductType e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="unitDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select u from crm$Product p join p.nomenclature n join n.unit u where p.id = :ds$mainDs.id order by u.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="secondaryUnitDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Unit e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabsheet" height="100%" spacing="true" width="100%">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab" caption="msg://mainTab" margin="true">
+                <groupBox id="docInfoGroupBox" height="100%" stylename="edit-area">
+                    <scrollBox id="scrollBox58" height="100%" scrollBars="both">
+                        <vbox id="infoVBox">
+                            <hbox spacing="true">
+                                <label id="integrationStateLabel" align="MIDDLE_CENTER" stylename="thesis-green-bold"/>
+                            </hbox>
+                            <vbox id="docInfo" margin="true,false,true,false" stylename="thesis-top-separator">
+                                <hbox spacing="true">
+                                    <label id="label_1" align="MIDDLE_CENTER" stylename="thesis-green-bold" visible="false"/>
+                                </hbox>
+                                <flowBox spacing="true">
+                                    <hbox expand="nomenclature" spacing="true" width="450px">
+                                        <label value="msg://nomenclature" width="110px"/>
+                                        <searchPickerField id="nomenclature" datasource="mainDs" optionsDatasource="nomenclatureDs"
+                                                           property="nomenclature" required="true">
+                                            <actions>
+                                                <action id="open"/>
+                                            </actions>
+                                        </searchPickerField>
+                                    </hbox>
+                                    <hbox expand="unit" spacing="true" width="450px">
+                                        <label value="msg://unit" width="110px"/>
+                                        <label id="unit" datasource="mainDs" property="nomenclature.unit.fullName_ru" stylename="thesis-bold"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="productType" spacing="true" width="450px">
+                                        <label value="msg://productType" width="110px"/>
+                                        <lookupField id="productType" datasource="mainDs" optionsDatasource="productTypesDs" property="productType"/>
+                                    </hbox>
+                                    <hbox expand="characteristic" spacing="true" width="450px">
+                                        <label value="msg://characteristic" width="110px"/>
+                                        <lookupPickerField id="characteristic" datasource="mainDs" optionsDatasource="characteristicsDs"
+                                                           property="characteristic">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="title_ru" spacing="true" width="450px">
+                                        <label value="msg://title_ru" width="110px"/>
+                                        <textField id="title_ru" datasource="mainDs" property="title_ru"/>
+                                    </hbox>
+                                    <hbox expand="title_en" spacing="true" width="450px">
+                                        <label value="msg://title_en" width="110px"/>
+                                        <textField id="title_en" datasource="mainDs" property="title_en"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="minQuantity" spacing="true" width="450px">
+                                        <label value="msg://minQuantity" width="110px"/>
+                                        <textField id="minQuantity" datasource="mainDs" property="minQuantity"/>
+                                    </hbox>
+                                    <hbox expand="maxQuantity" spacing="true" width="450px">
+                                        <label value="msg://maxQuantity" width="110px"/>
+                                        <textField id="maxQuantity" datasource="mainDs" property="maxQuantity"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="typeDetailBox" spacing="true" width="450px">
+                                        <vbox expand="exhibitSpaceLabel" width="110px">
+                                            <label id="exhibitSpaceLabel" value="msg://exhibitSpace" width="150px"/>
+                                            <label id="eventOrganizerLabel" value="msg://eventOrganizer" width="110px"/>
+                                            <label id="projectLabel" value="msg://project" width="110px"/>
+                                        </vbox>
+                                        <vbox id="typeDetailBox">
+                                            <lookupPickerField id="exhibitSpace" datasource="mainDs" optionsDatasource="exhibitSpacesDs"
+                                                               property="exhibitSpace" width="100%">
+                                                <actions>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </lookupPickerField>
+                                            <pickerField id="eventOrganizer" datasource="mainDs" property="eventOrganizer" width="100%">
+                                                <actions>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </pickerField>
+                                            <lookupPickerField id="project" datasource="mainDs" optionsDatasource="projectsDs" property="project"
+                                                               width="100%">
+                                                <actions>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </lookupPickerField>
+                                        </vbox>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="secondaryUnit" spacing="true" width="450px">
+                                        <label id="secondaryUnitLabel" value="msg://secondaryUnit" width="110px"/>
+                                        <lookupPickerField id="secondaryUnit" datasource="mainDs" optionsDatasource="secondaryUnitDs"
+                                                           property="secondaryUnit">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </hbox>
+                                    <hbox expand="tourismProductType" spacing="true" width="450px">
+                                        <label id="tourismProductTypeLabel" value="msg://tourismProductType"/>
+                                        <lookupField id="tourismProductType" datasource="mainDs" property="tourismProductType"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">                                    
+                                    <hbox expand="notInUse" spacing="true" width="450px">
+                                        <label id="notInUseLabel" value="msg://com.haulmont.thesis.crm.entity/Product.notInUse" width="140px"/>
+                                        <checkBox id="notInUse" datasource="mainDs" property="notInUse" width="250px"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="comment_ru" spacing="true" width="450px">
+                                        <label value="msg://comment_ru" width="110px"/>
+                                        <richTextArea id="comment_ru" datasource="mainDs" property="comment_ru"/>
+                                    </hbox>
+                                    <hbox expand="comment_en" spacing="true" width="450px">
+                                        <label value="msg://comment_en" width="110px"/>
+                                        <richTextArea id="comment_en" datasource="mainDs" property="comment_en"/>
+                                    </hbox>
+                                </flowBox>
+                                <vbox>
+                                    <label/>
+                                    <button id="enqueueToExportBtn" caption="msg://enqueueToExport" invoke="enqueueToExport"/>
+                                </vbox>
+                            </vbox>
+                        </vbox>
+                    </scrollBox>
+                </groupBox>
+            </tab>
+            <tab id="productCostsTab" caption="msg://productCostsCaption">
+                <vbox id="vbox74" height="100%" margin="true,false,false,false">
+                    <table id="productCostsTable" height="100%" width="100%">
+                        <columns>
+                            <column id="code"/>
+                            <column id="startDate"/>
+                            <column id="primaryCost"/>
+                            <column id="secondaryCost"/>
+                            <column id="primaryCurrency" caption="msg://primaryCostCaption" collapsed="true"/>
+                            <column id="secondaryCurrency" caption="msg://secondaryCostCaption" collapsed="true"/>
+                            <column id="comment_ru" collapsed="true"/>
+                            <column id="comment_en" collapsed="true"/>
+                            <column id="comment2_ru"/>
+                            <column id="project"/>
+                            <column id="costType"/>
+                        </columns>
+                        <rows datasource="productCostsDs"/>
+                        <buttonsPanel>
+                            <button action="productCostsTable.create"/>
+                            <button action="productCostsTable.edit" icon="icons/edit.png"/>
+                            <button action="productCostsTable.remove" icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>
+            <tab id="productLogTab" caption="msg://productLogTab" lazy="true">
+                <iframe id="productLogFrame" height="100%" screen="entityLogFrame"/>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions" screen="extendedEditWindowActions"/>
+    </layout>
+</window>

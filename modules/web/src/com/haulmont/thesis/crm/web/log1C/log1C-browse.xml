@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browseCaption" class="com.haulmont.thesis.crm.web.log1C.Log1CBrowser"
+        focusComponent="genericFilter" lookupComponent="log1CTable" messagesPack="com.haulmont.thesis.crm.web.log1C">
+    <dsContext>
+        <groupDatasource id="log1CDs" class="com.haulmont.thesis.crm.entity.Log1C" view="browse">
+            <query>
+                <![CDATA[select distinct p from crm$Log1C p order by p.startDate DESC]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="log1CTable" datasource="log1CDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel" spacing="true">
+                <groupTable id="log1CTable" height="100%" width="100%">
+                    <actions>
+                        <action id="edit"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="shortServiceOperationResults"/>
+                        <column id="startDate"/>
+                        <column id="entityName"/>
+                        <column id="entityId"/>
+                        <column id="extId"/>
+                        <column id="priority"/>
+                        <column id="extSystem"/>
+                        <column id="error" maxTextLength="100" collapsed="true"/>
+                    </columns>
+                    <rows datasource="log1CDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="log1CTable.edit" icon="icons/edit.png"/>
+                        <button action="log1CTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

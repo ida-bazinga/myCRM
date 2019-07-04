@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://dialogCaption"
+        class="com.haulmont.thesis.crm.web.ui.cti.transfer.CallTransferDialog" messagesPack="com.haulmont.thesis.crm.web.ui.cti.transfer">
+    <dsContext>
+        <collectionDatasource id="employeesDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" maxResults="100" view="_local">
+            <query>
+                <![CDATA[select distinct e from df$Employee e order by e.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="mainBox" expand="tablePanel" height="100%" spacing="true">
+            <hbox spacing="true" width="100%">
+                <filter id="genericFilter" applyTo="employeesTable" datasource="employeesDs">
+                    <properties exclude="createdBy|id|createTs|deleteTs|version|project" include=".*"/>
+                </filter>
+            </hbox>
+            <vbox id="tablePanel" spacing="true">
+                <table id="employeesTable" height="100%" width="100%">
+                    <columns>
+                        <column id="avatar"/>
+                        <column id="name"/>
+                        <column id="phoneNumExtnesion"/>
+                        <column id="mobilePhone"/>
+                        <column id="organization"/>
+                        <column id="department"/>
+                        <column id="position"/>
+                    </columns>
+                    <rows datasource="employeesDs"/>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

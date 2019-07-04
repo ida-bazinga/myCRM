@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://BrowserCaption"
+        class="com.haulmont.thesis.crm.web.ui.activity.ActivityBrowser" focusComponent="tablePanel" lookupComponent="activitiesTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.activity">
+    <dsContext>
+        <groupDatasource id="activitiesDs" class="com.haulmont.thesis.crm.entity.Activity" maxResults="50" view="browse">
+            <query>
+                <![CDATA[select e from crm$Activity e order by e.createTs desc]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="activitiesTable" datasource="activitiesDs" stylename="edit-area">
+                <properties exclude="id|createdBy|connectionStartTime|connectionEndTime|preparationSeconds|connectingSeconds|editingSeconds|totalSeconds"
+                            include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <groupTable id="activitiesTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="owner" collapsed="true"/>
+                        <column id="campaign" collapsed="true"/>
+                        <column id="project"/>
+                        <column id="company" link="true" linkScreenOpenType="THIS_TAB"/>
+                        <column id="contact.fullName" caption="msg://contactFullName"/>
+                        <column id="phone"/>
+                        <column id="createTs" caption="msg://startTime">
+                            <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm:ss"/>
+                        </column>
+                        <column id="result"/>
+                        <column id="resultDetails" collapsed="true"/>
+                        <column id="callId" collapsed="true"/>
+                    </columns>
+                    <rows datasource="activitiesDs" rowHeaderMode="ICON"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="editBtn" action="activitiesTable.edit"/>
+                        <button id="refreshBtn" action="activitiesTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

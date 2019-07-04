@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<metadata xmlns="http://schemas.haulmont.com/cuba/metadata.xsd">
+    <metadata-model namespace="crm" root-package="com.haulmont.thesis.crm">
+        <class>com.haulmont.thesis.crm.entity.SaleDocsHistoryInfo</class>
+        <class>com.haulmont.thesis.crm.entity.CashMachineProduct</class>
+        <class>com.haulmont.thesis.crm.core.app.restApiService.myClass.ConfigurationSelection</class>
+        <class>com.haulmont.thesis.crm.core.app.restApiService.myClass.ConfigurationSelectionResult</class>
+        <class>com.haulmont.thesis.crm.entity.CallStatus</class>
+        <class>com.haulmont.thesis.crm.entity.CampaignTarget</class>
+        <class>com.haulmont.thesis.crm.entity.SoftPhoneProfile</class>
+    </metadata-model>
+    <annotations>
+        <entity class="com.haulmont.thesis.crm.entity.ExtContractorAccount">
+            <property name="no">
+                <annotation name="length" value="30"/>
+            </property>
+        </entity>
+    </annotations>
+</metadata>

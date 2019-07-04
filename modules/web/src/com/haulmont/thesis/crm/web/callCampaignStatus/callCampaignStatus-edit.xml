@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.callCampaignStatus.CallCampaignStatusEditor" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.callCampaignStatus">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.CallCampaignStatus" view="_local"/>
+    </dsContext>
+    <layout expand="vBox" height="100%" spacing="true" width="100%">
+        <vbox id="vBox">
+            <grid id="grid" margin="true,false,false,false" spacing="true" width="50%">
+                <columns>
+                    <column/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code" datasource="mainDs" property="code" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru" datasource="mainDs" property="name_ru" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textField id="comment_ru" datasource="mainDs" property="comment_ru" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://OperatorSessionEventsBrowserCaption"
+        class="com.haulmont.thesis.crm.web.operatorSessionEvents.OperatorSessionEventsBrowser"
+        messagesPack="com.haulmont.thesis.crm.web.operatorSessionEvents">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.OperatorSessionEvents" view="browse">
+            <query>
+                <![CDATA[select e from crm$OperatorSessionEvents e order by e.timeStamp desc]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="mainTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <groupTable id="mainTable" presentations="true" width="100%">
+                <actions>
+                    <action id="refresh"/>
+                </actions>
+                <columns>
+                    <group>
+                        <column id="operatorSession"/>
+                    </group>
+                    <column id="timeStamp"/>
+                    <column id="title"/>
+                    <column id="description" collapsed="true"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

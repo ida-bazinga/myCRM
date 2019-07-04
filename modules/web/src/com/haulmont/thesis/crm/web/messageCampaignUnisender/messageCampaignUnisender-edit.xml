@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.messageCampaignUnisender.MessageCampaignUnisenderEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.messageCampaignUnisender">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.MessageCampaignUnisender"
+                    view="_local"/>
+    </dsContext>
+    <layout expand="mainScrollBox"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <scrollBox id="mainScrollBox">
+            <grid id="grid"
+                  margin="true,false,false,false"
+                  spacing="true"
+                  stylename="edit-area"
+                  width="800px">
+                <columns>
+                    <column flex="0.1"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code"
+                                   datasource="mainDs"
+                                   property="code"
+                                   width="100px"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru"
+                                   datasource="mainDs"
+                                   property="name_ru"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru"
+                                  datasource="mainDs"
+                                  property="comment_ru"
+                                  rows="3"
+                                  width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.tourType.TourtypeEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.tourType">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.TourType"
+                    view="_local"/>
+    </dsContext>
+    <layout expand="vbox"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <vbox id="vbox">
+            <fieldGroup id="fields"
+                        datasource="mainDs"
+                        width="100%">
+                <column width="100%">
+                    <field id="code"
+                           width="100%"/>
+                    <field id="name_ru"
+                           width="100%"/>
+                    <field id="name_en"
+                           width="100%"/>
+                    <field id="comment_ru"
+                           width="100%"/>
+                </column>
+            </fieldGroup>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

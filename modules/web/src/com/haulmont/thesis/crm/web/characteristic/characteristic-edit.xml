@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.characteristic.CharacteristicEditor" datasource="mainDs" focusComponent="mainScrollBox"
+        messagesPack="com.haulmont.thesis.crm.web.characteristic">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Characteristic" view="edit"/>
+        <collectionDatasource id="characteristicTypesDs" class="com.haulmont.thesis.crm.entity.CharacteristicType" view="edit">
+            <query>
+                <![CDATA[select e from crm$CharacteristicType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="guesthousesDs" class="com.haulmont.thesis.crm.entity.Guesthouse" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Guesthouse e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="mainScrollBox" height="100%" spacing="true" width="100%">
+        <scrollBox id="mainScrollBox">
+            <grid id="grid" margin="true,false,false,false" spacing="true" stylename="edit-area" width="100%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="6.0"/>
+                    <column flex="4.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru" datasource="mainDs" property="name_ru" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_en"/>
+                        <textField id="name_en" datasource="mainDs" property="name_en" width="100%"/>
+                    </row>
+                    <row>
+                        <label id="characteristicTypeLabel" value="msg://characteristicType"/>
+                        <lookupPickerField id="characteristicType" datasource="mainDs" optionsDatasource="characteristicTypesDs"
+                                           property="characteristicType" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://duration"/>
+                        <textField id="duration" datasource="mainDs" property="duration" width="100%"/>
+                    </row>
+                    <row>
+                        <label id="hotelLabel" value="msg://hotel" visible="false"/>
+                        <lookupPickerField id="hotel" datasource="mainDs" optionsDatasource="guesthousesDs" property="guesthouse" visible="false"
+                                           width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru" datasource="mainDs" property="comment_ru" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

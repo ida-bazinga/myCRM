@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.integrationResolver.IntegrationResolverEdit"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.integrationResolver">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.IntegrationResolver" view="1c"/>
+    </dsContext>
+    <assign name="width" value="50%"/>
+    <layout expand="windowActions" margin="true" spacing="true">
+        <hbox expand="extSystem" spacing="true" width="500px">
+            <label value="msg://extSystem" width="140px"/>
+            <lookupField id="extSystem" datasource="mainDs" property="extSystem" width="100%"/>
+        </hbox>
+        <hbox expand="entityName" spacing="true" width="500px">
+            <label value="msg://entityName" width="140px"/>
+            <textField id="entityName" datasource="mainDs" property="entityName" width="100%"/>
+        </hbox>
+        <hbox expand="stateDocSales" spacing="true" width="500px">
+            <label value="msg://stateDocSales" width="140px"/>
+            <lookupField id="stateDocSales" datasource="mainDs" property="stateDocSales"/>
+        </hbox>
+        <hbox expand="entityId" spacing="true" width="500px" enable="true">
+            <label value="msg://entityId" width="140px"/>
+            <textField id="entityId" datasource="mainDs" property="entityId" width="100%"/>
+        </hbox>
+        <hbox expand="extId" spacing="true" width="500px" enable="true">
+            <label value="msg://extId" width="140px"/>
+            <textField id="extId" datasource="mainDs" property="extId" width="100%"/>
+        </hbox>
+        <groupBox caption="msg://addInfo" width="500px" orientation="vertical">
+            <checkBox id="posted" datasource="mainDs" property="posted" caption="msg://posted"/>
+            <checkBox id="del" datasource="mainDs" property="del" caption="msg://del"/>
+            <textField id="sumPayment" datasource="mainDs" property="sumPayment" caption="msg://sumPayment"/>
+        </groupBox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

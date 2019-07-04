@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.company.history.HistoryCompanyCellsBrowse"
+        focusComponent="mainTable"
+        lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.company.history">
+    <dsContext>
+        <collectionDatasource id="mainDs"
+                              class="com.haulmont.thesis.crm.entity.HistoryCompanyCells"
+                              loadDynamicAttributes="true"
+                              view="historyCompanyCells">
+            <query>
+                <![CDATA[select e from crm$HistoryCompanyCells e where e.company.id = :custom$company and e.companyCells = :custom$companyCells order by e.startDate]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel"
+              height="100%"
+              spacing="true">
+            <groupTable id="mainTable"
+                        height="100%"
+                        multiselect="true"
+                        presentations="true"
+                        width="100%">
+                <actions>
+                    <action id="remove"/>
+                    <action id="edit"/>
+                </actions>
+                <columns>
+                    <column id="company"/>
+                    <column id="companyCells"/>
+                    <column id="startDate"/>
+                    <column id="item"/>
+                    <column id="address"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel">
+                    <button id="createButton"
+                            icon="icons/plus-btn.png"
+                            invoke="create"/>
+                    <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn"
+                            action="mainTable.remove"
+                            icon="icons/remove.png"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

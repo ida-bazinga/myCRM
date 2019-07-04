@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://BrowserCaption"
+        class="com.haulmont.thesis.crm.web.ui.formofincorporation.FormOfIncorporationBrowser" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.formofincorporation">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.FormOfIncorporation" view="edit">
+            <query>
+                <![CDATA[select distinct p from crm$FormOfIncorporation p order by p.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <table id="mainTable" height="100%" width="100%">
+                    <actions>
+                        <action id="create" openType="DIALOG"/>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code" collapsed="true"/>
+                        <column id="shortName"/>
+                        <column id="name_ru"/>
+                        <column id="notApply"/>
+                        <column id="comment_ru" collapsed="true"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="mainTable.create"/>
+                        <button action="mainTable.edit" icon="icons/edit.png"/>
+                        <button action="mainTable.remove" icon="icons/remove.png"/>
+                        <button action="mainTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://templateBrowseCaption"
+        class="com.haulmont.thesis.crm.web.reqdoc.ReqDocBrowse"
+        extends="com/haulmont/thesis/crm/web/reqdoc/reqdoc-browse.xml">
+    <dsContext>
+        <groupDatasource id="cardsDs">
+            <query>
+                <![CDATA[select distinct d from crm$ReqDoc d where d.template = true and d.versionOf is null order by d.templateName]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout expand="split"
+            spacing="true">
+        <split id="split">
+            <vbox id="table-panel">
+                <groupTable id="cardsTable">
+                    <buttonsPanel id="buttonsPanel">
+                        <button action="cardsTable.excel"
+                                visible="false"/>
+                        <button id="refreshBtn"
+                                visible="false"/>
+                        <button id="createDocBtn"
+                                visible="true"/>
+                        <runReportPopupButton id="printButton"
+                                              description="msg://print"
+                                              icon="icons/reports-print.png"/>
+                    </buttonsPanel>
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="createDoc"/>
+                        <action id="deleteNotification"
+                                visible="false"/>
+                        <action id="showLink"
+                                visible="false"/>
+                    </actions>
+                    <columns>
+                        <column id="templateName"
+                                caption="msg://templateName"
+                                visible="true"/>
+                        <column id="important"
+                                visible="false"/>
+                        <column id="locState"
+                                visible="false"/>
+                        <column id="date"
+                                visible="false"/>
+                        <column id="number"
+                                visible="false"/>
+                        <column id="substitutedCreator"
+                                caption="msg://creator"/>
+                        <column id="proc.name"
+                                caption="msg://procName"
+                                visible="false"/>
+                        <column id="regDate"
+                                caption="msg://regDate"
+                                visible="false"/>
+
+                    </columns>
+                </groupTable>
+            </vbox>
+            <tabSheet id="cardDetailsTabSheet"
+                      visible="false"/>
+        </split>
+    </layout>
+</window>

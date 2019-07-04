@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.campaign.CampaignCreator"
+        messagesPack="com.haulmont.thesis.crm.web.ui.campaign">
+    <dsContext>
+        <collectionDatasource id="campaignKindDs" class="com.haulmont.thesis.crm.entity.CampaignKind" view="browse">
+            <query>
+                <![CDATA[select e from crm$CampaignKind e where e.entityType = :custom$entityType order by e.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="fieldsBox" height="100%" margin="true" spacing="true">
+            <vbox id="fieldsBox" spacing="true">
+                <hbox  expand="campaignKind" spacing="true" width="100%">
+                    <label width="10px"/>
+                    <label align="MIDDLE_RIGHT" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.kind"/>
+                    <lookupField id="campaignKind" optionsDatasource="campaignKindDs"/>
+                </hbox>
+            </vbox>
+            <iframe id="windowActions" screen="editWindowActions"/>
+        </vbox>
+    </layout>
+</window>

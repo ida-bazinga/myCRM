@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://okvdBrowserCaption"
+        class="com.haulmont.thesis.crm.web.okvd.OkvdBrowser" focusComponent="okvdTable" lookupComponent="okvdTable"
+        messagesPack="com.haulmont.thesis.crm.web.okvd">
+    <dsContext>
+        <hierarchicalDatasource id="okvdDs" class="com.haulmont.thesis.crm.entity.Okvd" hierarchyProperty="parentOkvd" view="browse">
+            <query>
+                <![CDATA[select e from crm$Okvd e order by e.code]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout expand="okvdTable" spacing="true">
+        <filter id="filter" datasource="okvdDs">
+            <properties include=".*"/>
+        </filter>
+        <treeTable id="okvdTable" multiselect="true" width="100%">
+            <actions>
+                <action id="create" openType="DIALOG"/>
+                <action id="edit" openType="DIALOG"/>
+                <action id="remove"/>
+                <action id="refresh"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="name_ru"/>
+                <column id="comment_ru" collapsed="true"/>
+            </columns>
+            <rows datasource="okvdDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel" alwaysVisible="true">
+                <button id="createBtn" action="okvdTable.create"/>
+                <button id="editBtn" action="okvdTable.edit"/>
+                <button id="removeBtn" action="okvdTable.remove"/>
+                <button id="refreshBtn" action="okvdTable.refresh" icon="icons/refresh.png"/>
+            </buttonsPanel>
+        </treeTable>
+    </layout>
+</window>

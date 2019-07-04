@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.nomenclature.NomenclatureBrowser"
+        focusComponent="nomenclatureTable"
+        lookupComponent="nomenclatureTable"
+        messagesPack="com.haulmont.thesis.crm.web.nomenclature">
+    <dsContext>
+        <groupDatasource id="nomenclatureDs"
+                         class="com.haulmont.thesis.crm.entity.Nomenclature"
+                         maxResults="5000"
+                         view="edit">
+            <query>
+                <![CDATA[select e from crm$Nomenclature e order by e.name_ru]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="organizationsDs"
+                              class="com.haulmont.thesis.core.entity.Organization"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from df$Organization e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="tablePanel"
+              expand="nomenclatureTable"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="nomenclatureTable"
+                    datasource="nomenclatureDs"
+                    stylename="edit-area">
+                <properties exclude="id|createdBy|createTs"
+                            include=".*"/>
+            </filter>
+            <groupTable id="nomenclatureTable"
+                        multiselect="true"
+                        presentations="true"
+                        width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                    <action id="expand"/>
+                </actions>
+                <columns>
+                    <column id="code"
+                            align="CENTER"
+                            width="50px"/>
+                    <column id="name_ru"/>
+                    <column id="unit"
+                            align="CENTER"
+                            caption="msg://unit"
+                            width="50px"/>
+                    <column id="tax"
+                            align="CENTER"
+                            width="80px"/>
+                    <column id="printName_ru"/>
+                    <column id="publicName_ru"/>
+                    <column id="characteristicType"
+                            collapsed="true"/>
+                    <column id="comment_ru"
+                            collapsed="true"/>
+                    <column id="comment_en"
+                            collapsed="true"/>
+                    <column id="printName_en"
+                            collapsed="true"/>
+                    <column id="publicName_en"
+                            collapsed="true"/>
+                    <column id="nomenclatureType"
+                            caption="msg://type"
+                            collapsed="true"/>
+                    <column id="notInUse"
+                            collapsed="true"/>
+                    <column id="organization"/>
+                </columns>
+                <rows datasource="nomenclatureDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel">
+                    <button id="createButton"
+                            action="nomenclatureTable.create"/>
+                    <button id="editBtn"
+                            action="nomenclatureTable.edit"
+                            icon="icons/edit.png"/>
+                    <button id="removeBtn"
+                            action="nomenclatureTable.remove"
+                            icon="icons/remove.png"/>
+                    <button id="refreshBtn"
+                            action="nomenclatureTable.refresh"
+                            icon="icons/refresh.png"/>
+                    <button id="excelBtn"
+                            description="msg://actions.Excel"
+                            icon="icons/excel.png"/>
+                    <button id="expandBtn"
+                            action="nomenclatureTable.expand"/>
+                    <runReportPopupButton id="printButton"
+                                          icon="icons/reports-print.png"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

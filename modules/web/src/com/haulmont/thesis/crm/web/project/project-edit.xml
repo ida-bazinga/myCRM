@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://projectEditor.caption"
+        class="com.haulmont.thesis.crm.web.project.ProjectEditor"
+        datasource="projectDs"
+        focusComponent="mainTab"
+        messagesPack="com.haulmont.thesis.crm.web.project">
+    <dsContext>
+        <datasource id="projectDs"
+                    class="com.haulmont.thesis.crm.entity.ExtProject"
+                    view="ext-edit">
+            <collectionDatasource id="projectTeamDs"
+                                  property="teams"/>
+            <collectionDatasource id="linesOfBusinessDs"
+                                  property="linesOfBusiness"/>
+        </datasource>
+        <groupDatasource id="projectRoomDs"
+                         class="com.haulmont.thesis.crm.entity.ProjectRoom"
+                         view="edit">
+            <query>
+                <![CDATA[select e from crm$ProjectRoom e where e.project.id = :ds$projectDs.id order by e.id]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="projectGroupDs"
+                              class="com.haulmont.thesis.crm.entity.ExtProject"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where e.isGroup = true order by e.code]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectLastDs"
+                              class="com.haulmont.thesis.crm.entity.ExtProject"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where e.isGroup = false and e.name like :(?i)custom$searchString order by e.code]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="responsibleDs"
+                              class="com.haulmont.thesis.core.entity.Employee"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="typeDs"
+                              class="com.haulmont.thesis.crm.entity.ProjectType"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectType e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="regionDs"
+                              class="com.haulmont.thesis.crm.entity.Region"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Region e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="themesDs"
+                              class="com.haulmont.thesis.crm.entity.ProjectTheme"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectTheme e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="ruefClassifierDs"
+                              class="com.haulmont.thesis.crm.entity.RuefClassifier"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$RuefClassifier e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="exhibitSpaceDs"
+                              class="com.haulmont.thesis.crm.entity.ExhibitSpace"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ExhibitSpace e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizerDs"
+                              class="com.haulmont.thesis.crm.entity.ExtCompany"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectFormatDs"
+                              class="com.haulmont.thesis.crm.entity.ProjectFormat"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectFormat e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="territorialClassifierDs"
+                              class="com.haulmont.thesis.crm.entity.TerritorialClassifier"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$TerritorialClassifier e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizationDs"
+                              class="com.haulmont.thesis.core.entity.Organization"
+                              view="_local">
+            <query>
+                <![CDATA[select o from df$Organization o order by o.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="guideLineDs"
+                              class="com.haulmont.thesis.crm.entity.GuideLine"
+                              view="browse">
+            <query>
+                <![CDATA[select e from crm$GuideLine e where e.project.id = :ds$projectDs.id]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabsheet"
+            spacing="true">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab"
+                 caption="msg://mainTab"
+                 margin="true" spacing="true">
+
+                    <scrollBox id="scrollBox" height="100%" scrollBars="both">
+                        <vbox spacing="true" margin="true,false,true,false">
+                            <hbox id="header"
+                                  spacing="true">
+                                <flowBox>
+                                    <hbox align="TOP_CENTER"
+                                          spacing="true">
+                                        <label id="integrationStateLabel"
+                                               align="MIDDLE_CENTER"
+                                               stylename="thesis-bold"/>
+                                        <label align="MIDDLE_CENTER"
+                                               value="   |   "/>
+                                        <linkButton id="export1cBtn"
+                                                    align="MIDDLE_CENTER"
+                                                    caption="msg://export1cBtn"
+                                                    invoke="export1cBtn"/>
+                                    </hbox>
+                                </flowBox>
+                            </hbox>
+
+                            <hbox expand="organization" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.code" width="50px"/>
+                                <textField id="code"
+                                           datasource="projectDs"
+                                           property="code" width="100px"/>
+
+                                <label value="msg://organization" width="80px"/>
+                                <lookupPickerField id="organization"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="organizationDs"
+                                                   property="organization" required="true">
+                                    <actions>
+                                        <action id="open"/>
+                                    </actions>
+                                </lookupPickerField>
+
+                            </hbox>
+                            <hbox expand="parentProject" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.parentProject" width="160px"/>
+                                <lookupPickerField id="parentProject"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="projectGroupDs"
+                                                   property="parentProject"
+                                                   required="true">
+                                    <actions>
+                                        <action id="lookup"/>
+                                    </actions>
+                                </lookupPickerField>
+                            </hbox>
+                            <hbox expand="lastProject" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.lastProject" width="160px"/>
+                                <searchPickerField id="lastProject" datasource="projectDs"
+                                                   optionsDatasource="projectLastDs" property="lastProject" width="539px">
+                                    <actions>
+                                        <action id="clear"/>
+                                        <action id="lookup"/>
+                                        <action id="open"/>
+                                    </actions>
+                                </searchPickerField>
+
+                            </hbox>
+                            <hbox expand="name" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.core.entity/Project.name" width="160px"/>
+                                <textField id="name"
+                                           datasource="projectDs"
+                                           property="name"
+                                           required="true"/>
+                            </hbox>
+                            <hbox expand="name_en" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.name_en" width="160px"/>
+                                <textField id="name_en"
+                                           datasource="projectDs"
+                                           property="name_en"/>
+                            </hbox>
+                            <hbox expand="fullName_ru" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.fullName_ru" width="160px"/>
+                                <textField id="fullName_ru"
+                                           datasource="projectDs"
+                                           maxLength="134"
+                                           property="fullName_ru"
+                                           required="true"/>
+                            </hbox>
+                            <hbox expand="fullName_en" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.fullName_en" width="160px"/>
+                                <textField id="fullName_en"
+                                           datasource="projectDs"
+                                           property="fullName_en"/>
+                            </hbox>
+                            <hbox expand="web" spacing="true" width="500px">
+                                <label value="msg://webAddress" width="160px"/>
+                                <textField id="web"
+                                           datasource="projectDs"
+                                           property="web"/>
+                            </hbox>
+                            <hbox expand="comment_ru" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.comment_ru" width="160px"/>
+                                <textArea id="comment_ru"
+                                          datasource="projectDs"
+                                          property="comment_ru"
+                                          resizable="true"
+                                          rows="3"/>
+                            </hbox>
+                            <hbox expand="comment_en" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.comment_en" width="160px"/>
+                                <textArea id="comment_en"
+                                          datasource="projectDs"
+                                          property="comment_en"
+                                          resizable="true"
+                                          rows="3"/>
+                            </hbox>
+                            <hbox expand="themes" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.themes" width="160px"/>
+                                <lookupPickerField id="themes"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="themesDs"
+                                                   property="themes">
+                                    <actions>
+                                        <action id="lookup"/>
+                                    </actions>
+                                </lookupPickerField>
+                            </hbox>
+                            <hbox expand="format" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.format" width="160px"/>
+                                <lookupPickerField id="format"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="projectFormatDs"
+                                                   property="format">
+                                    <actions>
+                                        <action id="lookup"/>
+                                    </actions>
+                                </lookupPickerField>
+                            </hbox>
+                            <hbox expand="exhibitSpace" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.exhibitSpace" width="160px"/>
+                                <lookupPickerField id="exhibitSpace"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="exhibitSpaceDs"
+                                                   property="exhibitSpace"/>
+                            </hbox>
+                            <hbox expand="organizer" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.organizer" width="160px"/>
+                                <lookupPickerField id="organizer"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="organizerDs"
+                                                   property="organizer">
+                                    <actions>
+                                        <action id="lookup"/>
+                                    </actions>
+                                </lookupPickerField>
+                            </hbox>
+                            <hbox expand="ruefClassifier" spacing="true" width="500px">
+                                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.ruefClassifier" width="160px"/>
+                                <lookupPickerField id="ruefClassifier"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="ruefClassifierDs"
+                                                   property="ruefClassifier">
+                                    <actions>
+                                        <action id="lookup"/>
+                                    </actions>
+                                </lookupPickerField>
+                            </hbox>
+                            <hbox expand="territoryClassifier" spacing="true" width="500px">
+                                <label value="msg://territoryClassifierCaption" width="160px"/>
+                                <lookupPickerField id="territoryClassifier"
+                                                   datasource="projectDs"
+                                                   optionsDatasource="territorialClassifierDs"
+                                                   property="territoryClassifier"/>
+                            </hbox>
+                            <hbox expand="groupFact" spacing="true" width="500px">
+                                <groupBox id="groupFact"
+                                          align="TOP_CENTER" caption="msg://factDatesCaption">
+                                    <hbox expand="installationDateFact" spacing="true">
+                                        <label align="MIDDLE_LEFT"
+                                               value="msg://installDate" width="160px"/>
+                                        <dateField id="installationDateFact"
+                                                   align="MIDDLE_RIGHT"
+                                                   datasource="projectDs"
+                                                   dateFormat="dd.MM.yyyy HH:mm"
+                                                   property="installationDateFact"
+                                                   resolution="MIN"/>
+                                    </hbox>
+                                    <hbox expand="dateStartFact" spacing="true">
+                                        <label align="MIDDLE_LEFT"
+                                               value="msg://startDate" width="160px"/>
+                                        <dateField id="dateStartFact"
+                                                   align="MIDDLE_RIGHT"
+                                                   datasource="projectDs"
+                                                   dateFormat="dd.MM.yyyy HH:mm"
+                                                   property="dateStartFact"
+                                                   resolution="MIN"/>
+                                    </hbox>
+                                    <hbox expand="datefield_3" spacing="true">
+                                        <label align="MIDDLE_LEFT"
+                                               value="msg://endDate" width="160px"/>
+                                        <dateField id="datefield_3"
+                                                   align="MIDDLE_RIGHT"
+                                                   datasource="projectDs"
+                                                   dateFormat="dd.MM.yyyy HH:mm"
+                                                   property="dateFinishFact"
+                                                   resolution="MIN"/>
+                                    </hbox>
+                                    <hbox expand="datefield_4" spacing="true">
+                                        <label align="MIDDLE_LEFT"
+                                               value="msg://unInstallDate" width="160px"/>
+                                        <dateField id="datefield_4"
+                                                   align="MIDDLE_RIGHT"
+                                                   datasource="projectDs"
+                                                   dateFormat="dd.MM.yyyy HH:mm"
+                                                   property="deinstallationDateFact"
+                                                   resolution="MIN"/>
+                                    </hbox>
+
+                                </groupBox>
+
+                            </hbox>
+                        </vbox>
+                    </scrollBox>
+
+            </tab>
+            <tab id="planDateTab"
+                 caption="msg://planDateTab"
+                 margin="true">
+                <grid id="planDateGrid"
+                      margin="true"
+                      spacing="true"
+                      width="800px">
+                    <columns count="2"/>
+                    <rows>
+                        <row>
+                            <groupBox id="groupPlan"
+                                      align="TOP_CENTER">
+                                <grid spacing="true">
+                                    <columns>
+                                        <column flex="0.5"/>
+                                        <column flex="2.0"/>
+                                    </columns>
+                                    <rows>
+                                        <row>
+                                            <label align="MIDDLE_LEFT"
+                                                   value="msg://installDate"/>
+                                            <dateField id="installationDatePlan"
+                                                       align="MIDDLE_RIGHT"
+                                                       datasource="projectDs"
+                                                       dateFormat="dd.MM.yyyy HH:mm"
+                                                       property="installationDatePlan"
+                                                       resolution="MIN"/>
+                                        </row>
+                                        <row>
+                                            <label align="MIDDLE_LEFT"
+                                                   value="msg://startDate"/>
+                                            <dateField id="dateStartPlan"
+                                                       align="MIDDLE_RIGHT"
+                                                       datasource="projectDs"
+                                                       dateFormat="dd.MM.yyyy HH:mm"
+                                                       property="dateStartPlan"
+                                                       resolution="MIN"/>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </groupBox>
+                            <groupBox id="groupbox_1"
+                                      align="TOP_CENTER">
+                                <grid spacing="true">
+                                    <columns>
+                                        <column flex="0.5"/>
+                                        <column flex="2.0"/>
+                                    </columns>
+                                    <rows>
+                                        <row>
+                                            <label align="MIDDLE_LEFT"
+                                                   value="msg://endDate"/>
+                                            <dateField id="dateFinishPlan"
+                                                       align="MIDDLE_RIGHT"
+                                                       datasource="projectDs"
+                                                       dateFormat="dd.MM.yyyy HH:mm"
+                                                       property="dateFinishPlan"
+                                                       resolution="MIN"/>
+                                        </row>
+                                        <row>
+                                            <label align="MIDDLE_LEFT"
+                                                   value="msg://unInstallDate"/>
+                                            <dateField id="deinstallationDatePlan"
+                                                       align="MIDDLE_RIGHT"
+                                                       datasource="projectDs"
+                                                       dateFormat="dd.MM.yyyy HH:mm"
+                                                       property="deinstallationDatePlan"
+                                                       resolution="MIN"/>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </groupBox>
+                        </row>
+                    </rows>
+                </grid>
+            </tab>
+            <tab id="linesOfBusinessTab"
+                 caption="msg://linesOfBusinessTab"
+                 margin="true">
+                <vbox id="linesOfBusinessBox"
+                      height="100%"
+                      margin="true,false,false,false">
+                    <table id="linesOfBusinessTable"
+                           height="100%"
+                           width="100%">
+                        <actions>
+                            <action id="add"/>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="name_ru"/>
+                        </columns>
+                        <rows datasource="linesOfBusinessDs"/>
+                        <buttonsPanel>
+                            <button id="linesOfBusinessAddBtn"
+                                    action="linesOfBusinessTable.add"
+                                    icon="font-icon:PLUS"/>
+                            <button id="linesOfBusinessRemoveBtn"
+                                    action="linesOfBusinessTable.remove"
+                                    icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>
+            <tab id="projectTeamsTab"
+                 caption="msg://projectTeamsCaption"
+                 margin="true">
+                <vbox id="tablPanel"
+                      height="100%"
+                      spacing="true">
+                    <table id="projectTeamTable"
+                           height="100%"
+                           width="100%">
+                        <actions>
+                            <action id="create"/>
+                            <action id="edit"/>
+                            <action id="remove"/>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="code"/>
+                            <column id="employee"/>
+                            <column id="roleInProject"/>
+                            <column id="anotherRole"/>
+                            <column id="comment_ru"/>
+                        </columns>
+                        <rows datasource="projectTeamDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button action="projectTeamTable.create"/>
+                            <button action="projectTeamTable.edit"
+                                    icon="icons/edit.png"/>
+                            <button action="projectTeamTable.remove"
+                                    icon="icons/remove.png"/>
+                            <button action="projectTeamTable.refresh"
+                                    icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>
+            <tab id="projectRoomsTab"
+                 caption="msg://projectRoomsCaption"
+                 margin="true">
+                <vbox id="vbox_1"
+                      height="100%"
+                      spacing="true">
+                    <groupTable id="projectRoomTable"
+                                height="100%"
+                                width="100%">
+                        <actions>
+                            <action id="create"
+                                    openType="DIALOG"/>
+                            <action id="edit"
+                                    openType="DIALOG"/>
+                            <action id="remove"/>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="room"/>
+                            <column id="installationDate"/>
+                            <column id="startDate"/>
+                            <column id="endDate"/>
+                            <column id="deinstallationDate"/>
+                            <column id="variant" collapsed="true"/>
+                            <column id="status"/>
+                            <column id="area"/>
+                            <column id="optionDate" caption="msg://com.haulmont.thesis.crm.entity/RoomResourceLoadingsInfo.isOption"/>
+                        </columns>
+                        <rows datasource="projectRoomDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="createBtn"
+                                    icon="icons/plus-btn.png"
+                                    invoke="createProjectRoom"/>
+                            <button action="projectRoomTable.edit"
+                                    icon="icons/edit.png"/>
+                            <button action="projectRoomTable.remove"
+                                    icon="icons/remove.png"/>
+                            <button action="projectRoomTable.refresh"
+                                    icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </tab>
+            <tab id="salesDocHistoryTab"
+                 caption="msg://salesdocHistory"
+                 margin="true">
+                <vbox height="100%"
+                      margin="true,false,false,false"
+                      spacing="true">
+                    <iframe id="salesDocHistoryFrame"
+                            height="100%"
+                            screen="projectSalesDocHistoryFrame"/>
+                </vbox>
+            </tab>
+            <tab id="guideLineTab"
+                 caption="msg://guideLine"
+                 margin="true" lazy="true">
+                <vbox height="100%"
+                      margin="true,false,false,false"
+                      spacing="true">
+                    <iframe id="guidLineFrame"
+                            height="100%"
+                            screen="crm$GuideLine.frame"/>
+                </vbox>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

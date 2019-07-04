@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://lookupCaption"
+        class="com.haulmont.thesis.crm.web.equipment.EquipmentgroupLookup" focusComponent="genericFilter" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.equipment">
+    <dsContext>
+        <hierarchicalDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.Equipment" hierarchyProperty="parent" view="edit">
+            <query>
+                <![CDATA[select e from crm$Equipment e where e.isGroup=true order by e.name]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <treeTable id="mainTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="name_ru"/>
+                        <column id="name_en" collapsed="true"/>
+                        <column id="comment_ru" collapsed="true"/>
+                        <column id="resourceType"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                </treeTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

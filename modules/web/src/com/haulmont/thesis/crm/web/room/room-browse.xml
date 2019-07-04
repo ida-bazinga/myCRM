@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browseCaption" class="com.haulmont.thesis.crm.web.room.RoomBrowser"
+        focusComponent="genericFilter" lookupComponent="mainTable" messagesPack="com.haulmont.thesis.crm.web.room">
+    <dsContext>
+        <hierarchicalDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.Room" maxResults="1000" hierarchyProperty="parent" view="browse">
+            <query>
+                <![CDATA[select e from crm$Room e]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" expand="mainTable" spacing="true">
+                <treeTable id="mainTable" editable="true" presentations="true" width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                        <action id="expand"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="name_en" collapsed="true"/>
+                        <column id="serialNumber" caption="msg://roomNumber"/>
+                        <column id="reference" caption="msg://link" collapsed="true"/>
+                        <column id="comment_ru" collapsed="true"/>
+                        <column id="resourceType"/>
+                        <column id="inventoryNumber" collapsed="true"/>
+                        <column id="state"/>
+                        <column id="root"/>
+                        <column id="parent"/>
+                        <column id="cadastralNumber" collapsed="true"/>
+                        <column id="totalGrossArea"/>
+                        <column id="length"/>
+                        <column id="width"/>
+                        <column id="isUseConfigurator"/>
+                        <column id="useLoadingInfo" editable="true"/>
+                        <column id="isGroup" collapsed="true"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel alwaysVisible="true">
+                        <popupButton id="createBtn" caption="msg://actions.Create"/>
+                        <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                        <button id="expandBtn" action="mainTable.expand"/>
+                        <button id="sendToLogBtn" description="Отправить помещение в каталог" icon="icons/send.png" invoke="sendToLog"/>
+                    </buttonsPanel>
+                </treeTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

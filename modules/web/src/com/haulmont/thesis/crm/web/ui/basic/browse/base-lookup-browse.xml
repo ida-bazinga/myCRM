@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.basic.browse.BaseLookupBrowser"
+        focusComponent="rowsTable" lookupComponent="rowsTable" messagesPack="com.haulmont.thesis.crm.web.ui.basic">
+    <dsContext>
+        <groupDatasource id="rowsDs" class="com.haulmont.thesis.crm.entity.BaseLookup" view="_local">
+            <query>
+                <![CDATA[select e from crm$BaseLookup e order by e.name]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="rowsTable" datasource="rowsDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <groupTable id="rowsTable" height="100%" width="100%">
+                    <actions>
+                        <action id="create" openType="DIALOG"/>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="name_ru"/>
+                        <column id="code"/>
+                        <column id="comment_ru" collapsed="true"/>
+                    </columns>
+                    <rows datasource="rowsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel">
+                        <button id="createBtn" action="rowsTable.create"/>
+                        <button id="editBtn" action="rowsTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="rowsTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="rowsTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.currency.CurrencyEditor" datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.currency">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Currency" view="_local"/>
+    </dsContext>
+    <layout expand="mainScrollBox" height="100%" spacing="true" width="100%">
+        <scrollBox id="mainScrollBox">
+            <grid id="grid" margin="true,false,false,false" spacing="true" stylename="edit-area" width="800px">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label id="integrationStateLabel" align="MIDDLE_CENTER" colspan="2" stylename="thesis-green-bold"/>
+                    </row>
+                    <row>
+                        <grid spacing="true">
+                            <columns>
+                                <column flex="0.8"/>
+                                <column flex="2.0"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <label value="msg://code"/>
+                                    <textField id="code" datasource="mainDs" property="code" width="300px"/>
+                                </row>
+                                <row>
+                                    <label value="msg://name_ru"/>
+                                    <textField id="name_ru" datasource="mainDs" property="name_ru" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://full_name_ru"/>
+                                    <textField id="fullName_ru" datasource="mainDs" property="fullName_ru" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://com.haulmont.thesis.crm.entity/Currency.subCurrencyName_ru"/>
+                                    <textField id="subCurrency_ru" datasource="mainDs" property="subCurrencyName_ru" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://com.haulmont.thesis.crm.entity/Currency.fullName_one"/>
+                                    <textField id="fullName_one" datasource="mainDs" property="fullName_one" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://com.haulmont.thesis.crm.entity/Currency.fullName_two"/>
+                                    <textField id="fullName_two" datasource="mainDs" property="fullName_two" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://com.haulmont.thesis.crm.entity/Currency.fullName_five"/>
+                                    <textField id="fullName_five" datasource="mainDs" property="fullName_five" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://comment_ru"/>
+                                    <textArea id="comment_ru" datasource="mainDs" property="comment_ru" rows="3" width="100%"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <grid spacing="true">
+                            <columns>
+                                <column flex="0.8"/>
+                                <column flex="2.0"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <label value="msg://name_en"/>
+                                    <textField id="name_en" datasource="mainDs" property="name_en" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://fullName_en"/>
+                                    <textField id="fullName_en" datasource="mainDs" property="fullName_en" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="msg://com.haulmont.thesis.crm.entity/Currency.subCurrencyName_en"/>
+                                    <textField id="subCurrencyName_en" datasource="mainDs" property="subCurrencyName_en" width="100%"/>
+                                </row>
+                                <row>
+                                    <label id="subCurrencyFullName_oneLabel"
+                                           value="msg://com.haulmont.thesis.crm.entity/Currency.subCurrencyFullName_one"/>
+                                    <textField id="subCurrencyFullName_one" datasource="mainDs" property="subCurrencyFullName_one" width="100%"/>
+                                </row>
+                                <row>
+                                    <label id="subCurrencyFullName_twoLabel"
+                                           value="msg://com.haulmont.thesis.crm.entity/Currency.subCurrencyFullName_two"/>
+                                    <textField id="subCurrencyFullName_two" datasource="mainDs" property="subCurrencyFullName_two" width="100%"/>
+                                </row>
+                                <row>
+                                    <label id="subCurrencyFullName_fiveLabel"
+                                           value="msg://com.haulmont.thesis.crm.entity/Currency.subCurrencyFullName_five"/>
+                                    <textField id="subCurrencyFullName_five" datasource="mainDs" property="subCurrencyFullName_five" width="100%"/>
+                                </row>
+                                <row>
+                                    <label id="courseByRUBLabel" value="msg://com.haulmont.thesis.crm.entity/Currency.courseByRUB"/>
+                                    <textField id="courseByRUB" datasource="mainDs" property="courseByRUB" width="100%"/>
+                                </row>
+                            </rows>
+                        </grid>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

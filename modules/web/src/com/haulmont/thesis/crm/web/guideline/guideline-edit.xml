@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.guideline.GuideLineEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.guideline">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.GuideLine"
+                    view="edit"/>
+
+        <collectionDatasource id="categoryDs" class="com.haulmont.cuba.core.entity.Category" view="_local">
+            <query>
+                <![CDATA[select e from sys$Category e]]>
+            </query>
+        </collectionDatasource>
+
+        <collectionDatasource id="emploeeDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+
+        <collectionDatasource id="docTemplateDs" class="com.haulmont.thesis.core.entity.Doc" view="_minimal">
+            <query>
+                <![CDATA[select distinct e from df$Doc e where e.template = true]]>
+            </query>
+        </collectionDatasource>
+
+        <collectionDatasource id="taskTemplateDs" class="com.haulmont.thesis.core.entity.TaskPattern" view="_minimal">
+            <query>
+                <![CDATA[select e from tm$TaskPattern e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="fBox">
+
+            <flowBox id="fBox" height="100%" spacing="true" width="100%">
+                <hbox expand="startDate"
+                      width="215px">
+                    <label id="startDatelabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.startDate"
+                           width="100px"/>
+                    <dateField id="startDate"
+                               datasource="mainDs"
+                               property="startDate"
+                               resolution="DAY"/>
+                </hbox>
+                <hbox expand="endDate"
+                      width="215px">
+                    <label id="endDatelabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.endDate"
+                           width="100px"/>
+                    <dateField id="endDate"
+                               datasource="mainDs"
+                               property="endDate"
+                               resolution="DAY"/>
+                </hbox>
+                <hbox expand="parentCard"
+                      width="440px">
+                    <label id="parentCardlabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.parentCard"
+                           width="100px"/>
+                    <pickerField id="parentCard"
+                                 datasource="mainDs"
+                                 property="parentCard">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="open"/>
+                        </actions>
+                    </pickerField>
+                </hbox>
+                <hbox expand="state"
+                      width="440px">
+                    <label id="statelabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.state"
+                           width="100px"/>
+                    <textField id="state"
+                               datasource="mainDs"
+                               property="state"/>
+                </hbox>
+                <hbox expand="category"
+                      width="440px">
+                    <label id="categorylabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.category"
+                           width="100px"/>
+                    <lookupPickerField id="category"
+                                       datasource="mainDs"
+                                       optionsDatasource="categoryDs"
+                                       property="category">
+                        <actions>
+                            <action id="lookup"/>
+                            <action id="clear"/>
+                            <action id="open"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox expand="theme"
+                      width="440px">
+                    <label id="themelabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.theme"
+                           width="100px"/>
+                    <textField id="theme"
+                               datasource="mainDs"
+                               property="theme"/>
+                </hbox>
+                <hbox expand="initiator"
+                      width="440px">
+                    <label id="initiatorlabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.initiator"
+                           width="100px"/>
+                    <lookupPickerField id="initiator"
+                                       datasource="mainDs"
+                                       optionsDatasource="emploeeDs"
+                                       property="initiator">
+                        <actions>
+                            <action id="lookup"/>
+                            <action id="clear"/>
+                            <action id="open"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox expand="executor"
+                      width="440px">
+                    <label id="executorlabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.executor"
+                           width="100px"/>
+                    <lookupPickerField id="executor"
+                                       datasource="mainDs"
+                                       optionsDatasource="emploeeDs"
+                                       property="executor">
+                        <actions>
+                            <action id="lookup"/>
+                            <action id="clear"/>
+                            <action id="open"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox expand="interval"
+                      width="215px">
+                    <label id="intervallabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.interval"
+                           width="100px"/>
+                    <textField id="interval"
+                               datasource="mainDs"
+                               datatype="int"
+                               property="interval"/>
+                </hbox>
+                <hbox expand="duration"
+                      width="215px">
+                    <label id="durationlabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.duration"
+                           width="100px"/>
+                    <textField id="duration"
+                               datasource="mainDs"
+                               datatype="int"
+                               property="duration"/>
+                </hbox>
+                <hbox expand="startingPoint"
+                      width="440px">
+                    <label id="startingPointlabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.startingPoint"
+                           width="100px"/>
+                    <lookupField id="startingPoint"
+                                 datasource="mainDs"
+                                 property="startingPoint"/>
+                </hbox>
+                <hbox expand="docTemplate"
+                      width="440px">
+                    <label id="docTemplatelabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.docTemplate"
+                           width="100px"/>
+                    <lookupPickerField id="docTemplate"
+                                 datasource="mainDs"
+                                 optionsDatasource="docTemplateDs"
+                                 property="docTemplate">
+                        <actions>
+                            <action id="lookup"/>
+                            <action id="clear"/>
+                            <action id="open"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox expand="taskTemplate"
+                      width="440px">
+                    <label id="taskTemplatelabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.taskTemplate"
+                           width="100px"/>
+                    <lookupPickerField id="taskTemplate"
+                                 datasource="mainDs"
+                                 optionsDatasource="taskTemplateDs"
+                                 property="taskTemplate">
+                        <actions>
+                            <action id="lookup"/>
+                            <action id="clear"/>
+                            <action id="open"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox expand="description"
+                      width="100%">
+                    <label id="descriptionlabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.description"
+                           width="100px"/>
+                    <textArea id="description"
+                              datasource="mainDs"
+                              property="description"/>
+                </hbox>
+                <hbox expand="comment"
+                      width="100%">
+                    <label id="commentlabel"
+                           value="msg://com.haulmont.thesis.crm.entity/GuideLine.comment"
+                           width="100px"/>
+                    <textArea id="comment"
+                              datasource="mainDs"
+                              property="comment"/>
+                </hbox>
+            </flowBox>
+
+
+        <iframe id="editWindowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

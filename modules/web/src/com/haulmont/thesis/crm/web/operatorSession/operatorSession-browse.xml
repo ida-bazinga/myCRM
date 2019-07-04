@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://OperatorSessionBrowserCaption"
+        class="com.haulmont.thesis.crm.web.operatorSession.OperatorSessionBrowser" messagesPack="com.haulmont.thesis.crm.web.operatorSession">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.OperatorSession" view="browse">
+            <query>
+                <![CDATA[select e from crm$OperatorSession e order by e.createTs desc]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <groupTable id="mainTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <group>
+                            <column id="operator" caption="msg://com.haulmont.thesis.core.entity/Employee.name"/>
+                        </group>
+                        <column id="createTs" caption="msg://startTimeCaption"/>
+                        <column id="endTime" caption="msg://endTimeCaption"/>
+                        <column id="isActive" caption="msg://com.haulmont.thesis.crm.entity/OperatorSession.isActive"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

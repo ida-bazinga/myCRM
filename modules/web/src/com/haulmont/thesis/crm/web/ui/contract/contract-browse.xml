@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.5/window.xsd"
+        class="com.haulmont.thesis.web.ui.contract.ContractBrowser"
+        messagesPack="com.haulmont.thesis.web.ui.contract"
+        caption="msg://docBrowser.caption"
+        lookupComponent="cardsTable"
+        focusComponent="genericFilter"
+        extends="/com/haulmont/thesis/web/ui/contract/contract-browse.xml"
+>
+
+    <dsContext>
+        <groupDatasource id="cardsDs" class="com.haulmont.thesis.core.entity.Contract" view="browse"
+                         datasourceClass="com.haulmont.thesis.web.ui.DocDatasource">
+            <query>
+                <![CDATA[select distinct d from df$Contract d
+                where d.template = false and d.versionOf is null and d.isArchivedDoc = false
+                 order by d.dateTime]]>
+                <filter>
+                    <and>
+                        <c><![CDATA[d.id <> :param$exclItem]]></c>
+                        <c>
+                            <![CDATA[d.imported = true and d.createTs >= :param$startCreateTs and d.createTs <= :param$endCreateTs]]></c>
+                    </and>
+                </filter>
+            </query>
+        </groupDatasource>
+    </dsContext>
+
+    <layout>
+        <vbox expand="split" spacing="true" height="100%">
+            <hbox spacing="true" height="AUTO" width="100%">
+                <filter id="genericFilter" datasource="cardsDs" applyTo="cardsTable"
+                        manualApplyRequired="${thesis_contractBrowser_filterManualApplyRequired}">
+                    <properties include=".*"
+                                exclude="contractor|procFamily|important|template|versionOf|templateName|createdBy|id|jbpmProcessId|
+                                createTs|docOfficeData|docKind|locState|category|docCategory|state|description|extraFields|
+                                currentActorsFullString|currentActorsString|addressees|executor|signedBy|deleteTs|version|project"/>
+                    <custom name="addresseeName" caption="msg://addresseeName" paramClass="java.lang.String"
+                            join="join d.docOfficeData.docOfficeDataAddressees a">
+                        a.addressee.name like ?
+                    </custom>
+                    <custom name="docProject" caption="msg://Doc.project" join="join d.projects p"
+                            paramClass="com.haulmont.thesis.core.entity.Project">
+                        p.name.id in (?)
+                    </custom>
+                    <custom id="docState" name="docState" caption="msg://Doc.state"
+                            paramClass="com.haulmont.thesis.core.enums.DocState">
+                        d.state like ?
+                    </custom>
+                    <custom name="receivingMethod" caption="msg://receivingMethod"
+                            paramClass="com.haulmont.thesis.core.entity.DocReceivingMethod">
+                        d.docOfficeData.receivingMethod.id in (?)
+                    </custom>
+                    <custom name="responseToDoc" caption="msg://responseToDoc"
+                            paramClass="com.haulmont.thesis.core.entity.Doc">
+                        d.docOfficeData.responseToDoc.id in (?)
+                    </custom>
+                    <custom name="sender" caption="msg://sender"
+                            paramClass="com.haulmont.thesis.core.entity.Correspondent">
+                        d.docOfficeData.sender.id in (?)
+                    </custom>
+                    <custom name="officeFile" caption="msg://officeFile"
+                            paramClass="com.haulmont.thesis.core.entity.OfficeFile" paramView="browse">
+                        d.docOfficeData.officeFile.id in (?)
+                    </custom>
+                    <custom name="officeExecutor" caption="msg://officeExecutor"
+                            paramClass="com.haulmont.thesis.core.entity.ContactPerson">
+                        d.docOfficeData.officeExecutor.id in (?)
+                    </custom>
+                    <custom id="employeeExecutorFilterId" name="employeeExecutor" caption="msg://employeeExecutor"
+                            paramClass="com.haulmont.thesis.core.entity.Employee">
+                        d.docOfficeData.employeeExecutor.id in (?)
+                    </custom>
+                    <custom name="officeSignedBy" caption="msg://officeSignedBy"
+                            paramClass="com.haulmont.thesis.core.entity.ContactPerson">
+                        d.docOfficeData.officeSignedBy.id in (?)
+                    </custom>
+                    <custom id="docKindFilterId" name="docKind" caption="msg://docKind"
+                            join="join d.docKind dk"
+                            paramClass="com.haulmont.thesis.core.entity.DocKind"
+                            paramWhere="{E}.docType.name = 'df$Contract'">
+                        dk.id in (?)
+                    </custom>
+                    <custom id="docCategoryFilterId" name="category" caption="msg://docCategory"
+                            join="join d.docCategory dc"
+                            paramWhere="{E}.docType.name = 'df$Contract'"
+                            paramClass="com.haulmont.thesis.core.entity.DocCategory">
+                        d.docCategory.id in (?)
+                    </custom>
+                    <custom caption="Контрагент" name="contractor" paramClass="java.lang.String">d.contractor.name like ?</custom>
+                </filter>
+            </hbox>
+
+            <split id="split" orientation="vertical" pos="60" width="100%">
+                <vbox id="table-panel" expand="cardsTable" spacing="true" height="100%">
+                    <groupTable id="cardsTable" editable="false" presentations="true" width="100%">
+                        <buttonsPanel id="buttonsPanel">
+                            <popupButton id="createButton" caption="msg://actions.Create" icon=""/>
+                            <button action="cardsTable.edit" icon="icons/edit.png"/>
+                            <button action="cardsTable.remove" icon="icons/remove.png"/>
+                            <button action="cardsTable.excel" id="excel" description="msg://actions.Excel"
+                                    icon="icons/excel.png"/>
+                            <button action="cardsTable.refresh" icon="icons/refresh.png"/>
+                            <button id="saveAsTemplateBtn" visible="false" icon="icons/save_as_template.png"/>
+                            <button id="createDocBtn" visible="false"/>
+                            <button action="cardsTable.expand"/>
+                            <runReportPopupButton id="printButton" icon="icons/reports-print.png" description="msg://print"/>
+                        </buttonsPanel>
+                        <actions>
+                            <action id="create"/>
+                            <action id="edit"/>
+                            <action id="remove"/>
+                            <action id="saveAsTemplate" visible="false"/>
+                            <action id="deleteNotification"/>
+                            <action id="openNewTab"/>
+                            <action id="showLink"/>
+                            <action id="expand"/>
+                        </actions>
+                        <rowsCount/>
+                        <tableSettings id="tableSettings"/>
+                        <columns>
+                            <column id="hasAttachments" caption="msg://hasAttachments" width="${30}">
+                                <formatter
+                                        class="com.haulmont.thesis.gui.components.formatter.HasAttachmentsFormatter"/>
+                            </column>
+                            <column id="important" caption="msg://important" width="${30}">
+                                <formatter class="com.haulmont.thesis.gui.components.formatter.ImportantDocFormatter"/>
+                            </column>
+                            <column id="docKind" caption="msg://docKind"/>
+                            <column id="contractor" caption="msg://contractor"/>
+                            <column id="currentActorsString" caption="msg://currentActors"/>
+                            <column id="templateName" caption="msg://templateName" visible="false"/>
+                            <column id="number" caption="msg://number"/>
+                            <column id="date" caption="msg://date"/>
+                            <column id="proc.name" caption="msg://procName"/>
+                            <column id="locState" caption="msg://state"/>
+                            <column id="amount" caption="msg://amount"/>
+                            <column id="currency" caption="msg://currency"/>
+                            <column id="active" collapsed="true" caption="msg://active"/>
+                            <column id="organization" caption="msg://organization"/>
+                            <column id="comment" caption="msg://comment" maxTextLength="30"/>
+                            <column id="docCategory" caption="msg://docCategory"/>
+                            <column id="owner" caption="msg://owner"/>
+                            <column id="project" collapsed="true"/>
+                            <column id="department" collapsed="true" caption="msg://department"/>
+                            <column id="liabilityStart" caption="msg://liabilityStart"/>
+                            <column id="liabilityEnd" caption="msg://liabilityEnd"/>
+                            <column id="endorsementStartDate" collapsed="true" caption="msg://endorsementStartDate">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                           format="msg://dateTimeFormat"/>
+                            </column>
+                            <column id="endorsementEndDate" collapsed="true" caption="msg://endorsementEndDate">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                           format="msg://dateTimeFormat"/>
+                            </column>
+                            <column id="approvalDate" collapsed="true" caption="msg://approvalDate">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                           format="msg://dateTimeFormat"/>
+                            </column>
+                            <column id="hasAttributes" collapsed="true" caption="msg://hasAttributes">
+                                <formatter class="com.haulmont.thesis.gui.components.formatter.HasAttributesFormatter"/>
+                            </column>
+                        </columns>
+                        <rows datasource="cardsDs"/>
+                    </groupTable>
+                </vbox>
+
+                <tabSheet id="cardDetailsTabSheet" height="100%">
+                    <tab id="resolutionsTab" caption="msg://resolutions">
+                        <iframe id="resolutionsFrame" screen="resolutionsFrame" height="100%"/>
+                    </tab>
+                    <tab id="hierarchyTab" caption="msg://hierarchy">
+                        <iframe id="cardTreeFrame" screen="cardTreeFrame" height="100%"/>
+                    </tab>
+                </tabSheet>
+            </split>
+        </vbox>
+    </layout>
+</window>
+

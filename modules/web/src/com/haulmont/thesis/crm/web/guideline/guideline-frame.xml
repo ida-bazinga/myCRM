@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.guideline.GuideLineFrame"
+        messagesPack="com.haulmont.thesis.crm.web.guideline">
+
+    <layout>
+        <vbox height="100%" margin="true, false, false, false" spacing="true" expand="guideLineTable">
+            <table id="guideLineTable" sortable="true" width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                </actions>
+                <buttonsPanel align="MIDDLE_LEFT">
+                    <button action="guideLineTable.create" icon="icons/plus-btn.png"/>
+                    <button action="guideLineTable.edit" icon="icons/edit.png"/>
+                    <button action="guideLineTable.remove" icon="icons/remove.png"/>
+                </buttonsPanel>
+                <columns>
+                    <column id="startDate"/>
+                    <column id="endDate"/>
+                    <column id="parentCard"/>
+                    <column id="state"/>
+                    <column id="project"/>
+                    <column id="description"/>
+                    <column id="category"/>
+                    <column id="theme"/>
+                    <column id="initiator"/>
+                    <column id="executor"/>
+                    <column id="comment"/>
+                    <column id="interval"/>
+                    <column id="duration"/>
+                    <column id="startingPoint"/>
+                    <column id="docTemplate"/>
+                    <column id="taskTemplate"/>
+                </columns>
+                <rows datasource="guideLineDs"/>
+                <rowsCount/>
+            </table>
+        </vbox>
+    </layout>
+</window>

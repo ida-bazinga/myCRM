@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.orderDetail.selectItemPercent.SelectItemPercentEdit"
+        messagesPack="com.haulmont.thesis.crm.web.orderDetail.selectItemPercent">
+    <layout>
+        <hbox id="hboxDDetail" expand="marginSum" spacing="true" width="100%">
+            <label value="msg://marginPercent" width="100px"/>
+            <textField id="marginSum"/>
+        </hbox>
+        <hbox id="hboxDGroup" expand="discountSum" spacing="true" width="100%">
+            <label value="msg://discountPercent" width="100px"/>
+            <textField id="discountSum"/>
+        </hbox>
+        <buttonsPanel id="buttonsPanel" align="MIDDLE_LEFT" width="100%">
+            <button id="selectButton" caption="Выбрать" invoke="selectButton" width="100%"/>
+            <button id="closeButton" caption="Закрыть"  invoke="closeButton" width="100%"/>
+        </buttonsPanel>
+    </layout>
+</window>

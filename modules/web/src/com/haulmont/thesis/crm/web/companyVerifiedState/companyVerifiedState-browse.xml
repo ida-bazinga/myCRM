@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.companyVerifiedState.CompanyVerifiedStateBrowser"
+        messagesPack="com.haulmont.thesis.crm.web.companyVerifiedState">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.CompanyVerifiedState" view="browse">
+            <query>
+                <![CDATA[select e from crm$CompanyVerifiedState e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id" include=".*"/>
+            </filter>
+            <vbox id="table-panel" spacing="true">
+                <groupTable id="mainTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="correspondent" caption="Контрагент"/>
+                        <column id="createTs" caption="Дата создания"/>
+                        <column id="updateTs" caption="Дата изменения" collapsed="true"/>
+                        <column id="byUser" caption="Пользователь"/>
+                        <column id="state" caption="Состояние"/>
+                        <column id="commentRu" collapsed="true"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="editBtn" icon="icons/edit.png" invoke="onEditbtnClick"/>
+                        <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                        <button id="verifiedStateBtn" invoke="verifiedState" icon="icons/ok.png" description="Изменить статус"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

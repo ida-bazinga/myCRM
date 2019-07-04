@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.provider.ProviderEditor" datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.provider">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Provider" view="edit"/>
+        <collectionDatasource id="currencyDs" class="com.haulmont.thesis.crm.entity.Currency" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Currency e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vbox" height="100%" spacing="true" width="100%">
+        <vbox id="vbox" spacing="true">
+            <hbox expand="company" spacing="true" width="100%">
+                <label value="msg://company" width="100px"/>
+                <pickerField id="company" datasource="mainDs" property="company">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </pickerField>
+            </hbox>
+            <hbox expand="currency" spacing="true" width="100%">
+                <label value="msg://price" width="100px"/>
+                <textField id="price" datasource="mainDs" property="price" width="120px"/>
+                <label value="msg://currency" width="80px"/>
+                <lookupField id="currency" datasource="mainDs" optionsDatasource="currencyDs" property="currency"/>
+            </hbox>
+            <!--<hbox expand="resource" spacing="true" width="100%">
+                <label value="msg://resource" width="100px"/>
+                <pickerField id="resource" datasource="mainDs" property="resource">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </pickerField>
+            </hbox>-->
+        </vbox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

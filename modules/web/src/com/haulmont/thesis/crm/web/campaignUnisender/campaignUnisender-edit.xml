@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.campaignUnisender.CampaignUnisenderEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.campaignUnisender">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.CampaignUnisender"
+                    view="_local"/>
+        <collectionDatasource id="statusesDs"
+                              class="com.haulmont.thesis.crm.entity.MessageCampaignStatus"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$MessageCampaignStatus e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="mainScrollBox"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <scrollBox id="mainScrollBox">
+            <grid id="grid"
+                  margin="true,false,false,false"
+                  spacing="true"
+                  stylename="edit-area"
+                  width="800px">
+                <columns>
+                    <column flex="0.1"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code"
+                                   datasource="mainDs"
+                                   property="code"
+                                   width="100px"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru"
+                                   datasource="mainDs"
+                                   property="name_ru"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://start_time"/>
+                        <dateField id="start_time"
+                                   datasource="mainDs"
+                                   dateFormat="dd.MM.yyyy"
+                                   property="start_time"/>
+                    </row>
+                    <row>
+                        <label value="msg://status"/>
+                        <textArea id="status"
+                                  datasource="mainDs"
+                                  property="status"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://message_id"/>
+                        <textArea id="message_id"
+                                  datasource="mainDs"
+                                  property="message_id"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://list_id"/>
+                        <textArea id="list_id"
+                                  datasource="mainDs"
+                                  property="list_id"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://sender_name"/>
+                        <textArea id="sender_name"
+                                  datasource="mainDs"
+                                  property="sender_name"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://sender_email"/>
+                        <textArea id="sender_email"
+                                  datasource="mainDs"
+                                  property="sender_email"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://stats_url"/>
+                        <textArea id="stats_url"
+                                  datasource="mainDs"
+                                  property="stats_url"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru"
+                                  datasource="mainDs"
+                                  property="comment_ru"
+                                  rows="3"
+                                  width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

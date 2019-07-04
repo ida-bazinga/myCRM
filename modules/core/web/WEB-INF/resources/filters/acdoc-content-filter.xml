@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<filter code="Doc.SysFilter.ByContent" filterComponent="[crm$AcDoc.lookup].genericFilter" name="">
+    <and>
+        <c caption="msg://com.haulmont.thesis.core.entity/SimpleDoc.comment" class="java.lang.String" name="comment" type="PROPERTY">d.comment like :component$genericFilter.comment09272            <param name="component$genericFilter.comment09272">NULL</param>
+        </c>
+    </and>
+</filter>

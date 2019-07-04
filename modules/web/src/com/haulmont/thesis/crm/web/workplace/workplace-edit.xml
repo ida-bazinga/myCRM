@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.workplace.WorkplaceEditor" datasource="mainDs" focusComponent="fields"
+        messagesPack="com.haulmont.thesis.crm.web.workplace">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Workplace" view="edit"/>
+    </dsContext>
+    <layout expand="vbox" height="100%" spacing="true" width="100%">
+        <vbox id="vbox">
+            <fieldGroup id="fields" datasource="mainDs" width="100%">
+                <column width="100%">
+                    <field id="name_ru" required="true"/>
+                    <field id="isPrimary"/>
+                    <field id="room"/>
+                    <field id="employee"/>
+                    <field id="socketNumber"/>
+                    <field id="comment_ru" rows="5"/>
+                </column>
+            </fieldGroup>
+        </vbox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

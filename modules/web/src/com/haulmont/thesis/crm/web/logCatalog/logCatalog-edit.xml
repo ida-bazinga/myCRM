@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.logCatalog.LogCatalogEditor"
+        datasource="logCatalogDs"
+        messagesPack="com.haulmont.thesis.crm.web.logCatalog">
+    <dsContext>
+        <datasource id="logCatalogDs"
+                    class="com.haulmont.thesis.crm.entity.LogCatalog"
+                    view="edit"/>
+    </dsContext>
+    <layout expand="windowActions"
+            spacing="true">
+        <hbox enable="false"
+              expand="shortServiceOperationResults"
+              spacing="true"
+              width="50%">
+            <label value="msg://shortServiceOperationResults"
+                   width="250px"/>
+            <lookupField id="shortServiceOperationResults"
+                         datasource="logCatalogDs"
+                         property="shortServiceOperationResults"/>
+        </hbox>
+        <hbox enable="false"
+              expand="startDate"
+              spacing="true"
+              width="50%">
+            <label value="msg://startDate"
+                   width="250px"/>
+            <dateField id="startDate"
+                       datasource="logCatalogDs"
+                       dateFormat="dd.MM.yyyy HH:mm"
+                       property="startDate"
+                       resolution="MIN"/>
+        </hbox>
+        <hbox expand="openWinEdit"
+              spacing="true"
+              width="50%">
+            <label value="msg://entityName"
+                   width="250px"/>
+            <textField id="entityName"
+                       datasource="logCatalogDs"
+                       enable="false"
+                       property="entityName"/>
+            <linkButton id="openWinEdit"
+                        caption="msg://openWinEdit"/>
+        </hbox>
+        <hbox enable="false"
+              expand="entityId"
+              spacing="true"
+              width="50%">
+            <label value="msg://entityId"
+                   width="250px"/>
+            <textField id="entityId"
+                       datasource="logCatalogDs"
+                       property="entityId"/>
+        </hbox>
+        <hbox enable="false"
+              expand="extId"
+              spacing="true"
+              width="50%">
+            <label value="msg://extId"
+                   width="250px"/>
+            <textField id="extId"
+                       datasource="logCatalogDs"
+                       property="extId"/>
+        </hbox>
+        <hbox enable="false"
+              expand="error"
+              spacing="true"
+              width="50%">
+            <label value="msg://error"
+                   width="250px"/>
+            <textArea id="error"
+                      datasource="logCatalogDs"
+                      height="200px"
+                      property="error"/>
+        </hbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

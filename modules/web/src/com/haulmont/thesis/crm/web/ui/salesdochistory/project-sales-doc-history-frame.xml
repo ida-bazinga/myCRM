@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.ui.salesdochistory.ProjectSalesDocHistoryFrame" focusComponent="docHistoryTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.salesdochistory">
+    <dsContext>
+        <groupDatasource id="salesDocHistoryDs" allowCommit="false" class="com.haulmont.thesis.crm.entity.SaleDocsHistoryInfo"
+                         datasourceClass="com.haulmont.thesis.crm.web.ui.salesdochistory.ProjectSalesDocHistoryDatasource" view="_local">
+            <query>
+                <![CDATA[select e from crm$SaleDocsHistoryInfo e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox height="100%" margin="true,false,false,false" spacing="true">
+            <groupTable id="docHistoryTable" height="100%" presentations="true" width="100%">
+                <actions>
+                    <action id="refresh"/>
+                    <action id="expand"/>
+                </actions>
+                <columns>
+                    <column id="customer" link="true" linkScreenOpenType="THIS_TAB"/>
+                    <column id="payer" collapsed="true" link="true" linkScreenOpenType="THIS_TAB"/>
+                    <column id="contract" captionProperty="contract.number" link="true" linkScreenOpenType="THIS_TAB"/>
+                    <column id="salesOrder" captionProperty="salesOrder.number" link="true" linkScreenOpenType="THIS_TAB"/>
+                    <column id="orderFullSum" align="RIGHT"/>
+                    <column id="invoices"/>
+                    <column id="sumActFullSum" align="RIGHT"/>
+                    <column id="currency" captionProperty="currency.name_ru"/>
+                </columns>
+                <rows datasource="salesDocHistoryDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button action="docHistoryTable.refresh" icon="icons/refresh.png"/>
+                    <button action="docHistoryTable.expand"/>
+                    <runReportPopupButton id="printContactTableButton" icon="icons/reports-print.png"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

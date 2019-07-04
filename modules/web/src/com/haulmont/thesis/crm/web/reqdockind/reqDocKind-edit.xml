@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.reqdockind.ReqDocKindEditor"
+        datasource="categoryDs"
+        messagesPack="com.haulmont.thesis.crm.web.reqdockind">
+    <dsContext>
+        <datasource id="categoryDs"
+                    class="com.haulmont.thesis.crm.entity.ReqDocKind"
+                    view="edit"/>
+        <collectionDatasource id="docCategoryDs"
+                              allowCommit="false"
+                              class="com.haulmont.thesis.core.entity.DocCategory"
+                              view="edit">
+            <query>
+                <![CDATA[select e from df$Category e where e.docType.name = 'crm$ReqDoc']]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="fieldsDs" allowCommit="false" class="com.haulmont.thesis.core.entity.FieldInfo"
+                              datasourceClass="com.haulmont.thesis.web.ui.dockind.DocKindFieldInfoDatasource" view="_local"/>
+    </dsContext>
+    <layout>
+        <vbox expand="fieldsBox"
+              height="100%"
+              spacing="true">
+            <vbox id="fieldsBox"
+                  expand="fieldsTable"
+                  margin="false,true,false,false"
+                  spacing="true">
+                <fieldGroup id="fieldsGroup"
+                            datasource="categoryDs"
+                            width="100%">
+                    <column width="100%">
+                        <field id="docCategory"
+                               optionsDatasource="docCategoryDs"
+                               requiredMessage="msg://validation.required.docCategoryMsg"/>
+                        <field id="description"
+                               rows="3"/>
+                    </column>
+                </fieldGroup>
+                <label value="msg://mainFields"/>
+                <table id="fieldsTable" editable="true" sortable="false" width="100%">
+                    <columns>
+                        <column id="name" caption="msg://com.haulmont.thesis.crm.entity/FieldInfo.name"/>
+                        <column id="locName" caption="msg://com.haulmont.thesis.core.entity/FieldInfo.locName" editable="true"/>
+                        <column id="visible" align="CENTER" caption="msg://com.haulmont.thesis.crm.entity/FieldInfo.visible" editable="true"
+                                width="75px"/>
+                        <column id="required" align="CENTER" caption="msg://com.haulmont.thesis.crm.entity/FieldInfo.required"
+                                editable="true" width="100px"/>
+                    </columns>
+                    <rows datasource="fieldsDs"/>
+                </table>
+            </vbox>
+            <iframe id="windowActions"
+                    screen="editWindowActions"/>
+        </vbox>
+    </layout>
+</window>

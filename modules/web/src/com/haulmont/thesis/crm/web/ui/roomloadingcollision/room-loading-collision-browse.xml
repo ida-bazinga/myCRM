@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.roomloadingcollision.RoomLoadingCollisionBrowser" focusComponent="roomLoadingCollisionsTable"
+        lookupComponent="roomLoadingCollisionsTable" messagesPack="com.haulmont.thesis.crm.web.ui.roomloadingcollision">
+    <dsContext>
+        <collectionDatasource id="roomLoadingCollisionsDs" class="com.haulmont.thesis.crm.entity.RoomLoadingCollision" view="edit">
+            <query>
+                <![CDATA[select e from crm$RoomLoadingCollision e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="roomLoadingCollisionsTable" spacing="true">
+        <filter id="filter" applyTo="roomLoadingCollisionsTable" datasource="roomLoadingCollisionsDs">
+            <properties include=".*"/>
+        </filter>
+        <table id="roomLoadingCollisionsTable" editable="true" presentations="true" width="100%">
+            <actions>
+                <action id="refresh"/>
+            </actions>
+            <columns>
+                <column id="room" collapsed="true" editable="false"/>
+                <column id="description" editable="false"/>
+                <column id="loadingInfo.installationDate" collapsed="true" editable="false">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="msg://dateFormat"/>
+                </column>
+                <column id="loadingInfo.deinstallationDate" collapsed="true" editable="false">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="msg://dateFormat"/>
+                </column>
+                <column id="collisionInfo.room" caption="msg://collisionRoom" collapsed="true" editable="false"/>
+                <column id="collisionInfo.installationDate" caption="msg://collisionInsDate" collapsed="true" editable="false">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="msg://dateFormat"/>
+                </column>
+                <column id="collisionInfo.deinstallationDate" caption="msg://collisionDeinsDate" collapsed="true" editable="false">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="msg://dateFormat"/>
+                </column>
+                <column id="isCollision" editable="true"/>
+            </columns>
+            <rows datasource="roomLoadingCollisionsDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel" alwaysVisible="true">
+                <button id="refreshBtn" action="roomLoadingCollisionsTable.refresh"/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

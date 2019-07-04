@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<filter code="SysFilter.MyDepartment" filterComponent="[crm$VatDoc.lookup].genericFilter" name="">
+    <and>
+        <c caption="msg://com.haulmont.workflow.core.entity/Card.proc" class="com.haulmont.workflow.core.entity.Proc" name="proc" operatorType="EQUAL"
+           type="PROPERTY">d.proc.id = :component$genericFilter.proc34271            <param javaClass="com.haulmont.workflow.core.entity.Proc" name="component$genericFilter.proc34271">NULL</param>
+        </c>
+        <c caption="msg://com.haulmont.workflow.core.entity/Card.state" class="com.haulmont.thesis.core.enums.DocState" entityAlias="d" name="state"
+           type="CUSTOM">d.state like :component$genericFilter.state75186            <param javaClass="com.haulmont.thesis.core.enums.DocState" name="component$genericFilter.state75186">NULL</param>
+        </c>
+        <c caption="msg://SysFilter.MyDepartment" entityAlias="d" hidden="true" join="join d.roles cr" name="myDepartment" type="CUSTOM" unary="true">(cr.user.id = :session$userId OR d.substitutedCreator.id = :session$userId OR exists(select em from df$Employee em where em.user.id = cr.user.id and em.department.id in (:session$departmentIds)))            <param name="component$genericFilter.MyDepartment90982">true</param>
+        </c>
+    </and>
+</filter>

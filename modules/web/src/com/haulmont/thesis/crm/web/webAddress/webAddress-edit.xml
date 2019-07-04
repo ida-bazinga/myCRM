@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.webAddress.WebAddressEditor" datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.webAddress">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.WebAddress" view="edit"/>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="hBox3" spacing="true">
+            <hbox id="hBox1" expand="textTitle" width="100%">
+                <label id="labelTitle" value="msg://title" width="100px"/>
+                <textField id="textTitle" datasource="mainDs" property="title"/>
+            </hbox>
+            <hbox id="hBox2" expand="textLink" width="100%">
+                <label id="labelLink" value="msg://link" width="100px"/>
+                <textField id="textLink" datasource="mainDs" property="link"/>
+            </hbox>
+            <hbox id="hBox3" expand="textComment" width="100%">
+                <label id="labelComment" value="msg://comment" width="100px"/>
+                <textArea id="textComment" datasource="mainDs" property="comment_ru"/>
+            </hbox>
+        </vbox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.department.ExtDepartmentEdit"
+        extends="com/haulmont/thesis/web/ui/department/department-edit.xml"
+        messagesPack="com.haulmont.thesis.crm.web.department"
+        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
+    <dsContext>
+        <datasource id="departmentDs"
+                    class="com.haulmont.thesis.crm.entity.ExtDepartment"
+                    view="ext-edit"/>
+        <collectionDatasource id="economistResponsiblesDs"
+                              class="com.haulmont.thesis.crm.entity.ExtEmployee"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox>
+            <grid id="grid">
+                <rows>
+                    <row>
+                        <label value="msg://com.haulmont.thesis.crm.entity/ExtDepartment.genName"/>
+                        <textField datasource="departmentDs"
+                                   property="genName"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://com.haulmont.thesis.crm.entity/ExtDepartment.datName"/>
+                        <textField datasource="departmentDs"
+                                   property="datName"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://departmentType"/>
+                        <lookupField id="departmentType"
+                                     datasource="departmentDs"
+                                     property="departmentType"
+                                     width="100%"/>
+                    </row>
+                    <row>
+                        <label id="economistResponsibleLabel"
+                               value="msg://com.haulmont.thesis.crm.entity/ExtDepartment.economistResponsible"/>
+                        <lookupPickerField id="economistResponsible"
+                                           datasource="departmentDs"
+                                           optionsDatasource="economistResponsiblesDs"
+                                           property="economistResponsible"
+                                           width="100%"/>
+                    </row>
+                    <row>
+                        <label id="notWorkingLabel"
+                               value="msg://com.haulmont.thesis.crm.entity/ExtDepartment.notWorking"/>
+                        <checkBox id="notWorking"
+                                  datasource="departmentDs"
+                                  property="notWorking"
+                                  width="250px"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+    </layout>
+</window>

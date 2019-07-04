@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://windowCaption"
+        class="com.haulmont.thesis.crm.web.ui.cashdocument.CashDocumentImporter" messagesPack="com.haulmont.thesis.crm.web.ui.cashdocument">
+
+    <dsContext/>
+
+    <assign name="lWidth" value="70px"/>
+
+    <layout expand="mainPane" spacing="true">
+        <vbox id="mainPane" spacing="true" width="300px">
+            <hbox id="storesBox" expand="stores" spacing="true" visible="false" width="100%">
+                <label value="msg://store" width="${lWidth}"/>
+                <lookupField id="stores"/>
+            </hbox>
+            <hbox expand="month" spacing="true" width="100%">
+                <label value="msg://month" width="${lWidth}"/>
+                <lookupField id="month" required="true"  />
+            </hbox>
+        </vbox>
+        <buttonsPanel>
+                <button id="okButton" caption="msg://okButton" enable="false" stylename="cuba-primary-action"/>
+                <button id="cancelButton" caption="msg://cancelButton"/>
+        </buttonsPanel>
+    </layout>
+</window>

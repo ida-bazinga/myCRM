@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.companyType.CompanyTypeBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="companyTypeTable"
+        messagesPack="com.haulmont.thesis.crm.web.companyType">
+    <dsContext>
+        <collectionDatasource id="companyTypeDs"
+                              class="com.haulmont.thesis.crm.entity.CompanyType"
+                              view="_local">
+            <query>
+                <![CDATA[select distinct p from crm$CompanyType p order by p.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="companyTypeTable"
+                    datasource="companyTypeDs"
+                    stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <table id="companyTypeTable"
+                       height="100%"
+                       width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="comment_ru"/>
+                    </columns>
+                    <rows datasource="companyTypeDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="companyTypeTable.create"/>
+                        <button action="companyTypeTable.edit"
+                                icon="icons/edit.png"/>
+                        <button action="companyTypeTable.remove"
+                                icon="icons/remove.png"/>
+                        <button action="companyTypeTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

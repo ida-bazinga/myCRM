@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.messageCampaignStatus.MessageCampaignStatusEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.messageCampaignStatus">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.MessageCampaignStatus"
+                    view="_local"/>
+    </dsContext>
+    <layout expand="mainScrollBox"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <scrollBox id="mainScrollBox">
+            <grid id="grid"
+                  margin="true,false,false,false"
+                  spacing="true"
+                  stylename="edit-area"
+                  width="635px">
+                <columns>
+                    <column flex="0.1"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"
+                               width="125px"/>
+                        <textField id="code"
+                                   datasource="mainDs"
+                                   property="code"
+                                   width="125px"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"
+                               width="125px"/>
+                        <textField id="name_ru"
+                                   datasource="mainDs"
+                                   property="name_ru"
+                                   width="400px"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"
+                               width="125px"/>
+                        <textArea id="comment_ru"
+                                  datasource="mainDs"
+                                  property="comment_ru"
+                                  width="400px"/>
+                    </row>
+                    <row>
+                        <label id="requestMessagesStatusesLabel"
+                               value="msg://requestMessagesStatuses"/>
+                        <checkBox id="requestMessagesStatuses"
+                                  datasource="mainDs"
+                                  property="requestMessagesStatuses"
+                                  width="250px"/>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

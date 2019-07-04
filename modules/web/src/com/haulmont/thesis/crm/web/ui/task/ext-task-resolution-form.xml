@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.task.ExtTaskResolutionForm"
+        extends="com/haulmont/thesis/web/ui/task/task-resolution-form.xml" messagesPack="com.haulmont.thesis.web.ui.task">
+    <layout/>
+</window>

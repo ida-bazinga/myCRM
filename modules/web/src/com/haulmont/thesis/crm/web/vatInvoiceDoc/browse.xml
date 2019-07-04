@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.vatInvoiceDoc.VatInvoiceDocBrowse" focusComponent="genericFilter" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.vatInvoiceDoc">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.VatInvoiceDoc" view="edit">
+            <query>
+                <![CDATA[select e from crm$VatInvoiceDoc e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="mainTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <groupTable id="mainTable" multiselect="true" presentations="true" width="100%">
+                <actions>
+                    <action id="refresh"/>
+                </actions>
+                <columns>
+                    <column id="code"/>
+                    <column id="outboundDate"/>
+                    <column id="company"/>
+                    <column id="actDoc"/>
+                    <column id="organization" collapsed="true"/>
+                    <column id="currency" collapsed="true"/>
+                    <column id="isCarried" collapsed="true"/>
+                    <column id="id1c" collapsed="true"/>
+                    <column id="printSingleLine"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

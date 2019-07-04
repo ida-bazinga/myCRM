@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.invoiceDoc.InvoiceDocEditor" datasource="mainDs" focusComponent="mainTab"
+        messagesPack="com.haulmont.thesis.crm.web.invoiceDoc">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.InvoiceDoc" view="edit">
+            <collectionDatasource id="detailsDs" property="invoiceDetails"/>
+        </datasource>
+        <collectionDatasource id="log1cDs" class="com.haulmont.thesis.crm.entity.Log1C" view="1c">
+            <query>
+                <![CDATA[select e from crm$Log1C e where e.entityId = :ds$mainDs and e.entityName = 'crm$InvoiceDoc' order by e.startDate]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companyDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="extProjectDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="orderStatusDs" class="com.haulmont.thesis.crm.entity.OrderStatus" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$OrderStatus e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="taxDs" class="com.haulmont.thesis.crm.entity.Tax" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Tax e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="currencyDs" class="com.haulmont.thesis.crm.entity.Currency" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Currency e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizationDs" class="com.haulmont.thesis.core.entity.Organization" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Organization e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="ownerDs" class="com.haulmont.thesis.core.entity.Employee" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contractDs" class="com.haulmont.thesis.core.entity.Contract" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Contract e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="generalDirectorDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectTeam p
+                left join p.employee e
+                where p.extProject.id = :ds$extProjectDs.id
+                and (p.signatory=2 or p.signatory=3)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="chiefAccountDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectTeam p
+                left join p.employee e
+                where p.extProject.id = :ds$extProjectDs.id
+                and (p.signatory=1 or p.signatory=3)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="ordDetailsDs" class="com.haulmont.thesis.crm.entity.OrderDetail" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$OrderDetail e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout acing="true" height="100%" width="100%">
+        <split id="split" height="100%" orientation="vertical" pos="80" width="100%">
+            <vbox>
+                <tabSheet id="tabsheet">
+                    <tab id="mainTab" caption="msg://mainTab" margin="true">
+                        <scrollBox id="scrollBox" height="100%">
+                            <grid id="grid" margin="true,false,false,false" spacing="true" stylename="edit-area"
+                                  width="60%">
+                                <columns>
+                                    <column/>
+                                    <column flex="2.0"/>
+                                    <column/>
+                                    <column flex="2.0"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label id="integrationStateLabel" align="MIDDLE_CENTER" colspan="4"
+                                               stylename="thesis-green-bold"/>
+                                    </row>
+                                    <row>
+                                        <label value="msg://code"/>
+                                        <textField id="code" datasource="mainDs" property="code" width="100%"/>
+                                        <label value="msg://outboundDate"/>
+                                        <dateField id="outboundDate" datasource="mainDs" dateFormat="dd.MM.yyyy"
+                                                   property="outboundDate"/>
+                                    </row>
+                                    <row>
+                                        <label value="msg://name_ru"/>
+                                        <textField id="name_ru" colspan="3" datasource="mainDs" enable="false"
+                                                   property="name_ru" required="true" width="100%"/>
+                                    </row>
+                                    <row>
+                                        <label value="msg://company"/>
+                                        <lookupPickerField id="company" datasource="mainDs" enable="false"
+                                                           optionsDatasource="companyDs" property="company"
+                                                           width="100%">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                        <label value="msg://organization"/>
+                                        <lookupPickerField id="organization" datasource="mainDs" enable="false"
+                                                           optionsDatasource="organizationDs" property="organization"
+                                                           width="100%">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </row>
+                                    <row>
+                                        <label value="msg://project"/>
+                                        <lookupPickerField id="project" datasource="mainDs" enable="false"
+                                                           optionsDatasource="extProjectDs" property="project"
+                                                           width="100%">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                        <label value="msg://status"/>
+                                        <lookupField id="status" datasource="mainDs" enable="false"
+                                                     optionsDatasource="orderStatusDs" property="status" width="100%"/>
+                                    </row>
+                                    <row>
+                                        <label value="msg://owner"/>
+                                        <lookupPickerField id="owner" datasource="mainDs" optionsDatasource="ownerDs"
+                                                           property="owner" width="100%">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                        <label value="msg://contract"/>
+                                        <lookupPickerField id="contract" datasource="mainDs" enable="false"
+                                                           optionsDatasource="contractDs" property="contract"
+                                                           width="100%">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </row>
+                                    <row>
+                                        <label value="msg://currency"/>
+                                        <lookupField id="currency" datasource="mainDs" enable="false"
+                                                     optionsDatasource="currencyDs" property="currency" required="true"
+                                                     width="100%"/>
+                                    </row>
+                                    <row>
+                                        <groupBox id="signatory" caption="msg://signatory" collapsable="true"
+                                                  collapsed="true" colspan="4" height="100%">
+                                            <grid id="signGrid" height="100%" margin="true,false,false,false"
+                                                  spacing="true" width="100%">
+                                                <columns>
+                                                    <column/>
+                                                    <column flex="2.0"/>
+                                                    <column/>
+                                                    <column flex="2.0"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <label value="msg://generalDirector"/>
+                                                        <lookupField id="generalDirector" colspan="3"
+                                                                     datasource="mainDs"
+                                                                     optionsDatasource="generalDirectorDs"
+                                                                     property="generalDirector" width="100%"/>
+                                                    </row>
+                                                    <row>
+                                                        <label value="msg://chiefAccount"/>
+                                                        <lookupField id="chiefAccount" colspan="3" datasource="mainDs"
+                                                                     optionsDatasource="chiefAccountDs"
+                                                                     property="chifAccount" width="100%"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </groupBox>
+                                    </row>
+                                    <row>
+                                        <groupBox id="additionalDetailBox" caption="msg://additionalDetailBox"
+                                                  collapsable="true" collapsed="true" colspan="4" height="100%">
+                                            <grid id="additionalDetailGrid" height="100%"
+                                                  margin="true,false,false,false" spacing="true" width="100%">
+                                                <columns>
+                                                    <column/>
+                                                    <column flex="2.0"/>
+                                                    <column/>
+                                                    <column flex="2.0"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <label value="msg://additionalDetail"/>
+                                                        <textArea id="additionalDetail" colspan="3" datasource="mainDs"
+                                                                  property="additionalDetail" width="100%"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </groupBox>
+                                    </row>
+                                    <row>
+                                        <label value="msg://taxSum"/>
+                                        <textField id="taxSum" datasource="mainDs" enable="false" property="taxSum"
+                                                   width="100%"/>
+                                        <label value="msg://fullSum"/>
+                                        <textField id="fullSum" datasource="mainDs" enable="false" property="fullSum"
+                                                   width="100%"/>
+                                    </row>
+                                    <row>
+                                        <label id="ordDetailLabel"
+                                               value="msg://com.haulmont.thesis.crm.entity/InvoiceDetail.ordDetail"/>
+                                        <lookupPickerField id="ordDetail" datasource="detailsDs"
+                                                           optionsDatasource="ordDetailsDs" property="ordDetail"
+                                                           width="250px"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <grid id="orderDetailVbox" margin="false,false,true,false" spacing="true" width="100%">
+                                <columns count="1"/>
+                                <rows>
+                                    <row>
+                                        <label id="detail" value="msg://detail"/>
+                                    </row>
+                                    <row>
+                                        <table id="orderDetailTable" aggregatable="true" height="300px"
+                                               multiselect="true" sortable="false" width="60%">
+                                            <columns>
+                                                <column id="product"/>
+                                                <column id="amount" width="30px"/>
+                                                <column id="cost" width="40px"/>
+                                                <column id="taxSum"/>
+                                                <column id="sumWithoutNds"/>
+                                                <column id="totalSum"/>
+                                                <column id="ordDetail"/>
+                                            </columns>
+                                            <rows datasource="detailsDs"/>
+                                        </table>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <grid id="exportGrid" margin="true,false,false,false" spacing="true" width="100%">
+                                <columns>
+                                    <column/>
+                                    <column flex="2.0"/>
+                                    <column/>
+                                    <column flex="2.0"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label/>
+                                        <button id="export1cBtn" caption="msg://export1cBtn" invoke="export1cBtn"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </scrollBox>
+                    </tab>
+                </tabSheet>
+                <iframe id="windowActions" screen="extendedEditWindowActions"/>
+            </vbox>
+            <tabSheet id="log1cSheet" height="100%">
+                <tab id="log1cTab" caption="msg://tabCaption" margin="true">
+                    <vbox id="table-log1c" height="100%" spacing="true">
+                        <groupTable id="logTable1c" height="100%" presentations="true" width="100%">
+                            <columns>
+                                <column id="shortServiceOperationResults"/>
+                                <column id="entityName" collapsed="true"/>
+                                <column id="entityId" collapsed="true"/>
+                                <column id="startDate" collapsed="true"/>
+                                <column id="extId" collapsed="true"/>
+                                <column id="error" collapsed="true"/>
+                                <column id="priority"/>
+                            </columns>
+                            <rows datasource="log1cDs"/>
+                        </groupTable>
+                    </vbox>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.room.roomSeatingType.RoomSeatingTypeEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.room.roomSeatingType">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.RoomSeatingType"
+                    view="edit" allowCommit="false">
+            <!--
+            <collectionDatasource id="attachmentsDs"
+                                  property="roomSeatingTypeAttachment" allowCommit="false"/>
+                                  -->
+            <collectionDatasource id="attachmentsDs"
+                                  property="roomSeatingTypeAttachment"/>
+
+        </datasource>
+    </dsContext>
+    <layout expand="vbox"
+            spacing="true">
+        <vbox id="vbox">
+            <tabSheet id="tabsheet"
+                      height="100%">
+                <tab id="mainTab"
+                     caption="msg://mainTab"
+                     margin="true,false,false,false">
+                    <scrollBox id="fieldsBox"
+                               height="100%"
+                               width="98%">
+
+                                <hbox expand="code"
+                                      spacing="true"
+                                      width="100%">
+                                    <label id="codeLabel"
+                                           value="msg://codeLabel"
+                                           width="225px"/>
+                                    <textField id="code"
+                                               datasource="mainDs"
+                                               property="code"/>
+                                </hbox>
+                                <hbox expand="name_ru"
+                                      spacing="true"
+                                      width="100%">
+                                    <label id="nameRuLabel"
+                                           value="msg://name_ru"
+                                           width="225px"/>
+                                    <textField id="name_ru"
+                                               datasource="mainDs"
+                                               property="name_ru"
+                                               required="true"/>
+                                </hbox>
+                                <hbox expand="name_en"
+                                      spacing="true"
+                                      width="100%">
+                                    <label id="nameEnLabel"
+                                           value="msg://name_en"
+                                           width="225px"/>
+                                    <textField id="name_en"
+                                               datasource="mainDs"
+                                               property="name_en"/>
+                                </hbox>
+                                <hbox expand="minCapacity"
+                                      spacing="true"
+                                      width="100%">
+                                    <label id="minCapacityLabel"
+                                           value="msg://minCapacity"
+                                           width="225px"/>
+                                    <textField id="minCapacity"
+                                               datasource="mainDs"
+                                               property="minCapacity"/>
+                                </hbox>
+                                <hbox expand="maxCapacity"
+                                      spacing="true"
+                                      width="100%">
+                                    <label id="maxCapacityLabel"
+                                           value="msg://maxCapacity"
+                                           width="225px"/>
+                                    <textField id="maxCapacity"
+                                               datasource="mainDs"
+                                               property="maxCapacity"/>
+                                </hbox>
+                                <hbox expand="seatingType"
+                                      spacing="true"
+                                      width="100%">
+                                    <label id="seatingTypeLabel"
+                                           value="msg://seatingType"
+                                           width="225px"/>
+                                    <lookupField id="seatingType"
+                                                 datasource="mainDs"
+                                                 property="seatingType"/>
+                                </hbox>
+                                <hbox expand="room"
+                                      spacing="true"
+                                      width="100%">
+                                    <label id="roomLabel"
+                                           value="msg://room"
+                                           width="225px"/>
+                                    <textField id="room"
+                                               datasource="mainDs"
+                                               property="room"/>
+                                </hbox>
+                    </scrollBox>
+                </tab>
+                <tab id="attachmentsTab"
+                     caption="msg://attachmentsTab"
+                     lazy="true">
+                    <iframe id="attachmentsFrame"
+                            height="100%"
+                            screen="abstractReferenceAttachmentsFrame"/>
+                </tab>
+
+            </tabSheet>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

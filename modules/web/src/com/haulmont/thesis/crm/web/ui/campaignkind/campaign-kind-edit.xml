@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.ui.campaignkind.CampaignKindEditor" datasource="categoryDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.campaignkind">
+    <dsContext>
+        <datasource id="categoryDs" class="com.haulmont.thesis.crm.entity.CampaignKind" view="edit">
+            <collectionDatasource id="categoryAttrsDs" property="categoryAttrs"/>
+        </datasource>
+        <collectionDatasource id="fieldsDs" allowCommit="false" class="com.haulmont.thesis.core.entity.FieldInfo"
+                              datasourceClass="com.haulmont.thesis.crm.web.ui.common.BaseFieldInfoDatasource" view="_local"/>
+        <collectionDatasource id="numeratorsDs" class="com.haulmont.thesis.core.entity.Numerator" view="_local">
+            <query>
+                <![CDATA[select n from df$Numerator n order by n.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="fieldsSplit" height="100%" spacing="true">
+            <split id="fieldsSplit" orientation="horizontal" width="100%" pos="30">
+                <vbox id="mainFieldsBox" expand="fieldsTable" height="100%" margin="false,true,false,false" spacing="true">
+                    <fieldGroup id="mainFieldsGroup" datasource="categoryDs" width="100%">
+                        <field id="entityType" custom="true" editable="false" required="true" requiredMessage="msg://validation.required.typeMsg"
+                               width="100%"/>
+                        <field id="name" required="true" requiredMessage="msg://validation.required.nameMsg" width="100%"/>
+                        <field id="code" width="100%"/>
+                        <field id="numerator" optionsDatasource="numeratorsDs" width="100%"/>
+                        <field id="numeratorType" width="100%"/>
+                        <field id="prefix" width="100%"/>
+                        <field id="description" rows="3" width="100%"/>
+                    </fieldGroup>
+                    <label value="msg://mainFields"/>
+                    <table id="fieldsTable" editable="true" sortable="false" width="100%" >
+                        <columns>
+                            <column id="locName" caption="msg://com.haulmont.thesis.core.entity/FieldInfo.name" editable="false"/>
+                            <column id="visible" align="CENTER" caption="msg://com.haulmont.thesis.core.entity/FieldInfo.visible" editable="true"
+                                    width="75px"/>
+                            <column id="required" align="CENTER" caption="msg://com.haulmont.thesis.crm.entity/FieldInfo.required" editable="true"
+                                    width="100px"/>
+                        </columns>
+                        <rows datasource="fieldsDs"/>
+                    </table>
+                </vbox>
+                <vbox expand="categoryAttrsFrame" height="100%" margin="false,false,false,true" spacing="true">
+                    <fieldGroup id="addFieldsGroup" caption="msg://additionalFields" datasource="categoryDs" width="100%">
+                        <field id="categoryAttrsPlace" required="true" width="180px"/>
+                        <field id="additionalFieldsTabName" required="true" width="180px"/>
+                    </fieldGroup>
+                    <iframe id="categoryAttrsFrame" screen="categoryAttrsFrame"/>
+                </vbox>
+            </split>
+            <iframe id="windowActions" screen="editWindowActions"/>
+        </vbox>
+    </layout>
+</window>

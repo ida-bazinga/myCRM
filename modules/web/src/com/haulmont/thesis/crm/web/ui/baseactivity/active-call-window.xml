@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.baseactivity.ActiveCallWindow"
+        messagesPack="com.haulmont.thesis.crm.web.ui.baseactivity">
+    <assign name="lWidth" value="120px"/>
+    <timers>
+        <timer id="ticksTimer" autostart="true" delay="1000" onTimer="ticks" repeating="true"/>
+    </timers>
+    <layout expand="mainPane">
+        <vbox id="mainPane" spacing="true">
+            <grid id="fieldsBox" spacing="true" width="100%">
+                <columns>
+                    <column/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row id="phoneNumberRow">
+                        <label id="phoneNumberLabel" value="msg://phoneNumber"/>
+                        <label id="phoneNumber" stylename="thesis-bold" width="100%"/>
+                    </row>
+                    <row id="companyRow">
+                        <label id="companyLabel" value="msg://company"/>
+                        <label id="company" stylename="thesis-bold" width="100%"/>
+                    </row>
+                    <row id="contactRow">
+                        <label id="contactLabel" value="msg://contact"/>
+                        <label id="contact" stylename="thesis-bold" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <hbox id="windowActions" expand="spacer" spacing="true" width="100%">
+            <button id="activateCallBtn" visible="false"/>
+            <button id="dropCallBtn"/>
+            <label id="spacer"/>
+            <label id="ticksTimerLabel" stylename="thesis-bold"/>
+            <label stylename="thesis-bold" value="msg://secs"/>
+        </hbox>
+    </layout>
+</window>

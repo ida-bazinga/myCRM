@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.characteristicType.CharacteristicTypeEditor" datasource="mainDs" focusComponent="mainScrollBox"
+        messagesPack="com.haulmont.thesis.crm.web.characteristicType">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.CharacteristicType" view="edit"/>
+        <collectionDatasource id="unitsDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Unit e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="mainScrollBox" height="100%" spacing="true" width="100%">
+        <scrollBox id="mainScrollBox">
+            <grid id="grid" margin="true,false,false,false" spacing="true" stylename="edit-area" width="100%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label id="integrationStateLabel" align="MIDDLE_CENTER" colspan="2" stylename="thesis-green-bold"/>
+                    </row>
+                    <row>
+                        <fieldGroup colspan="2" datasource="mainDs" width="50%">
+                            <column width="100%">
+                                <field id="code"/>
+                                <field id="name_ru"/>
+                                <field id="comment_ru"/>
+                            </column>
+                            <column width="100%">
+                                <field id="secondUnit" optionsDatasource="unitsDs" required="true"/>
+                            </column>
+                        </fieldGroup>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

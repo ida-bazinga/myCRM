@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://windowCaption"
+        class="com.haulmont.thesis.crm.web.emailCampaignTarget.EmailCampaignTargetWindow"
+        messagesPack="com.haulmont.thesis.crm.web.emailCampaignTarget">
+    <dsContext>
+        <hierarchicalDatasource id="targetsDs"
+                                class="com.haulmont.thesis.crm.entity.EmailCampaignTarget"
+                                hierarchyProperty="parent"
+                                maxResults="50"
+                                view="browse">
+            <query>
+                <![CDATA[select e from ext$EmailCampaignTarget e order by e.createTs, e.name]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.isGroup = :custom$hideGroup]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <iframe id="targetsFrame"
+                height="100%"
+                screen="emailCampaignTargetsFrame"/>
+    </layout>
+</window>

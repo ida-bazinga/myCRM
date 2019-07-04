@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.actDetail.ActDetailEditor" datasource="detailDs"
+        messagesPack="com.haulmont.thesis.crm.web.actDetail">
+    <dsContext>
+        <datasource id="detailDs" class="com.haulmont.thesis.crm.entity.ActDetail" view="edit"/>
+        <groupDatasource id="productDs" class="com.haulmont.thesis.crm.entity.Product" view="edit">
+            <query>
+                <![CDATA[select e from crm$Product e]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="taxDs" class="com.haulmont.thesis.crm.entity.Tax" view="_local">
+            <query>
+                <![CDATA[select e from crm$Tax e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contractsDs" class="com.haulmont.thesis.core.entity.Contract" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Contract e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="ordDetailsDs" class="com.haulmont.thesis.crm.entity.OrderDetail" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$OrderDetail e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox" height="100%" spacing="true" width="100%">
+        <vbox id="vBox" stylename="edit-area">
+            <grid id="grid" spacing="true" width="50%">
+                <columns>
+                    <column/>
+                    <column flex="2.0"/>
+                    <column/>
+                    <column flex="2.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://product"/>
+                        <lookupPickerField id="product" colspan="3" datasource="detailDs" optionsDatasource="productDs"
+                                           property="product" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://amount"/>
+                        <textField id="amount" datasource="detailDs" property="amount" required="true" width="100%"/>
+                        <label value="msg://cost"/>
+                        <textField id="cost" datasource="detailDs" enable="false" property="cost" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://taxSum"/>
+                        <textField id="taxSum" datasource="detailDs" enable="false" property="taxSum" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://sumWithoutNds"/>
+                        <textField id="sumWithoutNds" datasource="detailDs" datatype="decimal" enable="false"
+                                   property="sumWithoutNds" width="100%"/>
+                        <label value="msg://totalSum"/>
+                        <textField id="totalSum" datasource="detailDs" enable="false" property="totalSum" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru" colspan="3" datasource="detailDs" height="200px" property="comment_ru"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label id="isAgencyLabel" value="msg://com.haulmont.thesis.crm.entity/ActDetail.isAgency"/>
+                        <checkBox id="isAgency" datasource="detailDs" property="isAgency" width="250px"/>
+                    </row>
+                    <row>
+                        <label id="companyLabel" value="msg://com.haulmont.thesis.crm.entity/ActDetail.company"/>
+                        <lookupPickerField id="company" datasource="detailDs" optionsDatasource="companiesDs"
+                                           property="company" width="250px"/>
+                    </row>
+                    <row>
+                        <label id="contractLabel" value="msg://com.haulmont.thesis.crm.entity/ActDetail.contract"/>
+                        <lookupPickerField id="contract" datasource="detailDs" optionsDatasource="contractsDs"
+                                           property="contract" width="250px"/>
+                    </row>
+                    <row>
+                        <label id="secondaryAmountLabel"
+                               value="msg://com.haulmont.thesis.crm.entity/ActDetail.secondaryAmount"/>
+                        <textField id="secondaryAmount" datasource="detailDs" property="secondaryAmount" width="250px"/>
+                    </row>
+                    <row>
+                        <label id="ordDetailLabel" value="msg://com.haulmont.thesis.crm.entity/ActDetail.ordDetail"/>
+                        <lookupPickerField id="ordDetail" datasource="detailDs" optionsDatasource="ordDetailsDs"
+                                           property="ordDetail" width="250px"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

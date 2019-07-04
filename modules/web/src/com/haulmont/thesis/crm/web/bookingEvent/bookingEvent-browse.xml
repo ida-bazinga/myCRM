@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.bookingEvent.BookingEventBrowse"
+        focusComponent="cardsTable"
+        messagesPack="com.haulmont.thesis.crm.web.bookingEvent">
+    <dsContext>
+        <groupDatasource id="cardsDs"
+                         class="com.haulmont.thesis.crm.entity.BookingEvent"
+                         datasourceClass="com.haulmont.thesis.web.ui.DocDatasource"
+                         view="browse">
+            <query>
+                <![CDATA[select distinct d from crm$BookingEvent d where d.template = false and d.versionOf is null]]>
+            </query>
+        </groupDatasource>
+        <!--
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="themesesDs" class="com.haulmont.thesis.crm.entity.ProjectTheme" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectTheme e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="exhibitSpacesDs" class="com.haulmont.thesis.crm.entity.ExhibitSpace" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ExhibitSpace e]]>
+            </query>
+        </collectionDatasource>
+        -->
+    </dsContext>
+    <layout expand="split"
+            spacing="true">
+        <hbox spacing="true"
+              width="100%">
+            <filter id="genericFilter"
+                    applyTo="cardsTable"
+                    datasource="cardsDs"
+                    stylename="edit-area">
+                <properties exclude="company|procFamily|template|important|templateName|createdBy|createTs|regNo|jbpmProcessId|id|locState|state|extraFields|currentActorsFullString|currentActorsString|addressees|executor|signedBy|category|executor|versionOf|deleteTs"
+                            include=".*"/>
+            </filter>
+        </hbox>
+        <split id="split"
+               orientation="vertical"
+               pos="60"
+               width="100%">
+            <vbox id="table-panel"
+                  height="100%"
+                  spacing="true">
+                <groupTable id="cardsTable"
+                            height="100%"
+                            presentations="true"
+                            width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="saveAsTemplate"
+                                visible="false"/>
+                        <action id="deleteNotification"/>
+                        <action id="openNewTab"/>
+                        <action id="showLink"/>
+                        <action id="expand"/>
+                    </actions>
+                    <columns>
+                        <column id="hasAttachments"
+                                caption="msg://com.haulmont.workflow.core.entity/Card.hasAttachments"
+                                width="30">
+                            <formatter class="com.haulmont.thesis.gui.components.formatter.HasAttachmentsFormatter"/>
+                        </column>
+                        <column id="important"
+                                caption="msg://com.haulmont.thesis.core.entity/TsCard.important"
+                                width="30">
+                            <formatter class="com.haulmont.thesis.gui.components.formatter.ImportantDocFormatter"/>
+                        </column>
+                        <column id="locState"/>
+                        <column id="state"
+                                caption="msg://com.haulmont.workflow.core.entity/Card.state"
+                                collapsed="true"/>
+                        <column id="number"
+                                collapsed="true"/>
+                        <column id="dateTime"/>
+                        <column id="docKind"
+                                collapsed="true"/>
+                        <column id="owner"/>
+                        <column id="exhibitSpace"/>
+                        <column id="company"/>
+                        <column id="theme"
+                                maxTextLength="100"/>
+                        <column id="name"/>
+                        <column id="fullName_ru"
+                                collapsed="true"/>
+                        <column id="fullName_en"
+                                collapsed="true"/>
+                        <column id="installationDate"/>
+                        <column id="deinstallationDate"/>
+                        <column id="dateStart"
+                                collapsed="true"/>
+                        <column id="dateFinish"
+                                collapsed="true"/>
+                        <column id="year"
+                                collapsed="true"/>
+                        <column id="area"/>
+                        <column id="optionDate"
+                                collapsed="true"/>
+                        <column id="publishAllowedDate" collapsed="true"/>
+                    </columns>
+                    <rows datasource="cardsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel">
+                        <popupButton id="createButton"
+                                     caption="msg://actions.Create"/>
+                        <label stylename="thesis-buttonspanel-vertical-separator"/>
+                        <button id="editBtn"
+                                action="cardsTable.edit"
+                                icon="icons/edit.png"/>
+                        <button id="removeBtn"
+                                action="cardsTable.remove"
+                                icon="icons/remove.png"/>
+                        <button id="excel"
+                                action="cardsTable.excel"
+                                description="msg://actions.Excel"
+                                icon="icons/excel.png"/>
+                        <button id="refreshBtn"
+                                action="cardsTable.refresh"
+                                icon="icons/refresh.png"/>
+                        <button id="saveAsTemplateBtn"
+                                icon="icons/save_as_template.png"
+                                visible="false"/>
+                        <button id="createDocBtn"
+                                visible="false"/>
+                        <button id="expandBtn"
+                                action="cardsTable.expand"/>
+                        <runReportPopupButton id="printButton"
+                                              description="msg://print"
+                                              icon="icons/reports-print.png"/>
+                    </buttonsPanel>
+                    <tableSettings id="tableSettings"/>
+                </groupTable>
+            </vbox>
+            <tabSheet id="cardDetailsTabSheet"
+                      height="100%">
+                <tab id="resolutionsTab"
+                     caption="msg://resolutions"
+                     margin="true">
+                    <iframe id="resolutionsFrame"
+                            height="100%"
+                            screen="resolutionsFrame"/>
+                </tab>
+                <tab id="hierarchyTab"
+                     caption="msg://hierarchy">
+                    <iframe id="cardTreeFrame"
+                            height="100%"
+                            screen="cardTreeFrame"/>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

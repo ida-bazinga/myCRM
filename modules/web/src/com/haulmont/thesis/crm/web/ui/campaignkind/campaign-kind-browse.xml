@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.campaignkind.CampaignKindBrowser" focusComponent="campaignKindsTable"
+        lookupComponent="campaignKindsTable" messagesPack="com.haulmont.thesis.crm.web.ui.campaignkind">
+    <dsContext>
+        <collectionDatasource id="campaignKindsDs" class="com.haulmont.thesis.crm.entity.CampaignKind" view="browse">
+            <query>
+                <![CDATA[select e from crm$CampaignKind e order by e.name]]>
+                <filter>
+                    <and>
+                        <c><![CDATA[e.entityType = :param$type and e.id <> :param$kindId]]></c>
+                    </and>
+                </filter>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox height="100%" expand="campaignKindsTable" spacing="true">
+            <table id="campaignKindsTable" editable="false" width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                    <action id="change"/>
+                </actions>
+                <columns>
+                    <column id="code"/>
+                    <column id="name"/>
+                    <column id="entityTypeName"/>
+                    <column id="description"/>
+                    <column id="prefix"/>
+                </columns>
+                <rows datasource="campaignKindsDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel" alwaysVisible="true">
+                    <button id="createBtn" action="campaignKindsTable.create"/>
+                    <button id="editBtn" action="campaignKindsTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn" action="campaignKindsTable.remove" icon="icons/remove.png"/>
+                    <button id="refreshBtn" action="campaignKindsTable.refresh" icon="icons/refresh.png"/>
+                    <button id="accessProcessesButton" caption="msg://accessProcesses" invoke="OpenProcsEditor"/>
+                    <button id="accessReportsButton" caption="msg://accessReports" invoke="OpenReportsEditor"/>
+                </buttonsPanel>
+            </table>
+        </vbox>
+    </layout>
+</window>

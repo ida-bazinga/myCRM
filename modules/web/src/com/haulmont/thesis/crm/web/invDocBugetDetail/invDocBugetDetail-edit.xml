@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.invDocBugetDetail.InvDocBugetDetailEditor" datasource="cardDs"
+        messagesPack="com.haulmont.thesis.crm.web.invDocBugetDetail">
+    <dsContext>
+        <datasource id="cardDs" class="com.haulmont.thesis.crm.entity.InvDocBugetDetail" view="edit"/>
+        <collectionDatasource id="bugetItemDs" class="com.haulmont.thesis.crm.entity.BugetItem" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$BugetItem e where e.bugetItemType = 2]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="currencyDs" class="com.haulmont.thesis.crm.entity.Currency" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Currency e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="width" value="50%"/>
+    <layout margin="true" spacing="true">
+        <vbox id="vbox">
+            <hbox expand="bugetItem" spacing="true" width="100%">
+                <label id="bugetItemLabel" value="msg://bugetItem" width="120px"/>
+                <lookupPickerField id="bugetItem" datasource="cardDs" optionsDatasource="bugetItemDs" property="bugetItem">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox expand="fullSumField" spacing="true" width="100%">
+                <label id="fullSumLabel" value="msg://fullSum" width="120px"/>
+                <textField id="fullSumField" datasource="cardDs" property="fullSum"/>
+            </hbox>
+            <!--
+            <hbox expand="factSum" spacing="true" width="100%">
+                <label id="factSumLabel" value="msg://factSum" width="120px"/>
+                <textField id="factSum" datasource="cardDs" editable="false" enabled="false" property="factSum"/>
+            </hbox>
+            -->
+            <hbox expand="currency" spacing="true" width="100%">
+                <label id="currencyLabel" value="msg://currency" width="120px"/>
+                <lookupPickerField id="currency" datasource="cardDs" editable="false" enabled="false" optionsDatasource="currencyDs"
+                                   property="currency">
+                    <actions>
+                        <action id="lookup"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

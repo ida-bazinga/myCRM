@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.informationSource.InformationSourceBrowser" focusComponent="informationSourcesTable"
+        lookupComponent="informationSourcesTable" messagesPack="com.haulmont.thesis.crm.web.informationSource">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.InformationSource" view="edit">
+            <query>
+                <![CDATA[select e from crm$InformationSource e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="informationSourcesTable" spacing="true">
+        <filter id="filter" datasource="mainDs">
+            <properties include=".*"/>
+        </filter>
+        <table id="informationSourcesTable" width="100%">
+            <actions>
+                <action id="create" openType="DIALOG"/>
+                <action id="edit" openType="DIALOG"/>
+                <action id="remove"/>
+                <action id="refresh"/>
+            </actions>
+            <columns>
+                <column id="title"/>
+                <column id="infoType"/>
+                <column id="project"/>
+            </columns>
+            <rows datasource="mainDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel" alwaysVisible="true">
+                <button id="createBtn" action="informationSourcesTable.create"/>
+                <button id="editBtn" action="informationSourcesTable.edit"/>
+                <button id="removeBtn" action="informationSourcesTable.remove"/>
+                <button id="refreshBtn" action="informationSourcesTable.refresh" icon="icons/refresh.png"/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

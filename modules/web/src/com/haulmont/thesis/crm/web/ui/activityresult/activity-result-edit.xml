@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.ui.activityresult.ActivityResultEditor" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.activityresult">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.ActivityResult"
+                    view="edit"/>
+        <collectionDatasource id="docCategoriesDs"
+                              class="com.haulmont.thesis.core.entity.DocCategory"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from df$Category e where e.docType.name = 'crm$OutboundCampaign']]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox"
+              expand="commentBox"
+              spacing="true">
+            <hbox id="hBox1"
+                  expand="code"
+                  width="100%">
+                <label id="labelCode"
+                       value="msg://code"
+                       width="100px"/>
+                <textField id="code"
+                           datasource="mainDs"
+                           property="code"/>
+            </hbox>
+            <hbox id="hBox2"
+                  expand="nameRu"
+                  width="100%">
+                <label id="labelNameRu"
+                       value="msg://name_ru"
+                       width="100px"/>
+                <textField id="nameRu"
+                           datasource="mainDs"
+                           property="name_ru"/>
+            </hbox>
+            <hbox id="hBox3"
+                  expand="type"
+                  width="100%">
+                <label id="labelType"
+                       value="msg://Type"
+                       width="100px"/>
+                <lookupField id="type"
+                             datasource="mainDs"
+                             property="resultType"
+                             required="true"/>
+            </hbox>
+            <hbox id="hBox4"
+                  expand="docCategory"
+                  width="100%">
+                <label id="labelCategory"
+                       value="msg://Category"
+                       width="100px"/>
+                <lookupField id="docCategory"
+                             datasource="mainDs"
+                             optionsDatasource="docCategoriesDs"
+                             property="docCategory"/>
+            </hbox>
+            <hbox id="hBox5"
+                  expand="needDetails"
+                  width="100%">
+                <label width="100px"/>
+                <checkBox id="needDetails"
+                          caption="msg://isNeedDetails"
+                          datasource="mainDs"
+                          property="isNeedDetails"/>
+            </hbox>
+            <hbox id="commentBox"
+                  expand="comment"
+                  width="100%">
+                <label id="labelComment"
+                       value="msg://comment_ru"
+                       width="100px"/>
+                <textArea id="comment"
+                          datasource="mainDs"
+                          property="comment_ru"
+                          rows="3"/>
+            </hbox>
+        </vbox>
+        <iframe id="editWindowActions"
+                screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth"
+            value="100px"/>
+</window>

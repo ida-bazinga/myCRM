@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.ui.account.ExtAccountsFrame"
+        messagesPack="com.haulmont.thesis.crm.web.ui.account">
+    <layout>
+        <vbox height="100%" margin="true, false, false, false" spacing="true" expand="accountsTable">
+            <table id="accountsTable" editable="false" sortable="true" width="100%">
+                <buttonsPanel align="MIDDLE_LEFT">
+                    <button action="accountsTable.create" icon="icons/plus-btn.png"/>
+                    <button action="accountsTable.edit" icon="icons/edit.png"/>
+                    <button action="accountsTable.remove" icon="icons/remove.png"/>
+                </buttonsPanel>
+                <columns>
+                    <column id="no" caption="msg://no"/>
+                    <column id="bik" caption="msg://bik"/>
+                    <column id="swift" caption="msg://swift"/>
+                    <column id="name" caption="msg://name"/>
+                    <column id="region" caption="msg://region"/>
+                    <column id="adress" caption="msg://adress" maxTextLength="40"/>
+                    <column id="correspondent" caption="msg://correspondent" collapsed="true"/>
+                    <column id="bank" caption="msg://bank" visible="false"/>
+                    <column id="indirectCalcBank" caption="msg://indirectCalcBank" collapsed="true"/>
+                    <column id="currency" caption="msg://currency"/>
+                    <column id="comment" caption="msg://comment" maxTextLength="40"/>
+                </columns>
+                <rows datasource="accountsDs"/>
+            </table>
+        </vbox>
+    </layout>
+</window>

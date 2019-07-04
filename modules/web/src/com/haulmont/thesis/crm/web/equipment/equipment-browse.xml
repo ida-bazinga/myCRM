@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.equipment.EquipmentBrowser" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.equipment">
+    <dsContext>
+        <hierarchicalDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.Equipment" hierarchyProperty="parent" view="edit">
+            <query>
+                <![CDATA[select e from crm$Equipment e]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <treeTable id="mainTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="name_ru"/>
+                        <column id="model"/>
+                        <column id="name_en" collapsed="true"/>
+                        <column id="serialNumber"/>
+                        <column id="reference"/>
+                        <column id="resourceType"/>
+                        <column id="inventoryNumber"/>
+                        <column id="state"/>
+                        <column id="unit"/>
+                        <column id="owner"/>
+                        <column id="comment_ru" collapsed="true"/>
+                        <column id="numberMto" collapsed="true"/>
+                        <column id="warrantyExpirationDate" collapsed="true"/>
+                        <column id="writeOffsDate" collapsed="true"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel alwaysVisible="true">
+                        <popupButton id="createBtn" caption="msg://actions.Create"/>
+                        <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </treeTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

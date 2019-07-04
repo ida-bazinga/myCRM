@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.projectType.ProjectTypeBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="projectTypeTable"
+        messagesPack="com.haulmont.thesis.crm.web.projectType">
+    <dsContext>
+        <collectionDatasource id="projectTypeDs"
+                              class="com.haulmont.thesis.crm.entity.ProjectType"
+                              view="_local">
+            <query>
+                <![CDATA[select distinct p from crm$ProjectType p order by p.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="projectTypeTable"
+                    datasource="projectTypeDs"
+                    stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <table id="projectTypeTable"
+                       height="100%"
+                       width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="comment_ru"/>
+                    </columns>
+                    <rows datasource="projectTypeDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="projectTypeTable.create"/>
+                        <button action="projectTypeTable.edit"
+                                icon="icons/edit.png"/>
+                        <button action="projectTypeTable.remove"
+                                icon="icons/remove.png"/>
+                        <button action="projectTypeTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

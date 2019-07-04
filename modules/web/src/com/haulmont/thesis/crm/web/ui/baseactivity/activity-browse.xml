@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.baseactivity.ActivityBrowser"
+        focusComponent="cardsTable"
+        lookupComponent="cardsTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.baseactivity">
+    <dsContext>
+        <groupDatasource id="cardsDs"
+                         class="com.haulmont.thesis.crm.entity.BaseActivity"
+                         view="browse">
+            <query>
+                <![CDATA[select e from crm$BaseActivity e order by e.endTimeFact desc, e.createTime desc]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="ownersDs"
+                              class="com.haulmont.thesis.crm.entity.ExtEmployee"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectsDs"
+                              class="com.haulmont.thesis.crm.entity.ExtProject"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="departmentsDs"
+                              class="com.haulmont.thesis.crm.entity.ExtDepartment"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Department e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="cardsTable"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="cardsTable"
+                    datasource="cardsDs">
+                <properties exclude="procFamily|template|important|createdBy|createTs|regNo|jbpmProcessId|deleteTs|id|locState|state|extraFields|currentActorsFullString|currentActorsString|executor|category|"
+                            include=".*"/>
+            </filter>
+            <groupTable id="cardsTable"
+                        presentations="true"
+                        width="100%">
+                <actions>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                </actions>
+                <columns>
+                    <column id="kind"/>
+                    <column id="description"
+                            collapsed="true"/>
+                    <column id="owner"
+                            collapsed="true"/>
+                    <column id="campaign"
+                            collapsed="true"/>
+                    <column id="project"/>
+                    <column id="locState"/>
+                    <column id="company"
+                            link="true"
+                            linkScreenOpenType="THIS_TAB"/>
+                    <column id="contactPerson"
+                            caption="msg://contact"
+                            captionProperty="contactPerson.fullName"
+                            link="true"
+                            linkScreenOpenType="DIALOG"/>
+                    <column id="address"/>
+                    <column id="createTime"
+                            caption="msg://createTime"
+                            collapsed="true">
+                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                   format="dd.MM.yy HH:mm:ss"/>
+                    </column>
+                    <column id="result"/>
+                    <column id="details"
+                            collapsed="true"/>
+                    <column id="endTimePlan"
+                            collapsed="true">
+                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                   format="dd.MM.yy HH:mm:ss"/>
+                    </column>
+                    <column id="endTimeFact"
+                            collapsed="true">
+                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                   format="dd.MM.yy HH:mm:ss"/>
+                    </column>
+                    <column id="organization"
+                            collapsed="true"/>
+                </columns>
+                <rows datasource="cardsDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel"
+                              alwaysVisible="true">
+                    <popupButton id="createButton"
+                                 caption="msg://actions.Create"
+                                 icon=""/>
+                    <button id="editBtn"
+                            action="cardsTable.edit"/>
+                    <button id="removeBtn"
+                            action="cardsTable.remove"/>
+                    <button id="refreshBtn"
+                            action="cardsTable.refresh"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

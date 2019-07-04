@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.ruefClassifier.RuefClassifierEditor" datasource="ruefClassifierDs"
+        messagesPack="com.haulmont.thesis.crm.web.ruefClassifier">
+    <dsContext>
+        <datasource id="ruefClassifierDs" class="com.haulmont.thesis.crm.entity.RuefClassifier" view="edit"/>
+        <collectionDatasource id="ruefClassifierSectionsDs" class="com.haulmont.thesis.crm.entity.RuefClassifier" view="_minimal">
+            <query>
+                <![CDATA[select p from crm$RuefClassifier p where p.id <> :ds$ruefClassifierDs order by p.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="scrollBox" height="100%" spacing="true" width="100%">
+        <scrollBox id="scrollBox">
+            <grid id="grid" spacing="true" stylename="edit-area" width="100%">
+                <columns>
+                    <column flex="4.0"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <fieldGroup colspan="2" datasource="ruefClassifierDs" width="50%">
+                            <column width="100%">
+                                <field id="code" required="true" width="100%"/>
+                                <field id="fullName" editable="false" width="100%"/>
+                                <field id="name_ru" required="true" width="100%"/>
+                                <field id="comment_ru" width="100%"/>
+                                <field id="parentRuefClassifier" optionsDatasource="ruefClassifierSectionsDs" width="100%"/>
+                            </column>
+                        </fieldGroup>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

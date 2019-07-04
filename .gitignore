@@ -1,0 +1,32 @@
+# idea
+.ideaDataSources/
+dataSources/
+build/*
+.idea/
+*.iml
+*.ipr
+*.iws
+*.7z
+#*.bin
+#*.lock
+*.sql
+.studio
+out
+test-run
+
+# gradle
+.gradle
+gradle/
+deploy/
+.gradle/1.12/taskArtifacts/*.bin
+.gradle/1.12/taskArtifacts/*.lock
+.gradle/1.12/taskArtifacts/*.properties
+.gradle/2.11/taskArtifacts/*.bin
+.gradle/2.11/taskArtifacts/*.lock
+.gradle/2.11/taskArtifacts/*.properties
+.gradle/buildOutputCleanup/
+gradlew.*
+
+#studio
+studio-settings.xml
+modules/*/build/*

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://templateBrowserCaption"
+        class="com.haulmont.thesis.crm.web.ordDoc.OrdDocBrowser"
+        extends="com/haulmont/thesis/crm/web/ordDoc/ordDoc-browse.xml">
+    <dsContext>
+        <groupDatasource id="cardsDs">
+            <query>
+                <![CDATA[select distinct d from crm$OrdDoc d where d.template = true and d.versionOf is null order by d.templateName]]>
+            </query>
+        </groupDatasource>
+        <!--
+        <collectionDatasource id="companiesDs"
+                              class="com.haulmont.thesis.crm.entity.ExtCompany"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e]]>
+            </query>
+        </collectionDatasource>
+        -->
+        <collectionDatasource id="themesesDs" class="com.haulmont.thesis.crm.entity.ProjectTheme" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectTheme e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="exhibitSpacesDs" class="com.haulmont.thesis.crm.entity.ExhibitSpace" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ExhibitSpace e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="split" spacing="true">
+        <split id="split">
+            <vbox id="table-panel">
+                <groupTable id="cardsTable">
+                    <buttonsPanel id="buttonsPanel">
+                        <button action="cardsTable.excel" visible="false"/>
+                        <button id="refreshBtn" visible="false"/>
+                        <button id="createDocBtn" visible="true"/>
+                        <popupButton id="printButton" visible="false"/>
+                        <popupButton id="additionalCreateBtn" visible="false"/>
+                    </buttonsPanel>
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="createDoc"/>
+                        <action id="deleteNotification" visible="false"/>
+                        <action id="showLink" visible="false"/>
+                    </actions>
+                    <columns>
+                        <column id="templateName" visible="true"/>
+                        <column id="important" visible="false"/>
+                        <column id="locState" visible="false"/>
+                        <column id="date" visible="false"/>
+                        <column id="number" visible="false"/>
+                        <column id="substitutedCreator" caption="msg://creator"/>
+                        <column id="proc.name" caption="msg://procName" visible="false"/>
+                        <column id="theme" visible="false"/>
+                        <column id="company" visible="false"/>
+                        <column id="contract" visible="false"/>
+                        <column id="docCategory" visible="false"/>
+                        <column id="owner" visible="false"/>
+                        <column id="fullSum" visible="false"/>
+                        <column id="integrationResolver.stateDocSales" visible="false"/>
+                        <column id="integrationResolver.posted" visible="false"/>
+                        <column id="integrationResolver.sumPayment" visible="false"/>
+                        <column id="integrationResolver.del" visible="false"/>
+                        <column id="integrationResolver.stateDocSales" visible="false"/>
+                        <column id="companyAttorney" visible="false"/>
+                        <column id="companyAccountable" visible="false"/>
+                        <column id="companyPowerOfAttorney" visible="false"/>
+                        <column id="payer" visible="false"/>
+                        <column id="payerAttorney" visible="false"/>
+                        <column id="payerPowerOfAttorney" visible="false"/>
+                        <column id="taxSum" visible="false"/>
+                        <column id="hasAttributes" visible="false"/>
+                        <column id="note" visible="false"/>
+                        <column id="comment" visible="false"/>
+                    </columns>
+                </groupTable>
+            </vbox>
+            <tabSheet id="cardDetailsTabSheet" visible="false"/>
+        </split>
+    </layout>
+</window>

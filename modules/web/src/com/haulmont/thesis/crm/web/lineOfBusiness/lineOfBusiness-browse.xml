@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.lineOfBusiness.LineOfBusinessBrowser" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.lineOfBusiness">
+    <dsContext>
+        <hierarchicalDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.LineOfBusiness" hierarchyProperty="parentLine" view="browse">
+            <query>
+                <![CDATA[select e from crm$LineOfBusiness e]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout expand="mainTable" spacing="true">
+        <filter id="filter" datasource="mainDs">
+            <properties exclude="id|createdBy|createTs|isGroup" include=".*"/>
+        </filter>
+        <treeTable id="mainTable" multiselect="true" presentations="true" width="100%">
+            <actions>
+                <action id="create" openType="DIALOG"/>
+                <action id="edit" openType="DIALOG"/>
+                <action id="remove"/>
+                <action id="refresh"/>
+            </actions>
+            <columns>
+                <column id="parentLine"/>
+                <column id="code"/>
+                <column id="name_ru"/>
+                <column id="comment_ru" collapsed="true"/>
+            </columns>
+            <rows datasource="mainDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel" alwaysVisible="true">
+                <popupButton id="createBtn" caption="msg://actions.Create"/>
+                <button id="editBtn" action="mainTable.edit"/>
+                <button id="removeBtn" action="mainTable.remove"/>
+                <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+            </buttonsPanel>
+        </treeTable>
+    </layout>
+</window>

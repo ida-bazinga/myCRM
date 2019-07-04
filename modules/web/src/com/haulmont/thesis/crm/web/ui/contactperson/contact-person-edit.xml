@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://EditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.contactperson.ContactPersonEditor"
+        datasource="contactDs"
+        focusComponent="mainTab"
+        messagesPack="com.haulmont.thesis.crm.web.ui.contactperson">
+    <dsContext>
+        <datasource id="contactDs"
+                    class="com.haulmont.thesis.crm.entity.ExtContactPerson"
+                    view="edit">
+            <groupDatasource id="communicationsDs"
+                             property="communications"/>
+            <groupDatasource id="lineOfBusinessContactPersonDs"
+                             property="lineOfBusinessContactPerson"/>
+            <collectionDatasource id="contactRolesDs"
+                                  property="contactRoles"/>
+            <collectionDatasource id="projectsDs"
+                                  property="projects"/>
+        </datasource>
+        <collectionDatasource id="rolesDs"
+                              class="com.haulmont.thesis.crm.entity.ContactRole"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ContactRole e where e.id not in (select f.id from crm$ContactRole f where f.contactPersons.id like :ds$contactDs.id)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companyDs"
+                              class="com.haulmont.thesis.crm.entity.ExtCompany"
+                              view="_local">
+            <query>
+                <![CDATA[select e from crm$Company e where e.name like :(?i)custom$searchString order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="countryDs"
+                              class="com.haulmont.thesis.crm.entity.Country"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Country e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="cityDs"
+                              class="com.haulmont.thesis.crm.entity.City"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$City e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="regionDs"
+                              class="com.haulmont.thesis.crm.entity.Region"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Region e where e.name_ru like :(?i)custom$searchString order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="learnedAboutExhibitionDs"
+                              class="com.haulmont.thesis.crm.entity.LearnedAboutExhibition"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$LearnedAboutExhibition e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabSheet"
+            spacing="true">
+        <tabSheet id="tabSheet">
+            <tab id="mainTab"
+                 caption="msg://mainTab"
+                 margin="true,false,false,false">
+                <split id="split"
+                       height="100%"
+                       orientation="vertical"
+                       pos="60"
+                       width="100%">
+                    <scrollBox id="scrollBox60"
+                               height="100%">
+                        <vbox id="vBox"
+                              expand="commentBox">
+                            <hbox expand="vBox2"
+                                  spacing="true"
+                                  width="100%">
+                                <vbox id="vBox2"
+                                      spacing="true">
+                                    <hbox expand="lastName"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://lastName"
+                                               width="100px"/>
+                                        <textField id="lastName"
+                                                   datasource="contactDs"
+                                                   property="lastName"
+                                                   requiredMessage="msg://lastNameMsg"/>
+                                    </hbox>
+                                    <hbox expand="firstName"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://firstName"
+                                               width="100px"/>
+                                        <textField id="firstName"
+                                                   datasource="contactDs"
+                                                   property="firstName"/>
+                                    </hbox>
+                                    <hbox expand="middleName"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://middleName"
+                                               width="100px"/>
+                                        <textField id="middleName"
+                                                   datasource="contactDs"
+                                                   property="middleName"/>
+                                    </hbox>
+                                    <hbox expand="position"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://position"
+                                               width="100px"/>
+                                        <textField id="position"
+                                                   datasource="contactDs"
+                                                   property="positionLong"/>
+                                    </hbox>
+                                    <hbox expand="sex"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://sex"
+                                               width="100px"/>
+                                        <optionsGroup id="sex"
+                                                      datasource="contactDs"
+                                                      orientation="horizontal"
+                                                      property="sex"/>
+                                    </hbox>
+                                    <hbox expand="rolesList"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://roles"
+                                               width="100px"/>
+                                        <tokenList id="rolesList"
+                                                   datasource="contactRolesDs"
+                                                   inline="true">
+                                            <lookup optionsDatasource="rolesDs"/>
+                                        </tokenList>
+                                    </hbox>
+                                    <hbox expand="company"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://company"
+                                               width="100px"/>
+                                        <searchPickerField id="company"
+                                                           datasource="contactDs"
+                                                           optionsDatasource="companyDs"
+                                                           property="company">
+                                            <actions>
+                                                <action id="clear"/>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </searchPickerField>
+                                    </hbox>
+                                    <hbox expand="companyName"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://companyName"
+                                               width="100px"/>
+                                        <textField id="companyName"
+                                                   datasource="contactDs"
+                                                   property="companyName"/>
+                                    </hbox>
+                                    <hbox expand="lerndAboutExhibition"
+                                          spacing="true"
+                                          width="100%">
+                                        <label value="msg://lerndAboutExhibition"
+                                               width="100px"/>
+                                        <lookupField id="lerndAboutExhibition"
+                                                     datasource="contactDs"
+                                                     optionsDatasource="learnedAboutExhibitionDs"
+                                                     property="lerndAboutExhibition"/>
+                                    </hbox>
+                                    <groupBox id="address"
+                                              caption="msg://address"
+                                              collapsable="true"
+                                              spacing="true">
+                                        <searchPickerField id="country"
+                                                           caption="msg://country"
+                                                           datasource="contactDs"
+                                                           optionsDatasource="countryDs"
+                                                           property="country"
+                                                           width="100%">
+                                            <actions>
+                                                <action id="clear"/>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </searchPickerField>
+                                        <searchPickerField id="city"
+                                                           caption="msg://city"
+                                                           datasource="contactDs"
+                                                           optionsDatasource="cityDs"
+                                                           property="city"
+                                                           width="100%">
+                                            <actions>
+                                                <action id="clear"/>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </searchPickerField>
+                                        <searchPickerField id="region"
+                                                           caption="msg://region"
+                                                           datasource="contactDs"
+                                                           optionsDatasource="regionDs"
+                                                           property="region"
+                                                           width="100%">
+                                            <actions>
+                                                <action id="clear"/>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </searchPickerField>
+                                    </groupBox>
+                                    <groupBox id="state"
+                                              caption="msg://state"
+                                              collapsable="true"
+                                              orientation="horizontal"
+                                              spacing="true">
+                                        <checkBox id="isMail"
+                                                  caption="msg://isMail"
+                                                  datasource="contactDs"
+                                                  editable="false"
+                                                  property="isMail"/>
+                                        <checkBox id="isProcessing"
+                                                  caption="msg://isProcessing"
+                                                  datasource="contactDs"
+                                                  editable="false"
+                                                  property="isProcessing"/>
+                                        <checkBox id="isLocked"
+                                                  caption="msg://isLocked"
+                                                  datasource="contactDs"
+                                                  editable="false"
+                                                  property="isLocked"/>
+                                    </groupBox>
+                                </vbox>
+                                <iframe id="embeddedImageFrame"
+                                        screen="avatarImageFrame"
+                                        width="210px"/>
+                            </hbox>
+                            <hbox id="commentBox"
+                                  margin="true,false,true,false"
+                                  spacing="true"
+                                  width="100%">
+                                <textArea id="comment"
+                                          caption="msg://comment"
+                                          datasource="contactDs"
+                                          property="comment"
+                                          rows="3"
+                                          width="100%"/>
+                            </hbox>
+                        </vbox>
+                    </scrollBox>
+                    <vbox height="100%"
+                          margin="true,false,false,false"
+                          spacing="true">
+                        <groupTable id="communicationsTable"
+                                    editable="true"
+                                    height="100%"
+                                    width="100%">
+                            <actions>
+                                <action id="create"
+                                        icon="font-icon:PLUS"
+                                        openType="DIALOG"/>
+                                <action id="edit"
+                                        openType="DIALOG"/>
+                                <action id="remove"/>
+                            </actions>
+                            <columns>
+                                <group>
+                                    <column id="commKind.communicationType"/>
+                                </group>
+                                <column id="commKind"/>
+                                <column id="maskedAddress"/>
+                                <column id="emailStatus"/>
+                                <column id="pref"
+                                        editable="true"/>
+                            </columns>
+                            <rows datasource="communicationsDs"/>
+                            <rowsCount/>
+                            <buttonsPanel id="buttonsPanel"
+                                          alwaysVisible="true">
+                                <button id="createBtn"
+                                        action="communicationsTable.create"/>
+                                <button id="editBtn"
+                                        action="communicationsTable.edit"/>
+                                <button id="removeBtn"
+                                        action="communicationsTable.remove"/>
+                            </buttonsPanel>
+                        </groupTable>
+                    </vbox>
+                </split>
+            </tab>
+            <tab id="projectsTab"
+                 caption="msg://projects"
+                 margin="true">
+                <vbox id="projectsBox"
+                      height="100%"
+                      margin="true,false,false,false">
+                    <groupTable id="projectsTable"
+                                aggregatable="true"
+                                height="100%"
+                                sortable="false"
+                                width="100%">
+                        <actions>
+                            <action id="add"/>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="name"/>
+                        </columns>
+                        <rows datasource="projectsDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="projectsCreateBtn"
+                                    action="projectsTable.add"
+                                    icon="font-icon:PLUS"/>
+                            <button id="projectsRemoveBtn"
+                                    action="projectsTable.remove"
+                                    icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </tab>
+            <tab id="lineOfBusinessContactPersonTab"
+                 caption="msg://lineOfBusinessContactPerson"
+                 margin="true">
+                <vbox id="lineOfBusinessContactPersonBox"
+                      height="100%"
+                      margin="true,false,false,false">
+                    <groupTable id="lineOfBusinessContactPersonTable"
+                                aggregatable="true"
+                                editable="true"
+                                height="100%"
+                                sortable="false"
+                                width="100%">
+                        <actions>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="lineOfBusiness"
+                                    editable="false"/>
+                            <column id="is_interestingly"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="services"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="distributor"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="retail"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="manufacturer"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="chainStore"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="wholesale"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="internetStore"
+                                    align="CENTER"
+                                    editable="true"/>
+                            <column id="dealer"
+                                    align="CENTER"
+                                    editable="true"/>
+                        </columns>
+                        <rows datasource="lineOfBusinessContactPersonDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="lineOfBusinessContactPersonTableCreateBtn"
+                                    icon="font-icon:PLUS"
+                                    invoke="createLineOfBusines"/>
+                            <button id="lineOfBusinessContactPersonTableRemoveBtn"
+                                    action="lineOfBusinessContactPersonTable.remove"
+                                    icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </tab>
+            <tab id="contactLogTab"
+                 caption="msg://contactLogTab"
+                 lazy="true">
+                <iframe id="contactLogFrame"
+                        height="100%"
+                        screen="entityLogFrame"/>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

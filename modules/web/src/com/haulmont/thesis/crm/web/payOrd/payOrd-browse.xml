@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://captionBrowse"
+        class="com.haulmont.thesis.crm.web.payOrd.PayOrdBrowse"
+        focusComponent="genericFilter"
+        lookupComponent="cardsTable"
+        messagesPack="com.haulmont.thesis.crm.web.payOrd">
+    <dsContext>
+        <groupDatasource id="cardsDs"
+                         class="com.haulmont.thesis.crm.entity.PayOrd"
+                         datasourceClass="com.haulmont.thesis.web.ui.CardBrowserDatasource"
+                         view="browse">
+            <query>
+                <![CDATA[select distinct p from crm$PayOrd p]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="mainLayout"
+              expand="split"
+              height="100%"
+              spacing="true">
+            <hbox spacing="true"
+                  width="100%">
+                <filter id="genericFilter"
+                        applyTo="cardsTable"
+                        datasource="cardsDs">
+                    <properties include=".*"/>
+                </filter>
+            </hbox>
+            <split id="split"
+                   orientation="vertical"
+                   pos="60"
+                   width="100%">
+                <vbox id="table-panel"
+                      height="100%"
+                      spacing="true">
+                    <groupTable id="cardsTable"
+                                height="100%"
+                                presentations="true"
+                                width="100%">
+                        <buttonsPanel id="buttonsPanel">
+                            <button action="cardsTable.edit"/>
+                            <button action="cardsTable.remove"/>
+                            <button action="cardsTable.refresh"/>
+                            <button description="Отправить в 1С"
+                                    icon="icons/1c.png"
+                                    invoke="exportButton"/>
+                            <button description="Оплачено"
+                                    icon="icons/paid.png"
+                                    invoke="paidButton"/>
+                            <runReportPopupButton id="print"
+                                                  icon="icons/reports-print.png"/>
+                        </buttonsPanel>
+                        <actions>
+                            <action id="edit"/>
+                            <action id="remove"/>
+                            <action id="openNewTab"/>
+                            <action id="showLink"/>
+                        </actions>
+                        <rowsCount/>
+                        <tableSettings id="tableSettings"/>
+                        <columns>
+                            <column id="hasAttachments"
+                                    width="${30}">
+                                <formatter class="com.haulmont.thesis.gui.components.formatter.HasAttachmentsFormatter"/>
+                            </column>
+                            <column id="important"
+                                    caption="msg://com.haulmont.thesis.core.entity/TsCard.important"
+                                    width="${30}">
+                                <formatter class="com.haulmont.thesis.gui.components.formatter.ImportantFormatter"/>
+                            </column>
+                            <column id="number"/>
+                            <column id="createTs"
+                                    width="100px">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                           format="msg://dateFormat"/>
+                            </column>
+                            <column id="paymentDateFact"/>
+                            <column id="fullSum">
+                                <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            </column>
+                            <column id="currency"/>
+                            <column id="paymentDestination"
+                                    maxTextLength="100"/>
+                            <column id="company"/>
+                            <column id="integrationResolver.stateDocSales"
+                                    collapsed="true"/>
+                            <!--
+                            <column id="integrationResolver.sumPayment">
+                                <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            </column>
+                            <column id="regNo" caption="msg://regNo"/>
+                            -->
+                            <column id="locState"
+                                    collapsed="true"/>
+                            <column id="invDoc.owner"
+                                    caption="msg://owner"/>
+                            <column id="invDoc.regNo" caption="msg://regNo"/>
+                        </columns>
+                        <rows datasource="cardsDs"/>
+                    </groupTable>
+                </vbox>
+                <tabSheet id="cardDetailsTabSheet"
+                          height="100%">
+                    <tab id="resolutionsTab1"
+                         caption="msg://resolutions">
+                        <iframe id="resolutionsFrame"
+                                height="100%"
+                                screen="taskResolutionsFrame"/>
+                    </tab>
+                    <tab id="hierarchyTab1"
+                         caption="msg://hierarchy">
+                        <iframe id="cardTreeFrame"
+                                height="100%"
+                                screen="cardTreeFrame"/>
+                    </tab>
+                </tabSheet>
+            </split>
+        </vbox>
+    </layout>
+    <assign name="widthMin"
+            value="100px"/>
+    <assign name="width"
+            value="400px"/>
+</window>

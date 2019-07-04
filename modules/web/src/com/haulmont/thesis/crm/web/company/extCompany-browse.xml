@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://companyBrowser.caption"
+        class="com.haulmont.thesis.crm.web.company.ExtCompanyBrowser" focusComponent="table-panel" lookupComponent="companiesTable"
+        messagesPack="com.haulmont.thesis.crm.web.company">
+    <dsContext>
+        <groupDatasource id="companiesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="browse">
+            <query>
+                <![CDATA[select distinct c from crm$Company c order by c.name]]>
+                <filter>
+                    <and>
+                        <or>
+                            <c>
+                                <![CDATA[lower(c.name) like :(?i)component$searchSimpleText]]>
+                            </c>
+                            <c>
+                                <![CDATA[lower(c.fullName) like :(?i)component$searchSimpleText]]>
+                            </c>
+                            <c>
+                                <![CDATA[lower(c.inn) like :(?i)component$searchSimpleText]]>
+                            </c>
+                            <c>
+                                <![CDATA[lower(c.phone) like :(?i)component$searchSimpleText]]>
+                            </c>
+                            <c>
+                                <![CDATA[lower(c.email) like :(?i)component$searchSimpleText]]>
+                            </c>
+                        </or>
+                    </and>
+                </filter>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="companiesTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="companiesTable" datasource="companiesDs" stylename="edit-area">
+                <properties exclude="legalAddress|email|phone|postalAddress|comment|fax|deleteTs|deleteBy|repeatLegalAddressTop|repeatLegalAddressTof|txtsearch|idTS"
+                            include=".*|alternativeName"/>
+            </filter>
+            <vbox id="simpleFilter" spacing="true" visible="false">
+                <label value="msg://searchSimple"/>
+                <hbox spacing="true">
+                    <textField id="searchSimpleText" width="150px"/>
+                    <button id="searchSimple"/>
+                </hbox>
+            </vbox>
+            <groupTable id="companiesTable" width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                    <action id="expand"/>
+                </actions>
+                <columns>
+                    <column id="name" caption="msg://name" maxTextLength="100"/>
+                    <column id="extFactAddress" maxTextLength="50"/>
+                    <column id="inn" caption="msg://inn"/>
+                    <column id="webAddress"/>
+                    <column id="kpp" caption="msg://kpp" collapsed="true"/>
+                    <column id="fullName" caption="msg://fullName" maxTextLength="100"/>
+                    <column id="alternativeName" caption="msg://alternativeName" maxTextLength="40"/>
+                    <column id="code" collapsed="true"/>
+                    <column id="companyType" collapsed="true"/>
+                    <column id="extLegalAddress" collapsed="true" maxTextLength="40"/>
+                    <column id="ogrn" caption="msg://ogrn" collapsed="true"/>
+                    <column id="okpo" collapsed="true"/>
+                    <column id="egrip" collapsed="true"/>
+                    <column id="countryOfRegistration" collapsed="true"/>
+                    <column id="regNo" collapsed="true"/>
+                    <column id="notes" collapsed="true" maxTextLength="60"/>
+                    <column id="activityStatus"/>
+                    <column id="actualizationDate" collapsed="true"/>
+                </columns>
+                <rows datasource="companiesDs"/>
+                <rowsCount/>
+                <buttonsPanel alwaysVisible="true">
+                    <button action="companiesTable.create"/>
+                    <button action="companiesTable.edit" icon="icons/edit.png"/>
+                    <button action="companiesTable.remove" icon="icons/remove.png"/>
+                    <button id="excel" description="msg://actions.Excel" icon="icons/excel.png"/>
+                    <button action="companiesTable.refresh" icon="icons/refresh.png"/>
+                    <button id="importCSV" description="msg://UploadFromCSV" icon="icons/csv.png"/>
+                    <button action="companiesTable.expand"/>
+                    <runReportPopupButton id="printButton" icon="icons/reports-print.png"/>
+                    <popupButton id="actionCompanyBtn" description="msg://actionCompanyBtnCaption" icon="icons/settings.png">
+                        <actions>
+                            <action id="extCompanyMDup" caption="Объединение дублей" invoke="extCompanyMDup"/>
+                            <action id="duplicateCompany" caption="Пометить как дубли" invoke="duplicateCompany"/>
+                            <action id="companyVerifiedState" caption="Пометить для актулизации" invoke="companyVerifiedState"/>
+                            <action id="addCallTargetsBtn" caption="msg://addCallTargets" invoke="addCallTargets"/>
+                            <action id="addEmailTargetsBtn" caption="msg://addEmailTargets" invoke="addEmailTargets"/>
+                            <action id="addCallCampaignTrgtsBtn" caption="msg://addCallCampaignTargets" invoke="addCallCampaignTargets"/>
+                        </actions>
+                    </popupButton>
+                    <button id="createCompanyOld" icon="icons/plus-btn.png" invoke="createCompanyOld"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

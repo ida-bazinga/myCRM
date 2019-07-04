@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.categotyTask.CategoryTaskEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.categotyTask">
+    <dsContext>
+    <datasource id="mainDs"
+                class="com.haulmont.thesis.crm.entity.CategoryTask"
+                view="edit"/>
+        <collectionDatasource id="taskTypeDs" class="com.haulmont.thesis.core.entity.TaskType">
+            <query>
+                <![CDATA[select e from tm$TaskType e]]>
+            </query>
+        </collectionDatasource>
+
+    </dsContext>
+    <layout height="100%" margin="true" spacing="true" width="100%" expand="windowActions">
+        <vbox id="vBox">
+            <hbox width="100%" spacing="true" expand="name">
+                <label value="msg://name"
+                       width="140px"/>
+                <textField id="name" datasource="mainDs" property="name"/>
+            </hbox>
+            <hbox width="100%" spacing="true" expand="taskType">
+                <label value="msg://category"
+                       width="140px"/>
+                <lookupField id="taskType" datasource="mainDs" property="taskType" optionsDatasource="taskTypeDs"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

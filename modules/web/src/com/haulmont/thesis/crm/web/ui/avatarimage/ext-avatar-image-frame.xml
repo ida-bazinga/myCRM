@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" class="com.haulmont.thesis.crm.web.ui.avatarimage.ExtAvatarImageFrame"
+        messagesPack="com.haulmont.thesis.crm.web.ui.avatarimage">
+    <layout>
+        <vbox id="box" expand="controlsBox" spacing="true" width="${width}">
+            <vbox id="picture" height="${width}">
+                <embedded id="embedded" height="100%" width="100%"/>
+            </vbox>
+            <buttonsPanel id="controlsBox" expand="expandLabel" width="${width}">
+                <upload id="upload" align="MIDDLE_LEFT" icon="font-icon:PLUS" width="${bWidth}"/>
+                <label id="expandLabel"/>
+                <button id="remove" align="MIDDLE_RIGHT" icon="icons/remove.png" width="${bWidth}"/>
+            </buttonsPanel>
+        </vbox>
+    </layout>
+    <assign name="width" value="195px"/>
+    <assign name="bWidth" value="50px"/>
+</window>

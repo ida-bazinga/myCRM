@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.webAddress.WebaddressBrowser" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.webAddress">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.WebAddress" view="edit">
+            <query>
+                <![CDATA[select e from crm$WebAddress e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="tablePanel" expand="mainTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <table id="mainTable" presentations="true" width="100%">
+                <actions>
+                    <action id="create" openType="DIALOG"/>
+                    <action id="edit" openType="DIALOG"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                </actions>
+                <columns>
+                    <column id="link"/>
+                    <column id="title"/>
+                    <column id="comment_ru" collapsed="true"/>
+                    <column id="company" collapsed="true"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button id="createButton" action="mainTable.create"/>
+                    <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                    <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </table>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.activityresult.ActivityResultCampaignKindsEditor"
+        datasource="activityResultDs" messagesPack="com.haulmont.thesis.crm.web.ui.activityresult">
+    <dsContext>
+        <datasource id="activityResultDs" class="com.haulmont.thesis.crm.entity.ActivityRes" view="edit">
+            <collectionDatasource id="kindsDs" property="campaignKinds"/>
+        </datasource>
+        <collectionDatasource id="allKindsDs" class="com.haulmont.thesis.crm.entity.CampaignKind" view="_local">
+            <query>
+                <![CDATA[select e from crm$CampaignKind e
+                where e.id not in (select f.id from crm$CampaignKind f where f.activityResults.id = :ds$activityResultDs) order by e.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout spacing="true">
+        <hbox id="hboxOption" stylename="edit-area" width="362px">
+            <optionsGroup id="useAllKindsOption" orientation="horizontal"/>
+        </hbox>
+        <tokenList id="listKinds" caption="msg://helpKinds" datasource="kindsDs" position="TOP" inline="false" editable="true" height="150px"
+                   simple="false" visible="false">
+            <lookup optionsDatasource="allKindsDs" captionProperty="name"/>
+        </tokenList>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

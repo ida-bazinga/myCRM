@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        extends="com/haulmont/thesis/web/ui/contractor/contractor-lookup.xml"
+        messagesPack="com.haulmont.thesis.web.ui.contractor">
+    <dsContext>
+        <collectionDatasource id="companyDs" class="com.haulmont.thesis.core.entity.Company" view="_local">
+            <query>
+                <![CDATA[select distinct c from df$Company c order by c.name]]>
+            </query>
+        </collectionDatasource>
+
+        <collectionDatasource id="individualDs" class="com.haulmont.thesis.core.entity.Individual" view="_local">
+            <query>
+                <![CDATA[select distinct i from df$Company i order by i.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+
+    <layout expand="tabsheet" height="100%" width="100%">
+        <tabSheet id="tabsheet" width="100%">
+            <tab id="individualTab" caption="msg://individualTab" margin="true" expand="vbox36" lazy="true" visible="false">
+                <vbox expand="individualTable" id="vbox36">
+                    <filter id="genericFilterIndividual" datasource="individualDs" stylename="edit-area">
+                        <properties include=".*"
+                                    exclude="(deleteTs)|(deletedBy)|(updateTs)|(updatedBy)|(id)|(createTs)"/>
+                    </filter>
+                    <table id="individualTable" editable="false" width="100%" visible="false">
+                        <buttonsPanel id="individualTablePanel" align="MIDDLE_LEFT">
+                            <button action="individualTable.create" icon=""/>
+                            <button action="individualTable.edit" icon="icons/edit.png"/>
+                            <button action="individualTable.remove" icon="icons/remove.png"/>
+                        </buttonsPanel>
+                        <columns>
+                            <column id="name" caption="msg://name"/>
+                            <column id="inn" caption="msg://inn"/>
+                        </columns>
+                        <rows datasource="individualDs"/>
+                    </table>
+                </vbox>
+            </tab>
+        </tabSheet>
+    </layout>
+</window>

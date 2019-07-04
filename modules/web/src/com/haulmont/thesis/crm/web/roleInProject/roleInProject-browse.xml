@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://BrowseCaption"
+        class="com.haulmont.thesis.crm.web.roleInProject.RoleInProjectBrowser" focusComponent="genericFilter" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.roleInProject">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.RoleInProject" view="_local">
+            <query>
+                <![CDATA[select e from crm$RoleInProject e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel" spacing="true">
+                <table id="mainTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="comment_ru" collapsed="true"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="createButton" action="mainTable.create"/>
+                        <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.ruefClassifier.RuefClassifierBrowser" focusComponent="ruefClassifierTable"
+        lookupComponent="ruefClassifierTable" messagesPack="com.haulmont.thesis.crm.web.ruefClassifier">
+    <dsContext>
+        <hierarchicalDatasource id="ruefClassifierDs" class="com.haulmont.thesis.crm.entity.RuefClassifier" hierarchyProperty="parentRuefClassifier"
+                                view="edit">
+            <query>
+                <![CDATA[select p from crm$RuefClassifier p order by p.code]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="ruefClassifierTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="ruefClassifierTable" datasource="ruefClassifierDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <treeTable id="ruefClassifierTable" width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                    <action id="expand"/>
+                </actions>
+                <columns>
+                    <column id="code"/>
+                    <column id="fullName"/>
+                    <column id="comment_ru"/>
+                </columns>
+                <rows datasource="ruefClassifierDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel">
+                    <button id="createButton" action="ruefClassifierTable.create"/>
+                    <button id="editBtn" action="ruefClassifierTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn" action="ruefClassifierTable.remove" icon="icons/remove.png"/>
+                    <button id="refreshBtn" action="ruefClassifierTable.refresh" icon="icons/refresh.png"/>
+                    <button id="expandBtn" action="ruefClassifierTable.expand"/>
+                </buttonsPanel>
+            </treeTable>
+        </vbox>
+    </layout>
+</window>

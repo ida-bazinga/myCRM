@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
+    <menu id="taskman">
+        <item id="tm$Task.edit"
+              shortcut="${thesis.shortcut.taskEdit}">
+            <permissions>
+                <permission target="tm$Task:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="tm$Task.browse"
+              shortcut="${thesis.shortcut.taskBrowse}"/>
+        <separator/>
+        <item id="newTaskGroupEditor">
+            <permissions>
+                <permission target="tm$TaskGroup:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="tm$TaskGroup.browse"/>
+        <separator/>
+        <item id="tm$TaskPattern.browse"/>
+        <item id="tm$TaskGroupPattern.browse"/>
+        <separator/>
+        <item id="tm$TaskType.browse"/>
+        <item id="tm$ScheduleTask.browse"/>
+        <separator/>
+        <item id="crm$CategoryTask.browse"/>
+    </menu>
+    <menu id="docflow">
+        <item id="docCreatorItem"
+              shortcut="${thesis.shortcut.docEdit}">
+            <param name="docType"
+                   value="df$SimpleDoc"/>
+            <permissions>
+                <permission target="df$SimpleDoc:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="df$SimpleDoc.browse"
+              shortcut="${thesis.shortcut.docBrowse}"/>
+        <separator/>
+        <item id="contractCreatorItem"
+              shortcut="${thesis.shortcut.contractEdit}">
+            <param name="docType"
+                   value="df$Contract"/>
+            <permissions>
+                <permission target="df$Contract:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="df$Contract.browse"
+              shortcut="${thesis.shortcut.contractBrowse}"/>
+        <separator/>
+        <item id="meetingCreatorItem"
+              shortcut="${thesis.shortcut.meetingEdit}">
+            <param name="docType"
+                   value="df$MeetingDoc"/>
+            <permissions>
+                <permission target="df$MeetingDoc:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="df$MeetingDoc.browse"
+              shortcut="${thesis.shortcut.meetingBrowse}"/>
+        <separator/>
+        <item id="ordDocCreatorItem"
+              shortcut="ALT-Z">
+            <param name="docType"
+                   value="crm$OrdDoc"/>
+            <permissions>
+                <permission target="crm$OrdDoc:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="crm$OrdDoc.browse"
+              shortcut="SHIFT-ALT-Z"/>
+        <separator/>
+        <item id="crm$InvDoc.browse"/>
+        <item id="crm$PayOrd.browse"/>
+        <separator/>
+        <item id="crm$AcDoc.browse"/>
+        <separator/>
+        <item id="bookingEventDocCreatorItem">
+            <param name="docType"
+                   value="crm$BookingEvent"/>
+            <permissions>
+                <permission target="crm$BookingEvent:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="crm$BookingEvent.browse"/>
+        <separator/>
+        <item id="crm$ReqDoc.lookup"/>
+        <item id="crm$ReqDocKind.browse"/>
+        <separator/>
+        <separator/>
+        <menu id="templates">
+            <item id="df$SimpleDoc.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="df$SimpleDoc:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="df$Contract.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="df$Contract:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="df$MeetingDoc.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="df$MeetingDoc:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="crm$OrdDoc.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="crm$OrdDoc:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="crm$InvDoc.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="crm$InvDoc:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="crm$AcDoc.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="crm$AcDoc:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="crm$OutboundCampaign.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="crm$OutboundCampaign:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="crm$BookingEvent.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="crm$BookingEvent:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+            <item id="crm$ReqDoc.templateBrowse">
+                <param name="inTemplates"
+                       value="true"/>
+                <permissions>
+                    <permission target="crm$ReqDoc:create"
+                                type="ENTITY_OP"/>
+                </permissions>
+            </item>
+        </menu>
+        <separator/>
+        <item id="df$DocKind.browse"/>
+    </menu>
+    <menu id="office">
+        <item id="df$DocIncome.browse"
+              shortcut="${thesis.shortcut.docIncome}"/>
+        <item id="df$DocOutcome.browse"
+              shortcut="${thesis.shortcut.docOutcome}"/>
+        <item id="df$DocInternal.browse"
+              shortcut="${thesis.shortcut.docInternal}"/>
+        <separator/>
+        <item id="df$OfficeFileNomenclature.browse"/>
+        <item id="df$OfficeFile.browse"/>
+        <separator/>
+        <item id="df$DocReceivingMethod.browse"/>
+        <item id="df$ReservationNumber.browse"/>
+        <item id="streamRegistration">
+            <permissions>
+                <permission target="df$FastRegistration"
+                            type="SCREEN"/>
+                <permission target="df$SimpleDoc:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+            <param name="ITEM"
+                   value="newItem"/>
+        </item>
+        <item id="registrationFormCreator"
+              shortcut="${thesis.shortcut.fastRegistration}">
+            <permissions>
+                <permission target="df$FastRegistration"
+                            type="SCREEN"/>
+                <permission target="df$SimpleDoc:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+            <param name="ITEM"
+                   value="newItem"/>
+        </item>
+    </menu>
+    <menu id="Crm">
+        <separator/>
+        <!--<item id="df$Company.edit"/>-->
+        <item id="df$Company.find"
+              shortcut="ALT-F"/>
+        <item id="df$Company.browse"
+              shortcut="${thesis.shortcut.companyBrowse}"/>
+        <separator/>
+        <item id="crm$ContactPerson.browse"/>
+        <separator/>
+        <item id="df$Individual.edit"/>
+        <item id="df$Individual.browse"/>
+        <separator/>
+        <item id="tm$Project.edit">
+            <permissions>
+                <permission target="tm$Project:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="tm$Project.browse">
+            <permissions>
+                <permission target="tm$Project"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <separator/>
+        <item id="crm$DuplicateCompany.browse"/>
+        <item id="crm$CompanyVerifiedState.browse"/>
+        <separator/>
+        <item id="projectRoomLoadingsInfoWindow"/>
+        <item id="crm$RoomLoadingCollision.browse"/>
+        <separator/>
+        <item id="crm$FacilityManagment.browse"/>
+    </menu>
+    <menu id="ContactCentre">
+        <item id="crm$OperatorSessionWindow"
+              openType="NEW_TAB">
+            <permissions>
+                <permission target="crm$OperatorSessionWindow"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <separator/>
+        <item id="crm$Operator.browse">
+            <permissions>
+                <permission target="crm$Operator:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="crm$OperatorSession.browse">
+            <permissions>
+                <permission target="crm$OperatorSession.browse"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <separator/>
+        <item id="campaignCreatorItem">
+            <param name="docType"
+                   value="crm$OutboundCampaign"/>
+            <permissions>
+                <permission target="crm$OutboundCampaign:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="crm$OutboundCampaign.browse">
+            <permissions>
+                <permission target="crm$OutboundCampaign.browse"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <separator/>
+        <item id="crm$Activity.browse">
+            <permissions>
+                <permission target="crm$Activity.browse"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <separator/>
+        <item id="crm$CallCampaignTarget.browse">
+            <permissions>
+                <permission target="crm$CallCampaignTarget.browse"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <separator/>
+        <!--
+        <menu id="Unisender">
+            <item id="crm$MessageCampaignUnisender.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$MessageUnisender.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$MessageCampaignStatus.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$EmailStatus.browse"
+                  openType="NEW_TAB"/>
+        </menu>
+        -->
+    </menu>
+    <menu id="ContactCenter">
+        <item id="campgnCreatorItem">
+            <param name="metaClassName"
+                   value="crm$CallCampaign"/>
+            <permissions>
+                <permission target="crm$CallCampaign:create"
+                            type="ENTITY_OP"/>
+            </permissions>
+        </item>
+        <item id="crm$CallCampaign.browse"/>
+        <item id="crm$EmailCampaign.browse"
+              openType="NEW_TAB"/>
+        <separator/>
+        <item id="crm$CallCampaignTargetWindow"/>
+        <separator/>
+        <item id="crm$BaseActivity.browse"/>
+        <separator/>
+        <item id="crm$CampaignKind.browse">
+            <permissions>
+                <permission target="crm$CampaignKind.browse"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <item id="crm$ActivityKind.browse">
+            <permissions>
+                <permission target="crm$ActivityKind.browse"
+                            type="SCREEN"/>
+            </permissions>
+        </item>
+        <separator/>
+        <item id="crm$ActivityRes.browse"/>
+        <separator/>
+        <item id="crm$SoftphoneSession.browse"/>
+        <separator/>
+    </menu>
+    <menu id="cashMachines">
+        <item id="crm$CashMachine.browse"/>
+        <item id="crm$CashDocument.browse"/>
+        <item id="crm$CashMachineProduct.browse"/>
+    </menu>
+    <menu id="archive">
+        <item id="ts$ArchivedSimpleDoc.browse">
+            <param name="archived"
+                   value="true"/>
+        </item>
+        <item id="ts$ArchivedContract.browse">
+            <param name="archived"
+                   value="true"/>
+        </item>
+        <item id="ts$ArchivistWorkplace"/>
+    </menu>
+    <menu id="reference">
+        <!-- Taskman -->
+        <item id="tm$Priority.browse"/>
+        <!-- <item id="tm$ProjectGroup.browse"/> -->
+        <item id="df$Category.browse"/>
+        <item id="wf$UserGroup.browse"/>
+        <item id="wf$AttachTypes.browse"/>
+        <!-- Docflow -->
+        <separator/>
+        <item id="df$Organization.browse"/>
+        <item id="df$Department.browse"/>
+        <item id="df$Employee.browse"
+              shortcut="${thesis.shortcut.employeeBrowse}"/>
+        <item id="df$Position.browse"/>
+        <item id="df$UserSubstitution.browse"/>
+        <item id="df$TypicalResolution.browse"/>
+        <separator/>
+        <menu id="kontragent">
+            <item id="crm$CompanyType.browse"/>
+            <item id="crm$FormOfIncorporation.browse"/>
+            <item id="crm$InformationSource.browse"/>
+            <separator/>
+            <item id="crm$LineOfBusiness.browse"/>
+            <item id="crm$Okvd.browse"/>
+            <item id="crm$CompanyComTurnoverType.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$CompanyScale.browse"/>
+        </menu>
+        <menu id="Contacts">
+            <item id="crm$CommKind.browse"/>
+            <item id="crm$ContactRole.browse"/>
+            <item id="crm$LearnedAboutExhibition.browse"/>
+        </menu>
+        <menu id="bank_and_cur">
+            <!--<item id="df$Currency.browse"/>-->
+            <item id="crm$Currency.browse"/>
+            <item id="df$Bank.browse"/>
+            <item id="df$BankRegion.browse"/>
+            <item id="crm$Tax.browse"/>
+        </menu>
+        <menu id="tourism">
+            <item id="crm$TourType.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$Guesthouse.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$TransferType.browse"
+                  openType="NEW_TAB"/>
+        </menu>
+        <menu id="crm_nomenclature">
+            <item id="crm$Catalog.browse"/>
+            <separator/>
+            <item id="crm$CharacteristicType.browse"/>
+            <item id="crm$Characteristic.browse"/>
+            <item id="crm$Nomenclature.browse"/>
+            <separator/>
+            <item id="crm$Product.browse"/>
+            <item id="crm$ProductType.browse"/>
+            <item id="crm$ProductState.browse"/>
+            <separator/>
+            <item id="crm$Cost.browse"/>
+            <separator/>
+            <item id="crm$Unit.browse"/>
+        </menu>
+        <menu id="crm_address">
+            <item id="crm$Address.browse"/>
+            <item id="crm$AddressPartType.browse"/>
+            <item id="crm$Country.browse"/>
+            <item id="crm$Region.browse"/>
+            <item id="crm$RegionDistrict.browse"/>
+            <item id="crm$FederalDistrict.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$City.browse"/>
+        </menu>
+        <menu id="buget">
+            <item id="crm$CfcItem.browse"/>
+            <item id="crm$BugetItem.browse"/>
+        </menu>
+        <menu id="Project">
+            <item id="crm$ProjectTheme.browse"/>
+            <item id="crm$ProjectFormat.browse"/>
+            <item id="crm$ProjectType.browse"/>
+            <separator/>
+            <item id="crm$TerritorialClassifier.browse"/>
+            <item id="crm$RuefClassifier.browse"/>
+            <item id="crm$ExhibitSpace.browse"/>
+            <item id="crm$RoleInProject.browse"/>
+        </menu>
+        <menu id="resorces">
+            <item id="crm$Resource.browse"
+                  openType="NEW_TAB"/>
+            <item id="crm$ResourceHistory.browse"/>
+            <separator/>
+            <item id="crm$ResourceType.browse"/>
+            <item id="crm$EquipmentState.browse"/>
+            <separator/>
+            <item id="crm$Staff.browse"/>
+            <item id="crm$Equipment.browse"/>
+            <item id="crm$Room.browse"/>
+            <item id="crm$Workplace.browse"/>
+        </menu>
+        <menu id="contactCentre_lookups">
+            <item id="crm$ActivityResult.browse"/>
+            <item id="crm$OperatorQualification.browse"/>
+            <item id="crm$CallCampaignStatus.browse"/>
+        </menu>
+    </menu>
+    <menu id="administration">
+        <item id="sec$User.browse"
+              shortcut="${thesis.shortcut.userBrowse}"/>
+        <item id="sec$Group.browse"/>
+        <item id="sec$Role.browse"/>
+        <item id="ts$CardType.browse"/>
+        <separator/>
+        <item id="sec$UserSessionEntity.browse"/>
+        <item id="assistantWebSocketStatuses"/>
+        <item id="entityRestore"/>
+        <item id="jmxConsole"/>
+        <!--<item id="sys$ScheduledTask.browse"/>-->
+        <item id="report$Report.browse"/>
+        <!--<item id="report$ReportGroup.browse"/>-->
+        <item id="df$ImportDataType.browse"/>
+        <!--<item id="sys$Categories.browse"/>-->
+        <menu id="monitoring">
+            <item id="serverLog"/>
+            <item id="sys$ScheduledTask.browse"/>
+            <item id="performanceStatistics"/>
+            <item id="screenProfiler"/>
+        </menu>
+        <item id="printDomain"/>
+        <item id="df$AppIntegrationLog.browse"/>
+        <separator/>
+        <item id="wf$UserNotifiedBySms.browse"/>
+        <item id="wf$SendingSms.browse"/>
+        <item id="userMobileBrowse"/>
+        <item id="mobileClientAdministrationWindow"/>
+        <separator/>
+        <item id="df$Numerator.browse"/>
+        <item id="wf$Design.browse"/>
+        <item id="wf$Proc.browse"/>
+        <item id="reassignment.form"/>
+        <item id="transferOfficeFile"/>
+        <!--<item id="wf$ProcStageType.browse"/>-->
+        <!--<item id="tm$ScheduleActionType.browse"/>-->
+        <separator/>
+        <item id="wf$WorkCalendar.browse"/>
+        <item id="systemSettings"/>
+        <separator/>
+        <item id="portalIntegration"/>
+        <menu id="Integration">
+            <item id="crm$Log1C.browse"/>
+            <item id="crm$ExternalSystem.browse"/>
+            <item id="crm$IntegrationResolver.browse"/>
+            <separator/>
+            <item id="crm$LogCatalog.browse"/>
+            <separator/>
+            <item id="crm$OperatorSessionEvents.browse"/>
+        </menu>
+        <separator/>
+        <item id="certificationAuthoritySignatureRequestForm"
+              openType="DIALOG"/>
+        <!--<item id="feedback"/>-->
+    </menu>
+    <menu id="help">
+        <menu id="instruction">
+            <item id="instructionComplete"/>
+            <separator/>
+            <item id="instructionMainScreen"/>
+            <item id="instructionTaskWork"/>
+            <item id="instructionDocWork"/>
+            <item id="instructionAddComment"/>
+            <item id="instructionAddAttachment"/>
+        </menu>
+        <item id="tm$Settings"
+              shortcut="${thesis.shortcut.settings}"/>
+        <item id="logWindow"/>
+        <!--item id="wf$AttachClipboard" openType="DIALOG" resizable="false"/-->
+        <item id="sec$ScreenHistory.browse"
+              openType="DIALOG"/>
+        <separator/>
+        <item id="df$About"
+              openType="DIALOG"/>
+    </menu>
+</menu-config>

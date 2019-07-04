@@ -1,0 +1,111 @@
+/**
+ * @author Kirill Khoroshilov, 2018
+ * Created on 10.12.2018.
+ */
+
+svg#schedule-chart {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+text {
+    font-family: sans-serif;
+}
+
+g.axis path {
+    fill: none;
+    shape-rendering: crispEdges;
+    stroke: #ccc;
+    stroke-width: 1px;
+}
+
+g.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispedges;
+    stroke-opacity: 0.2;
+}
+g.axis.months path {
+    stroke-width: 0;
+}
+
+g.axis.labeled path {
+    stroke: none;
+}
+
+g.axis text {
+    opacity: 1;
+}
+
+g.axis.days.labeled text {
+    fill: black;
+}
+
+g.axis.months text {
+    fill: #999;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+g.axis.y-axis.labeled text {
+    fill: #555;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+polyline#view {
+    stroke: #999;
+    stroke-width: 2px;
+    fill: none;
+}
+
+rect#chartZone  {
+    stroke: #999;
+    stroke-width: 1px;
+    fill-opacity: 0.0;
+}
+
+rect#zoom {
+    cursor: move;
+    fill: none;
+    stroke-width: 0;
+    pointer-events: none;
+}
+
+rect.selection {
+    stroke-width: 0;
+}
+
+rect.value-bar rect.bar {
+    stroke: none;
+    stroke-width: 0;
+}
+
+rect.phantom-bar {
+    stroke: silver;
+    stroke-width: 2px;
+    stroke-dasharray:6px;
+}
+
+line.black-line {
+    stroke: black;
+    stroke-width: 1px;
+}
+
+g.axis.grid-line, g#values {
+    clip-path: url(#clip);
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 180px;
+    height: 30px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightblue;
+    border: 0px;
+    border-radius: 3px;
+    pointer-events: none;
+}

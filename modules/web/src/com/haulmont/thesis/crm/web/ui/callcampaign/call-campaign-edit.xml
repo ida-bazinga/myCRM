@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.ui.callcampaign.CallCampaignEditor" datasource="cardDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.callcampaign">
+    <dsContext>
+        <datasource id="cardDs" class="com.haulmont.thesis.crm.entity.CallCampaign" view="edit">
+            <collectionDatasource id="operatorsDs" property="operators"/>
+            <collectionDatasource id="cardRolesDs" property="roles"/>
+            <collectionDatasource id="cardProcDs" property="procs"/>
+        </datasource>
+        <hierarchicalDatasource id="attachmentsDs" class="com.haulmont.workflow.core.entity.CardAttachment" hierarchyProperty="versionOf"
+                                view="card-edit">
+            <query>
+                <![CDATA[select a from wf$CardAttachment a where a.card.id = :ds$cardDs order by a.createTs desc]]>
+            </query>
+        </hierarchicalDatasource>
+        <hierarchicalDatasource id="targetsDs" class="com.haulmont.thesis.crm.entity.CallCampaignTrgt" hierarchyProperty="parent" view="browse"
+                                maxResults="5000">
+            <query>
+                <![CDATA[select e from crm$CallCampaignTrgt e where e.campaign.id = :ds$cardDs order by e.createTs, e.name]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.isGroup = :custom$hideGroup]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </hierarchicalDatasource>
+        <collectionDatasource id="procDs" class="com.haulmont.workflow.core.entity.Proc" view="proc-edit"/>
+        <collectionDatasource id="cardRelationsDs" class="com.haulmont.workflow.core.entity.CardRelation" view="card-relation">
+            <query>
+                <![CDATA[ select c from wf$CardRelation c where ((c.card.id = :ds$cardDs or c.relatedCard.id = :ds$cardDs)
+                 and c.card.deleteTs is null and c.relatedCard.deleteTs is null)]]>
+            </query>
+        </collectionDatasource>
+        <runtimePropsDatasource id="runtimePropsDs" mainDs="cardDs"/>
+        <collectionDatasource id="categoriesDs" class="com.haulmont.cuba.core.entity.Category" view="_local">
+            <query>
+                <![CDATA[select c from sys$Category c where c.entityType= :ds$cardDs.kind.entityType.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizationsDs" class="com.haulmont.thesis.core.entity.Organization" view="_minimal">
+            <query>
+                <![CDATA[ select o from df$Organization o order by o.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="ownersDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="departmentsDs" class="com.haulmont.thesis.crm.entity.ExtDepartment" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Department e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where e.isGroup = false order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="activityResultsDs" class="com.haulmont.thesis.crm.entity.ActivityRes" view="_local">
+            <query>
+                <![CDATA[select e from crm$ActivityRes e join e.campaignKinds ck where ck.id = :ds$cardDs.kind]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="fieldWidth" value="200px"/>
+    <assign name="bigFieldWidth" value="550px"/>
+    <assign name="commentWidth" value="512px"/>
+    <assign name="rightPanelWidth" value="200px"/>
+    <layout expand="split" spacing="true">
+        <split id="split" orientation="vertical" pos="70" width="100%">
+            <hbox id="mainPane" expand="tabsheet" height="100%" width="100%">
+                <tabSheet id="tabsheet" height="100%">
+                    <tab id="mainTab" caption="msg://mainTab.name" margin="true">
+                        <groupBox id="infoGroupBox" height="100%" stylename="edit-area">
+                            <scrollBox id="infoScrollBox" height="100%">
+                                <vbox id="infoVBox" width="AUTO">
+                                    <hbox id="firstInfoBox" spacing="true" stylename="thesis-star-left-margin">
+                                        <label value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.kind"/>
+                                        <label id="kind" datasource="cardDs" property="kind" stylename="thesis-bold"/>
+                                        <label value="    |    "/>
+                                        <label value="msg://com.haulmont.thesis.core.entity/Card.state"/>
+                                        <hbox id="stateHolder"/>
+                                        <hbox id="procStateBox" spacing="true">
+                                            <label value="    |    "/>
+                                            <label value="msg://procName"/>
+                                            <label id="procLabel" datasource="cardDs" property="proc" stylename="thesis-bold"/>
+                                        </hbox>
+                                    </hbox>
+                                    <vbox id="cardsInfo" width="100%">
+                                        <grid id="campaignFields" margin="true,false,true,false" spacing="true" width="100%">
+                                            <columns>
+                                                <column/>
+                                                <column flex="1.0"/>
+                                                <column/>
+                                                <column flex="1.0"/>
+                                            </columns>
+                                            <rows>
+                                                <row id="nameRow">
+                                                    <label id="nameLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.name"/>
+                                                    <label id="name" colspan="3" datasource="cardDs" property="name" stylename="thesis-bold"
+                                                           width="550px"/>
+                                                </row>
+                                                <row>
+                                                    <label id="numberLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.number"/>
+                                                    <textField id="number" datasource="cardDs" property="number" width="${fieldWidth}"/>
+                                                    <label id="dateLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.date"/>
+                                                    <dateField id="date" datasource="cardDs" property="date" resolution="DAY" width="${fieldWidth}"/>
+                                                </row>
+                                                <row id="organizationRow">
+                                                    <label id="callModeLabel" value="msg://com.haulmont.thesis.crm.entity/CallCampaign.callMode"/>
+                                                    <lookupField id="callMode" datasource="cardDs" property="callMode" width="${fieldWidth}"/>
+                                                    <label id="organizationLabel"
+                                                           value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.organization"/>
+                                                    <lookupPickerField id="organization" datasource="cardDs" optionsDatasource="organizationsDs"
+                                                                       property="organization" width="${fieldWidth}">
+                                                        <actions>
+                                                            <action id="open"/>
+                                                        </actions>
+                                                    </lookupPickerField>
+                                                </row>
+                                                <row>
+                                                    <label id="ownerLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.owner"/>
+                                                    <lookupPickerField id="owner" datasource="cardDs" optionsDatasource="ownersDs" property="owner"
+                                                                       width="${fieldWidth}">
+                                                        <actions>
+                                                            <action id="open"/>
+                                                            <action id="clear"/>
+                                                        </actions>
+                                                    </lookupPickerField>
+                                                    <label id="departmentLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.department"/>
+                                                    <lookupField id="department" datasource="cardDs" optionsDatasource="departmentsDs"
+                                                                 property="department" width="${fieldWidth}"/>
+                                                </row>
+                                                <row>
+                                                    <label id="priorityLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.priority"/>
+                                                    <lookupField id="priority" datasource="cardDs" property="priority" width="${fieldWidth}"/>
+                                                </row>
+                                                <row>
+                                                    <label id="startTimeLabel" value="msg://startTimePlan"/>
+                                                    <dateField id="startTime" datasource="cardDs" dateFormat="dd.MM.yyyy HH:mm"
+                                                               property="startTimePlan" width="${fieldWidth}"/>
+                                                    <label id="endTimeLabel" value="msg://endTimePlan"/>
+                                                    <dateField id="endTime" datasource="cardDs" dateFormat="dd.MM.yyyy HH:mm" property="endTimePlan"
+                                                               width="${fieldWidth}"/>
+                                                </row>
+                                                <row>
+                                                    <label id="maxAttemptCountLabel" value="msg://AttemptCount"/>
+                                                    <textField id="maxAttemptCount" datasource="cardDs" property="maxAttemptCount" width="${fieldWidth}"/>
+                                                    <label id="endTimeFactLabel" value="msg://endTimeActual"/>
+                                                    <label id="endTimeFact" align="MIDDLE_CENTER" datasource="cardDs" property="endTimeFact"
+                                                           stylename="bold" width="${fieldWidth}">
+                                                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                                                                   format="msg://dateTimeFormat"/>
+                                                    </label>
+                                                </row>
+                                                <row id="sizeOfQueue" visible="false">
+                                                    <label id="minSizeOfQueueLabel"
+                                                           value="msg://com.haulmont.thesis.crm.entity/CallCampaign.minSizeOfQueue"/>
+                                                    <textField id="minSizeOfQueue" datasource="cardDs" property="minSizeOfQueue" width="${fieldWidth}"/>
+                                                    <label id="maxSizeOfQueueLabel" value="msg://com.haulmont.thesis.crm.entity/CallCampaign.maxSizeOfQueue"/>
+                                                    <textField id="maxSizeOfQueue" datasource="cardDs" property="maxSizeOfQueue" width="${fieldWidth}"/>
+                                                </row>
+                                                <row>
+                                                    <label id="projectLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.project"/>
+                                                    <lookupField id="project" datasource="cardDs" optionsDatasource="projectsDs" property="project"
+                                                                 width="${fieldWidth}">
+                                                    </lookupField>
+                                                    <label id="parentCardLabel" value="msg://com.haulmont.thesis.core.entity/Card.parentCard"/>
+                                                    <pickerField id="parentCard" datasource="cardDs" property="parentCard" width="${fieldWidth}">
+                                                        <actions>
+                                                            <action id="open"/>
+                                                            <action id="clear"/>
+                                                        </actions>
+                                                    </pickerField>
+                                                </row>
+                                                <row>
+                                                    <label id="commentLabel" value="msg://com.haulmont.thesis.crm.entity/BaseCampaign.comment"/>
+                                                    <textArea id="comment" colspan="3" datasource="cardDs" property="comment" resizable="true"
+                                                              width="512px"/>
+                                                </row>
+                                                <row>
+                                                    <label id="parentCardAccessLabel" value="msg://parentCardAccess"/>
+                                                    <checkBox id="parentCardAccess" datasource="cardDs" property="parentCardAccess"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </vbox>
+                                    <vbox margin="false,false,true,false" spacing="true" width="AUTO">
+                                        <scrollBox height="100px" margin="true,false,true,false" scrollBars="both">
+                                            <runtimeProperties id="runtimePropertiesFrameMain" categoriesDs="categoriesDs" fieldWidth="${fieldWidth}"
+                                                               rows="${thesis_countOfColumnsForAdditionalFields}" runtimeDs="runtimePropsDs"/>
+                                        </scrollBox>
+                                    </vbox>
+                                    <grid id="attachmentInfo" margin="true,false,false,false" spacing="true" stylename="thesis-separator"
+                                          visible="false" width="550px">
+                                        <columns>
+                                            <column flex="1.0"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <vbox id="attachmentBox" height="100%"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </vbox>
+                            </scrollBox>
+                        </groupBox>
+                    </tab>
+                    <tab id="contentTab" caption="msg://contentTab" spacing="true">
+                        <vbox height="100%" margin="true,false,true,false" spacing="true">
+                            <richTextArea id="content" datasource="cardDs" height="100%" property="content" width="100%"/>
+                        </vbox>
+                    </tab>
+                    <tab id="targetsTab" caption="msg://targetsTab" margin="true" lazy="true">
+                        <iframe id="targetsFrame" height="100%" screen="callCampaignTargetsFrame"/>
+                    </tab>
+                    <tab id="operatorsTab" caption="msg://operatorsTab" margin="true">
+                        <vbox id="operatorsTablePanel" expand="operatorsTable" height="100%" spacing="true">
+                            <table id="operatorsTable" width="100%">
+                                <actions>
+                                    <action id="add" openType="THIS_TAB"/>
+                                    <action id="remove"/>
+                                    <action id="refresh"/>
+                                </actions>
+                                <columns>
+                                    <column id="name"/>
+                                </columns>
+                                <rows datasource="operatorsDs"/>
+                                <rowsCount/>
+                                <buttonsPanel>
+                                    <button action="operatorsTable.add" icon="font-icon:PLUS"/>
+                                    <button action="operatorsTable.remove" icon="icons/remove.png"/>
+                                    <button action="operatorsTable.refresh" icon="icons/refresh.png"/>
+                                </buttonsPanel>
+                            </table>
+                        </vbox>
+                    </tab>
+                    <tab id="activityResultTab" caption="msg://com.haulmont.thesis.crm.entity/CampaignKind.activityResults" margin="true">
+                        <vbox id="activityResultTablePanel" expand="activityResultTable" height="100%" spacing="true">
+                            <table id="activityResultTable" width="100%">
+                                <actions>
+                                    <action id="refresh"/>
+                                </actions>
+                                <columns>
+                                    <column id="name_ru"/>
+                                    <column id="resultType"/>
+                                    <column id="isNeedDetails"/>
+                                    <column id="comment_ru" collapsed="true"/>
+                                </columns>
+                                <rows datasource="activityResultsDs"/>
+                                <rowsCount/>
+                                <buttonsPanel>
+                                    <button action="activityResultTable.refresh" icon="icons/refresh.png"/>
+                                </buttonsPanel>
+                            </table>
+                        </vbox>
+                    </tab>
+                    <tab id="attachmentsTab" caption="msg://attachmentsTab" margin="true">
+                        <iframe id="cardAttachmentsFrame" height="100%" screen="cardAttachmentsFrame"/>
+                    </tab>
+                    <tab id="processTab" caption="msg://processTab.name" margin="true">
+                        <iframe id="cardProcFrame" height="100%" screen="cardProcFrame"/>
+                    </tab>
+                    <tab id="cardTreeTab" caption="msg://cardTreeTab.name" margin="true">
+                        <iframe id="cardTreeFrame" height="100%" screen="cardTreeFrame"/>
+                    </tab>
+                    <tab id="cardCommentTab" caption="msg://cardCommentTab" margin="true">
+                        <iframe id="cardCommentFrame" height="100%" screen="cardCommentFrame"/>
+                    </tab>
+                    <tab id="cardLogTab" caption="msg://cardLogTab.name" lazy="true">
+                        <iframe id="cardLogFrame" height="100%" screen="cardLogFrame"/>
+                    </tab>
+                    <tab id="openHistoryTab" caption="msg://openHistoryTab.name" margin="true">
+                        <iframe id="openHistoryFrame" height="100%" screen="openHistoryFrame"/>
+                    </tab>
+                    <tab id="securityTab" caption="msg://securityTab.name" lazy="true" margin="true">
+                        <iframe id="securityFrame" height="100%" screen="securityFrame"/>
+                    </tab>
+                    <tab id="runtimePropertiesTab" caption="msg://runtimePropsTab.name" margin="true">
+                        <scrollBox id="runtimeScrollBox" height="100%" margin="true,false,true,false" scrollBars="both">
+                            <runtimeProperties id="runtimePropertiesFrameTab" categoriesDs="categoriesDs" fieldWidth="${fieldWidth}"
+                                               rows="${thesis_countOfColumnsForAdditionalFields}" runtimeDs="runtimePropsDs"/>
+                        </scrollBox>
+                    </tab>
+                </tabSheet>
+                <vbox height="100%" margin="false,false,false,true" spacing="true" width="220px">
+                    <scrollBox id="actionsFrameScroll" height="100%" spacing="true">
+                        <vbox id="actionsPane" margin="true,true,true,false" stylename="edit-area" width="200px">
+                            <iframe id="actionsFrame" screen="actionsFrame"/>
+                        </vbox>
+                        <iframe id="startProcessButtonsFrame" screen="startProcessButtonsFrame" width="200px"/>
+                        <vbox id="otherActions" margin="true,true,true,false" spacing="true" stylename="edit-area" width="200px">
+                            <popupButton id="createSubCardButton" caption="msg://actions.Create" width="100%"/>
+                            <runReportPopupButton id="print" caption="msg://print" icon="icons/reports-print.png" width="100%"/>
+                        </vbox>
+                    </scrollBox>
+                </vbox>
+            </hbox>
+            <tabSheet id="detailsTabsheet" height="100%">
+                <tab id="resolutionsTab" caption="msg://resolutionsTab.name" margin="true">
+                    <vbox id="resolutionsPane" height="100%" spacing="true">
+                        <iframe id="resolutionsFrame" height="100%" screen="resolutionsFrame"/>
+                    </vbox>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

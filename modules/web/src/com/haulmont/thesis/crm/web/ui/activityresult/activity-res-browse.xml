@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.activityresult.ActivityResBrowser" messagesPack="com.haulmont.thesis.crm.web.ui.activityresult">
+    <dsContext>
+        <groupDatasource id="rowsDs" class="com.haulmont.thesis.crm.entity.ActivityRes" view="browse">
+            <query>
+                <![CDATA[select e from crm$ActivityRes e order by e.name_ru]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="operatorsDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="kindsDs" class="com.haulmont.thesis.crm.entity.CommKind" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$CommKind e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="commKindsDs" class="com.haulmont.thesis.crm.entity.CommKind" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$CommKind e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="rowsTable" datasource="rowsDs" stylename="edit-area">
+                <properties include=".*" exclude="id|createTs|createdBy"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <groupTable id="rowsTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="create" openType="DIALOG"/>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="expand"/>
+                    </actions>
+                    <columns>
+                        <group>
+                            <column id="entityTypeName" width="200px"/>
+                        </group>
+                        <column id="name_ru"/>
+                        <column id="resultType"/>
+                        <column id="isNeedDetails" align="CENTER" width="200px"/>
+                        <column id="useAllKinds" align="CENTER" width="200px"/>
+                        <column id="code" collapsed="true"/>
+                        <column id="comment_ru" collapsed="true"/>
+                    </columns>
+                    <rows datasource="rowsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel">
+                        <button id="createBtn" action="rowsTable.create"/>
+                        <button id="editBtn" action="rowsTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="rowsTable.remove" icon="icons/remove.png"/>
+                        <button id="expandBtn" action="rowsTable.expand"/>
+                        <button id="accessKindsButton" caption="msg://accessKinds" invoke="OpenKindsEditor"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

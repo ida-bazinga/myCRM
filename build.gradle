@@ -1,0 +1,305 @@
+
+allprojects {
+    ext.artifactGroup = 'com.haulmont.thesis.crm'
+    ext.artifactVersion = '1.0.0'
+    ext.isSnapshot = true
+    ext.tomcatDir = "$rootDir/deploy/tomcat"
+    ext.copyright = '''Copyright (c) ${YEAR} ${PACKAGE_NAME}''' // Copyright Notice for IDEA project
+    ext.classComment = '''/**
+ * @author ${USER}
+ */'''
+
+}
+
+project.configurations {
+    tomcat
+}
+
+project.dependencies {
+    tomcat(group: 'org.apache.tomcat', name: 'tomcat', version: '8.5.32', ext: 'zip')
+}
+
+buildscript {
+    ext.thesisVersion = '4.3.2'
+    ext.cubaVersion = '5.9.5'
+    ext.autoConfigurePortal = true
+    ext.autoConfigureMobile = true
+    ext.autoConfigureMobileRest = true
+    repositories {
+        mavenLocal()
+        maven {
+            url 'http://deprecated-repo.haulmont.com:8587/nexus/content/groups/work'
+            credentials {
+                username(rootProject.hasProperty('repoUser') ?
+                        rootProject['repoUser'] : 'external')
+                password(rootProject.hasProperty('repoPass') ?
+                        rootProject['repoPass'] : 'aiva33n8')
+            }
+        }
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    dependencies {
+        classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
+        classpath "com.haulmont.thesis.gradle:thesis-plugin:$thesisVersion"
+    }
+}
+
+def globalModule = project(':crm-global')
+def coreModule = project(':crm-core')
+def guiModule = project(':crm-gui')
+def webModule = project(':crm-web')
+def portalModule = project(':crm-portal')
+def mobileModule = project(':crm-mobile')
+
+def mssql = 'net.sourceforge.jtds:jtds:1.2.4'
+def servletApi = 'org.apache.tomcat:servlet-api:6.0.20'
+
+def thesisWebToolkitGAV = [group: 'com.haulmont.thesis.toolkit', name: 'thesis-web-toolkit', version: thesisVersion]
+
+
+apply(plugin: 'idea')
+apply(plugin: 'cuba')
+apply(plugin: 'thesis')
+
+configure([globalModule, coreModule, guiModule, webModule, portalModule, mobileModule]) {
+    apply(plugin: 'java')
+    apply(plugin: 'maven')
+    apply(plugin: 'idea')
+    apply(plugin: 'cuba')
+    apply(plugin: 'groovy')
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    sourceSets {
+        main {
+            groovy {
+                srcDir 'src'
+                exclude '**/appfolders/**/*.groovy'
+                exclude '**/process/**'
+                exclude '**/scripts/**'
+            }
+        }
+        test {
+            groovy { srcDir 'test' }
+        }
+    }
+
+    compileGroovy {
+        groovyOptions.encoding = 'UTF-8'
+        options.encoding = 'UTF-8'
+    }
+
+    compileTestGroovy {
+        groovyOptions.setFork(false)
+        groovyOptions.encoding = 'UTF-8'
+        options.encoding = 'UTF-8'
+    }
+
+
+    dependencies {
+        testCompile('junit:junit:4.5')
+    }
+
+    task sourceJar(type: Jar) {
+        from file('src')
+        classifier = 'sources'
+    }
+
+    artifacts {
+        archives sourceJar
+    }
+}
+
+configure([globalModule, coreModule, guiModule, webModule, portalModule]) {
+    apply(plugin: 'groovy')
+
+    sourceSets {
+        main { groovy { srcDirs = ["src"] } }
+        test { groovy { srcDirs = ["test"] } }
+    }
+}
+
+configure(globalModule) {
+    dependencies {
+        compile("com.haulmont.thesis.app:thesis-global:$thesisVersion")
+        compile group: 'ru.morpher', name : 'morpher', version : '2.0.0'
+        compile group: 'org.json', name : 'org.json', version : '2015-05-05'
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.3.3'
+    }
+
+    task enhance(type: CubaEnhancing) {
+        persistenceXml = "$globalModule.projectDir/src/persistence.xml"
+    }
+}
+
+configure(coreModule) {
+
+    configurations {
+        jdbc
+        dbscripts
+        webcontent
+    }
+
+    dependencies {
+        compile(globalModule)
+        provided(servletApi)
+        jdbc(mssql)
+        testRuntime(mssql)
+        webcontent("com.haulmont.thesis.app:thesis-core:$thesisVersion:web@zip")
+        compile("com.haulmont.thesis.app:thesis-core:$thesisVersion")
+        dbscripts("com.haulmont.thesis.app:thesis-core:$thesisVersion:db@zip")
+
+    }
+
+    task cleanConf(description: 'Cleans up conf directory') << {
+        def dir = new File(tomcatDir, '/conf/app-core')
+        if (dir.isDirectory()) {
+            ant.delete(includeemptydirs: true) {
+                fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties /process/**/* app.license')
+            }
+        }
+    }
+
+    task deploy(dependsOn: assemble, type: CubaDeployment) {
+        appName = 'app-core'
+        appJars('thesis-core', 'thesis-global', 'reports-global', 'reports-core', 'charts-global', 'workflow-core', 'workflow-global', 'fts-global', 'fts-core', 'cuba-core', 'cuba-global',
+                'thesis-cryptopro-global','crm-global', 'crm-core', 'thesis-shared-workflow')
+    }
+
+    task createDb(dependsOn: assemble, description: 'Creates local database', type: CubaDbCreation) {
+        dbmsVersion = 'Thesis2012'
+        dbms = 'mssql'
+        host = 'localhost'
+        dbName = 'thesis'
+        dbUser = 'cuba'
+        dbPassword = 'cuba'
+    }
+
+    task updateDb(dependsOn: assemble, description: 'Updates local database', type: CubaDbUpdate) {
+        dbmsVersion = 'Thesis2012'
+        dbms = 'mssql'
+        host = 'localhost'
+        dbName = 'thesis'
+        dbUser = 'cuba'
+        dbPassword = 'cuba'
+    }
+}
+
+configure(guiModule) {
+    dependencies {
+        compile(globalModule)
+        compile("com.haulmont.thesis.app:thesis-gui:$thesisVersion")
+
+    }
+
+    task deployConf(type: Copy) {
+        from file('src')
+        include "com/haulmont/thesis/crm/**"
+        into "$tomcatDir/conf/app"
+    }
+}
+
+configure(webModule) {
+    configurations {
+        webcontent
+
+        staticContent
+        themes
+    }
+
+    dependencies {
+        provided(servletApi)
+        compile(globalModule)
+        compile(guiModule)
+        compile("com.haulmont.thesis.app:thesis-web:$thesisVersion")
+        webcontent("com.haulmont.cuba:cuba-web:$cubaVersion:web@zip")
+        webcontent("com.haulmont.workflow:workflow-web:$cubaVersion:web@zip")
+        webcontent("com.haulmont.thesis.app:thesis-web:$thesisVersion:web@zip")
+        webcontent("com.haulmont.charts:charts-web:$cubaVersion:web@zip")
+        webcontent(thesisWebToolkitGAV + [classifier: 'web', ext: 'zip'])
+        webcontent("com.haulmont.thesis.cryptopro:thesis-cryptopro-web:$thesisVersion:web@zip")
+        themes(group: 'com.haulmont.cuba', name: 'cuba-web-themes', version: cubaVersion)
+        provided("com.haulmont.cuba:cuba-web-themes:$cubaVersion")
+        themes("com.haulmont.thesis.app:thesis-web-themes:$thesisVersion")
+        provided("com.haulmont.thesis.app:thesis-web-themes:$thesisVersion")
+    }
+
+    task webArchive(type: Zip) {
+        from file('web')
+        classifier = 'web'
+    }
+
+    artifacts {
+        archives webArchive
+    }
+
+    task deployConf(type: Copy) {
+        from file('src')
+        include "com/haulmont/thesis/crm/**"
+        into "$tomcatDir/conf/app"
+    }
+
+    task cleanConf(description: 'Cleans up conf directory') << {
+        def dir = new File(tomcatDir, '/conf/app')
+        if (dir.isDirectory()) {
+            ant.delete(includeemptydirs: true) {
+                fileset(dir: dir, includes: '**/*', excludes: 'local.web-app.properties')
+            }
+        }
+    }
+    def staticContentDir = "$tomcatDir/webapps/app/static"
+    task deployThesisDocZip {
+        def thesisDocZip = zipTree(configurations.staticContent.resolvedConfiguration.getResolvedArtifacts().find { it.name.startsWith('thesis-doc') }.file)
+        inputs.file thesisDocZip
+        outputs.dir new File(staticContentDir)
+        doLast {
+
+            copy {
+                from thesisDocZip
+                include 'quickstart/ru/html-single/**/*'
+                include 'quickstart/ru/pdf/**/*'
+                eachFile { details ->
+                    details.path = details.path.replaceAll('quickstart/ru/html-single/', '')
+                    details.path = details.path.replaceAll('quickstart/ru/pdf/', '')
+                }
+                into staticContentDir + "/manual_html"
+                includeEmptyDirs = false
+            }
+        }
+    }
+
+    task deploy(dependsOn: [assemble, cleanConf, deployThesisDocZip], type: ThesisWebAppDeployment) {
+        appName = 'app'
+        appJars('thesis-web', 'thesis-global', 'thesis-gui', 'reports-global', 'reports-gui', 'reports-web', 'charts-gui', 'charts-web', 'charts-global', 'workflow-web', 'workflow-global', 'workflow-gui', 'fts-global', 'fts-gui', 'fts-web', 'cuba-gui', 'cuba-web', 'cuba-global', 'cuba-client',
+                'thesis-bpmn-diagram','thesis-cryptopro-global', 'thesis-cryptopro-web','crm-global', 'crm-gui', 'crm-web', 'thesis-shared-workflow')
+    }
+    task buildScssThemes(type: ThesisWebScssThemeCreation){
+        cssStyles.remove(".v-richtextarea")
+    }
+    assemble.dependsOn buildScssThemes
+}
+
+task undeploy(type: Delete, dependsOn: ':crm-web:cleanConf') {
+    delete("$tomcatDir/shared")
+    delete("$tomcatDir/webapps/app-core")
+    delete("$tomcatDir/webapps/app")
+    delete("$tomcatDir/webapps/app-portal")
+    delete("$tomcatDir/webapps/app-mobile")
+}
+
+task restart(dependsOn: ['stop', ':crm-core:deploy', ':crm-web:deploy', ':crm-portal:deploy', ':crm-mobile:deploy', ':crm-mobile-rest:deploy'], description: 'Redeploys applications and restarts local Tomcat') << {
+    ant.waitfor(maxwait: 6, maxwaitunit: 'second', checkevery: 2, checkeveryunit: 'second') {
+        not {
+            socket(server: 'localhost', port: '8787')
+        }
+    }
+    start.execute()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.13'
+}

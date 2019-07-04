@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editCaption" class="com.haulmont.thesis.crm.web.room.RoomEditor"
+        datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.room">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Room" view="edit">
+            <collectionDatasource id="workplacesDs" property="workplaces"/>
+            <collectionDatasource id="attachmentsDs" property="resourceAttachments"/>
+            <collectionDatasource id="historyDs" property="resourceHistory"/>
+        </datasource>
+        <collectionDatasource id="resourceTypesDs" class="com.haulmont.thesis.crm.entity.ResourceType" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ResourceType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="equipmentStateDs" class="com.haulmont.thesis.crm.entity.EquipmentState" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$EquipmentState e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="unitDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Unit e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomGroupDs" class="com.haulmont.thesis.crm.entity.Room" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Room e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomParentDs" class="com.haulmont.thesis.crm.entity.Room" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Room e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="stateDs" class="com.haulmont.thesis.crm.entity.EquipmentState" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$EquipmentState e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomSeatingTypeDs" class="com.haulmont.thesis.crm.entity.RoomSeatingType" view="edit">
+            <query>
+                <![CDATA[select e from crm$RoomSeatingType e where e.room.id = :ds$mainDs.id]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="attachmentsSeatingTypeDs" class="com.haulmont.thesis.crm.entity.RoomSeatingTypeAttachment" view="edit">
+            <query>
+                <![CDATA[select e from crm$RoomSeatingTypeAttachment e where e.roomSeatingType.id = :ds$roomSeatingTypeDs.id]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomGeolocationDs" class="com.haulmont.thesis.crm.entity.RoomGeolocation" view="edit">
+            <query>
+                <![CDATA[select e from crm$RoomGeolocation e where e.room.id = :ds$mainDs.id]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomExceptionDs" class="com.haulmont.thesis.crm.entity.RoomException" view="edit">
+            <query>
+                <![CDATA[select e from crm$RoomException e where e.room.id = :ds$mainDs.id]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomConflictingDs" class="com.haulmont.thesis.crm.entity.Room" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Room e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="labelWidth" value="125px"/>
+    <layout expand="vbox" spacing="true">
+        <vbox id="vbox">
+            <tabSheet id="tabsheet" height="100%">
+                <tab id="mainTab" caption="msg://mainTab" margin="true,false,false,false">
+                    <scrollBox id="fieldsBox" height="100%" width="98%">
+                        <hbox expand="fields" spacing="true" width="100%">
+                            <vbox id="fields" spacing="true" width="500px">
+                                <hbox expand="isUseConfigurator" spacing="true" width="100%">
+                                    <label id="codeLabel" value="msg://codeLabel" width="${labelWidth}"/>
+                                    <textField id="code" datasource="mainDs" property="code"/>
+                                    <label id="isUseConfiguratorLabel" value="msg://isUseConfiguratorLabel" width="225px"/>
+                                    <checkBox id="isUseConfigurator" datasource="mainDs" property="isUseConfigurator"/>
+                                </hbox>
+                                <hbox expand="name_ru" spacing="true" width="100%">
+                                    <label id="nameRuLabel" value="msg://name_ru" width="${labelWidth}"/>
+                                    <textField id="name_ru" datasource="mainDs" property="name_ru" required="true"/>
+                                </hbox>
+                                <hbox expand="name_en" spacing="true" width="100%">
+                                    <label id="nameEnLabel" value="msg://name_en" width="${labelWidth}"/>
+                                    <textField id="name_en" datasource="mainDs" property="name_en"/>
+                                </hbox>
+                                <hbox expand="cadastralNumber" spacing="true" width="100%">
+                                    <label id="cadastralNumberLabel" value="msg://cadastralNumber" width="${labelWidth}"/>
+                                    <textField id="cadastralNumber" datasource="mainDs" property="cadastralNumber"/>
+                                </hbox>
+                                <hbox expand="length" spacing="true" width="100%">
+                                    <label id="lengthLabel" value="msg://length" width="${labelWidth}"/>
+                                    <textField id="length" datasource="mainDs" property="length"/>
+                                </hbox>
+                                <hbox expand="width" spacing="true" width="100%">
+                                    <label id="widthLabel" value="msg://width" width="${labelWidth}"/>
+                                    <textField id="width" datasource="mainDs" property="width"/>
+                                </hbox>
+                                <hbox expand="totalGrossArea" spacing="true" width="100%">
+                                    <label id="totalGrossAreaLabel" value="msg://totalGrossArea" width="${labelWidth}"/>
+                                    <textField id="totalGrossArea" datasource="mainDs" property="totalGrossArea"/>
+                                </hbox>
+                                <hbox expand="serialNumber" spacing="true" width="100%">
+                                    <label id="serialNumberLabel" value="msg://serialNumber" width="${labelWidth}"/>
+                                    <textField id="serialNumber" datasource="mainDs" property="serialNumber"/>
+                                </hbox>
+                                <hbox expand="resourceType" spacing="true" width="100%">
+                                    <label id="resourceTypeLabel" value="msg://resourceType" width="${labelWidth}"/>
+                                    <lookupField id="resourceType" datasource="mainDs" optionsDatasource="resourceTypesDs" property="resourceType"/>
+                                </hbox>
+                                <hbox expand="inventoryNumber" spacing="true" width="100%">
+                                    <label id="inventoryNumberLabel" value="msg://inventoryNumber" width="${labelWidth}"/>
+                                    <textField id="inventoryNumber" datasource="mainDs" property="inventoryNumber"/>
+                                </hbox>
+                                <hbox expand="state" spacing="true" width="100%">
+                                    <label id="stateLabel" value="msg://state" width="${labelWidth}"/>
+                                    <lookupField id="state" datasource="mainDs" optionsDatasource="stateDs" property="state"/>
+                                </hbox>
+                                <hbox expand="reference" spacing="true" width="100%">
+                                    <label id="referenceLabel" value="msg://reference" width="${labelWidth}"/>
+                                    <textField id="reference" datasource="mainDs" property="reference"/>
+                                </hbox>
+                                <hbox expand="parent" spacing="true" width="100%">
+                                    <label id="parentLabel" value="msg://parent" width="${labelWidth}"/>
+                                    <lookupPickerField id="parent" datasource="mainDs" optionsDatasource="roomGroupDs" property="parent"/>
+                                </hbox>
+                                <hbox expand="useLoadingInfo" spacing="true" width="100%">
+                                    <label id="useLoadingInfoLabel" width="${labelWidth}"/>
+                                    <checkBox id="useLoadingInfo" caption="msg://com.haulmont.thesis.crm.entity/Resource.useLoadingInfo"
+                                              datasource="mainDs" property="useLoadingInfo"/>
+                                </hbox>
+                                <hbox expand="comment_ru" spacing="true" width="100%">
+                                    <label id="commentRuLabel" value="msg://comment_ru" width="${labelWidth}"/>
+                                    <textArea id="comment_ru" datasource="mainDs" property="comment_ru"/>
+                                </hbox>
+                            </vbox>
+                            <iframe id="embeddedImageFrame" screen="avatarImageFrame" width="210px"/>
+                        </hbox>
+                    </scrollBox>
+                </tab>
+                <tab id="attachmentsTab" caption="msg://attachmentsTab" lazy="true">
+                    <iframe id="attachmentsFrame" height="100%" screen="abstractReferenceAttachmentsFrame"/>
+                </tab>
+                <tab id="workplaces" caption="msg://workplacesTab" lazy="true" margin="true,false,false,false">
+                    <table id="workplacesTable" height="100%" width="100%">
+                        <actions>
+                            <action id="add"/>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="name_ru"/>
+                            <column id="isPrimary"/>
+                            <column id="room"/>
+                            <column id="employee"/>
+                            <column id="comment_ru"/>
+                        </columns>
+                        <rows datasource="workplacesDs"/>
+                        <buttonsPanel>
+                            <button action="workplacesTable.add"/>
+                            <button action="workplacesTable.remove"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+                <tab id="historyTab" caption="msg://com.haulmont.thesis.crm.entity/Resource.histories" lazy="true" margin="true">
+                    <vbox id="historyBox" height="100%" margin="true,false,false,false">
+                        <groupTable id="historyTable" height="100%" width="100%">
+                            <actions>
+                                <action id="create" openType="DIALOG"/>
+                                <action id="edit" openType="DIALOG"/>
+                                <action id="remove"/>
+                                <action id="refresh"/>
+                            </actions>
+                            <columns>
+                                <column id="comment_ru"/>
+                                <column id="type"/>
+                                <column id="date"/>
+                                <column id="owner"/>
+                                <column id="sender"/>
+                                <column id="addressee"/>
+                                <column id="sourceDestination"/>
+                                <column id="destination"/>
+                                <column id="informationDate"/>
+                                <column id="transferDate"/>
+                                <column id="card"/>
+                            </columns>
+                            <rows datasource="historyDs"/>
+                            <rowsCount/>
+                            <buttonsPanel>
+                                <button id="historyCreateBtn" action="historyTable.create" caption="msg://actions.Create"/>
+                                <button id="historyAddBtn" action="historyTable.edit" icon="icons/edit.png"/>
+                                <button id="historyRemoveBtn" action="historyTable.remove" icon="icons/remove.png"/>
+                                <button id="historyRefreshBtn" action="historyTable.refresh" icon="icons/refresh.png"/>
+                            </buttonsPanel>
+                        </groupTable>
+                    </vbox>
+                </tab>
+                <tab id="roomSeatingTypeTab" caption="msg://roomSeatingTypeTab" margin="true,false,false,false">
+                    <table id="roomSeatingTypeTable" height="100%" width="100%">
+                        <actions>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="code"/>
+                            <column id="name_ru"/>
+                            <column id="name_en"/>
+                            <column id="minCapacity"/>
+                            <column id="maxCapacity"/>
+                            <column id="seatingType"/>
+                            <column id="hasAttachments"/>
+                        </columns>
+                        <rows datasource="roomSeatingTypeDs"/>
+                        <buttonsPanel>
+                            <button icon="font-icon:PLUS" invoke="roomSeatingType"/>
+                            <button action="roomSeatingTypeTable.edit"/>
+                            <button action="roomSeatingTypeTable.remove"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+                <tab id="roomGeolocationTab" caption="msg://roomGeolocationTab" lazy="true" margin="true,false,false,false">
+                    <table id="roomGeolocationTable" editable="true" height="100%" width="100%">
+                        <actions>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="geolocationType" editable="true"/>
+                            <column id="pointX" editable="true"/>
+                            <column id="pointY" editable="true"/>
+                            <column id="length" editable="true"/>
+                            <column id="width" editable="true"/>
+                            <column id="locationId" editable="true"/>
+                        </columns>
+                        <rows datasource="roomGeolocationDs"/>
+                        <buttonsPanel>
+                            <button icon="font-icon:PLUS" invoke="roomGeolocation"/>
+                            <button action="roomGeolocationTable.remove"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+                <tab id="roomExceptionTab" caption="msg://roomExceptionTab" lazy="true" margin="true,false,false,false">
+                    <table id="roomExceptionTable" editable="true" height="100%" width="100%">
+                        <actions>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="roomConflicting" editable="true" optionsDatasource="roomConflictingDs"/>
+                        </columns>
+                        <rows datasource="roomExceptionDs"/>
+                        <buttonsPanel>
+                            <button icon="font-icon:PLUS" invoke="roomException"/>
+                            <button action="roomExceptionTable.remove"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+            </tabSheet>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

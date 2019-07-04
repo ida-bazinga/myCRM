@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+    <!-- Application properties config files -->
+    <context-param>
+        <param-name>appPropertiesConfig</param-name>
+        <param-value>
+            classpath:cuba-portal-app.properties
+            classpath:thesis-portal-app.properties
+            classpath:ext-portal-app.properties
+            /WEB-INF/local.app.properties
+            file:${catalina.home}/conf/app-portal/local.app.properties
+        </param-value>
+    </context-param>
+
+    <listener>
+    
+        <listener-class>com.haulmont.thesis.portal.sys.ThesisPortalAppContextLoader</listener-class>
+    
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:cuba-portal-security-spring.xml
+        </param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+    <!-- Handles all webportal requests into the application -->
+    <servlet>
+        <servlet-name>portal</servlet-name>
+        <servlet-class>com.haulmont.cuba.portal.sys.PortalDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>load-on-startup</param-name>
+            <param-value>1</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>portal</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- Reminder web-service dispatcher servlet -->
+    <servlet>
+        <servlet-name>spring-ws</servlet-name>
+        <servlet-class>com.haulmont.thesis.portal.reminder.ws.ThesisMessageDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>transformWsdlLocations</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/ws/ws-spring.xml</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    
+    <servlet-mapping>
+        <servlet-name>spring-ws</servlet-name>
+        <url-pattern>/ws/assistant/*</url-pattern>
+        <url-pattern>/ws/appIntegration/*</url-pattern>
+        <url-pattern>/ws/portalIntegration/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>old-reminder-update-ws</servlet-name>
+        <servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>transformWsdlLocations</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/ws/reminder-update-ws-spring.xml</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>old-reminder-update-ws</servlet-name>
+        <url-pattern>/ws/*</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>CubaHttpFilter</filter-name>
+        <filter-class>com.haulmont.thesis.portal.sys.ThesisHttpFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CubaHttpFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Spring security -->
+    <!--<filter>-->
+        <!--<filter-name>springSecurityFilterChain</filter-name>-->
+        <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+    <!--</filter>-->
+
+    <!--<filter-mapping>-->
+        <!--<filter-name>springSecurityFilterChain</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error/404</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404</location>
+    </error-page>
+
+</web-app>

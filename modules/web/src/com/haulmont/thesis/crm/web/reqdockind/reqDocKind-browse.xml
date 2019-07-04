@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.reqdockind.ReqDocKindBrowser"
+        messagesPack="com.haulmont.thesis.crm.web.reqdockind">
+    <dsContext>
+        <collectionDatasource id="reqDocKindDs" class="com.haulmont.thesis.crm.entity.ReqDocKind" view="browse">
+            <query>
+                <![CDATA[select e from crm$ReqDocKind e order by e.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+
+    <layout>
+        <vbox expand="ReqDocKindTable" height="100%" spacing="true">
+            <table id="ReqDocKindTable" editable="false" width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                    <action id="change"/>
+                </actions>
+                <columns>
+                    <column id="name"/>
+                    <column id="description" maxTextLength="50"/>
+                    <column id="docCategory.name" collapsed="true"/>
+                    <column id="docCategory.docType" collapsed="true"/>
+                </columns>
+                <rows datasource="reqDocKindDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel" alwaysVisible="false">
+                    <button id="createBtn" action="ReqDocKindTable.create"/>
+                    <button id="editBtn" action="ReqDocKindTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn" action="ReqDocKindTable.remove" icon="icons/remove.png"/>
+                    <button id="refreshBtn" action="ReqDocKindTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </table>
+        </vbox>
+    </layout>
+</window>

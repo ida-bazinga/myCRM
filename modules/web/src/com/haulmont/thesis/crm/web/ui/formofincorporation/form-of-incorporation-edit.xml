@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://EditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.formofincorporation.FormOfIncorporationEditor" datasource="mainDs" focusComponent="nameRu"
+        messagesPack="com.haulmont.thesis.crm.web.ui.formofincorporation">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.FormOfIncorporation" view="edit"/>
+        <collectionDatasource id="countryDs" class="com.haulmont.thesis.crm.entity.Country" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Country e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="commentBox" spacing="true">
+            <hbox id="hBox1" expand="country" spacing="true" width="100%">
+                <label value="msg://country" width="120px"/>
+                <lookupField id="country" datasource="mainDs" optionsDatasource="countryDs" property="country" required="true"/>
+                <label value="msg://code" width="50px"/>
+                <textField id="code" datasource="mainDs" property="code" required="true" width="120px"/>
+            </hbox>
+            <hbox id="hBox2" expand="nameRu" spacing="true" width="100%">
+                <label value="msg://name_ru" width="120px"/>
+                <textField id="nameRu" datasource="mainDs" property="name_ru" required="true"/>
+            </hbox>
+            <hbox id="hBox3" expand="shortName" spacing="true" width="100%">
+                <label value="msg://shortName" width="120px"/>
+                <textField id="shortName" datasource="mainDs" property="shortName"/>
+            </hbox>
+            <hbox id="commentBox" expand="commentRu" spacing="true" width="100%">
+                <label value="msg://comment_ru" width="120px"/>
+                <textArea id="commentRu" datasource="mainDs" property="comment_ru" rows="3"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="120px"/>
+</window>

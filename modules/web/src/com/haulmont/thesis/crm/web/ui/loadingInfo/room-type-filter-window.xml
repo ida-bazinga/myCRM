@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://filterWindowCaption"
+        class="com.haulmont.thesis.crm.web.ui.loadingInfo.RoomTypeFilterWindow" messagesPack="com.haulmont.thesis.crm.web.ui.loadingInfo">
+    <dsContext>
+        <collectionDatasource id="rootRoomsDs" allowCommit="false" class="com.haulmont.thesis.crm.entity.Room" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Room e where e.parent is null]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="typesDs" allowCommit="false" class="com.haulmont.thesis.crm.entity.ResourceType" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ResourceType e
+            where e.kindResources = @enum(com.haulmont.thesis.crm.entity.ResourceKindEnum.Room)
+            and e.id in(select r.resourceType from crm$Room r where r.root.id = :ds$rootRoomsDs)
+            order by e.name_ru]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.name_ru not in (:custom$exclude)]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="selectedTypesDs" allowCommit="false" class="com.haulmont.thesis.crm.entity.ResourceType" refreshMode="NEVER"
+                              view="_minimal"/>
+    </dsContext>
+    <layout>
+        <vbox>
+            <grid spacing="true" width="100%">
+                <columns>
+                    <column/>
+                    <column flex="1.0"/>
+                    <column/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label id="rootRoomsLabel" value="msg://exhibitSpace"/>
+                        <lookupField id="rootRoom" colspan="3" optionsDatasource="rootRoomsDs" required="true" width="100%"/>
+                    </row>
+                    <row>
+                        <label id="typeLabel" value="msg://type"/>
+                        <tokenList id="selectedTypes" clearEnabled="true" colspan="3" datasource="selectedTypesDs" inline="true"
+                                   width="100%">
+                            <lookup optionsDatasource="typesDs"/>
+                        </tokenList>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <buttonsPanel>
+            <button id="confirmBtn" caption="msg://actions.Ok"/>
+            <button id="closeBtn" caption="msg://actions.Close"/>
+        </buttonsPanel>
+    </layout>
+</window>

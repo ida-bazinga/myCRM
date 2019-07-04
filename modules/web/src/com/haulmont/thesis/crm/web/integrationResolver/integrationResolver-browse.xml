@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.integrationResolver.IntegrationresolverBrowse" focusComponent="genericFilter"
+        lookupComponent="integrationResolverTable" messagesPack="com.haulmont.thesis.crm.web.integrationResolver">
+    <dsContext>
+        <groupDatasource id="integrationResolverDs" class="com.haulmont.thesis.crm.entity.IntegrationResolver" view="1c">
+            <query>
+                <![CDATA[select e from crm$IntegrationResolver e order by e.updateTs desc]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="integrationResolverTable" datasource="integrationResolverDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel" spacing="true">
+                <groupTable id="integrationResolverTable" height="100%" width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="refresh"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="createTs" collapsed="true"/>
+                        <column id="updateTs" caption="msg://updateTs"/>
+                        <column id="entityId"/>
+                        <column id="entityName"/>
+                        <column id="extId"/>
+                        <column id="posted"/>
+                        <column id="sumPayment"/>
+                        <column id="del"/>
+                        <column id="stateDocSales"/>
+                        <column id="extSystem"/>
+                    </columns>
+                    <rows datasource="integrationResolverDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="integrationResolverTable.create" icon="icons/plus-btn.png" />
+                        <button action="integrationResolverTable.refresh" icon="icons/refresh.png"/>
+                        <button id="editBtn" action="integrationResolverTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="integrationResolverTable.remove" icon="icons/remove.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

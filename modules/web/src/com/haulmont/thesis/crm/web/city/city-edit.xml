@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption" class="com.haulmont.thesis.crm.web.city.CityEditor"
+        datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.city">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.City" view="edit"/>
+        <collectionDatasource id="countryDs" class="com.haulmont.thesis.crm.entity.Country" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Country e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="addressPartTypeDs" class="com.haulmont.thesis.crm.entity.AddressPartType" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$AddressPartType e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="regionDs" class="com.haulmont.thesis.crm.entity.Region" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Region e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="regionDistrictDs" class="com.haulmont.thesis.crm.entity.RegionDistrict" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$RegionDistrict e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="width" value="50%"/>
+    <layout expand="vBox" margin="true" spacing="true">
+        <vbox id="vBox" stylename="edit-area">
+            <grid id="grid" spacing="true" width="50%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="6.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code" datasource="mainDs" property="code" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://country"/>
+                        <lookupPickerField id="country" datasource="mainDs" optionsDatasource="countryDs" property="country" required="true"
+                                           width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://region"/>
+                        <lookupPickerField id="region" datasource="mainDs" optionsDatasource="regionDs" property="region" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://regionDistrict"/>
+                        <lookupPickerField id="regionDistrict" datasource="mainDs" optionsDatasource="regionDistrictDs" property="regionDistrict"
+                                           width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://addressPartType"/>
+                        <lookupPickerField id="addressPartType" datasource="mainDs" optionsDatasource="addressPartTypeDs" property="addressPartType"
+                                           required="true" width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru" datasource="mainDs" property="name_ru" required="true" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="fullNname_ru" datasource="mainDs" property="fullName_ru" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru" datasource="mainDs" height="200px" property="comment_ru" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

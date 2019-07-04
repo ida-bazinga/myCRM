@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<filter code="SysFilter.ByProcRole" filterComponent="[crm$VatDoc.lookup].genericFilter" name="">
+    <and>
+        <c caption="msg://com.haulmont.workflow.core.entity/Card.proc" class="com.haulmont.workflow.core.entity.Proc" join="join {E}.procs cp"
+           name="proc" operatorType="EQUAL"
+           paramWhere="({E}.cardTypes is null or {E}.cardTypes = &apos;&apos; or {E}.cardTypes like &apos;%crm$VatDoc%&apos;)" type="CUSTOM">cp.proc.id = :component$genericFilter.proc34273            <param javaClass="com.haulmont.workflow.core.entity.Proc" name="component$genericFilter.proc34273">NULL</param>
+        </c>
+        <c caption="msg://com.haulmont.workflow.core.entity/Card.state" class="com.haulmont.workflow.core.entity.ProcState" entityAlias="d"
+           name="state" paramView="browse" paramWhere="{E}.proc.id = :component$genericFilter.proc34273" type="CUSTOM">{E}.state = (select concat(concat(&apos;,&apos;, ps.name), &apos;,&apos;) from wf$ProcState ps where ps.id = :component$genericFilter.state08402) and {E}.proc = (select ps.proc from wf$ProcState ps where ps.id = :component$genericFilter.state08402)            <param javaClass="com.haulmont.workflow.core.entity.ProcState" name="component$genericFilter.state08402">NULL</param>
+        </c>
+        <c caption="msg://com.haulmont.workflow.core.entity/CardRole.procRole" class="com.haulmont.workflow.core.entity.ProcRole" entityAlias="d"
+           join="join {E}.roles cr" name="procRole" paramWhere="{E}.invisible=false and {E}.proc.id = :component$genericFilter.proc34273"
+           type="CUSTOM">cr.procRole.id = :component$genericFilter.procRole70614            <param javaClass="com.haulmont.workflow.core.entity.ProcRole" name="component$genericFilter.procRole70614">NULL</param>
+        </c>
+        <c caption="msg://com.haulmont.workflow.core.entity/CardRole.user" class="com.haulmont.thesis.core.entity.TsUser"
+           join="join {E}.roles cr join {E}.procs cp" name="user" type="CUSTOM">cr.user.id = :component$genericFilter.user90982 and cr.procRole.proc = cp.proc            <param javaClass="com.haulmont.thesis.core.entity.TsUser" name="component$genericFilter.user90982">NULL</param>
+        </c>
+    </and>
+</filter>

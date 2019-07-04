@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.contactperson.ContactPersonFrame"
+        focusComponent="contactsTable" messagesPack="com.haulmont.thesis.crm.web.ui.contactperson">
+    <layout spacing="true">
+        <table id="contactsTable" height="100%" presentations="true" width="100%">
+            <actions>
+                <action id="create" openType="DIALOG"/>
+                <action id="edit" openType="DIALOG"/>
+                <action id="remove"/>
+                <action id="refresh"/>
+                <action id="expand"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="positionLong"/>
+                <column id="phone1"/>
+                <column id="phone2"/>
+                <column id="phone3"/>
+                <column id="email1"/>
+                <column id="sex"/>
+                <column id="comment" collapsed="true"/>
+            </columns>
+            <rows datasource="contactsDs"/>
+            <rowsCount/>
+            <buttonsPanel>
+                <button action="contactsTable.create"/>
+                <button action="contactsTable.edit" icon="icons/edit.png"/>
+                <button action="contactsTable.remove" icon="icons/remove.png"/>
+                <button action="contactsTable.refresh" icon="icons/refresh.png"/>
+                <runReportPopupButton id="printContactTableButton" icon="icons/reports-print.png"/>
+                <popupButton id="createActivityButton" caption="msg://actions.createActivity" icon=""/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

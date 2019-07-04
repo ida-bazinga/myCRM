@@ -1,0 +1,49 @@
+@import "../halo/halo-thesis";
+@import "components/spipanel/spi-panel";
+
+/* Define your theme modifications inside next mixin */
+@mixin halo-tExpoCRM {
+  @include halo-thesis;
+
+  @include spi-button;
+
+  .cuba-app-icon {
+      margin-top: 5px;
+      height: 24px;
+      width: 124px;
+  }
+
+  .cuba-login-main-layout .cuba-login-icon {
+    height: 48px;
+  }
+
+  .orange-grade {
+       background-color: #FFA500;
+   }
+
+  .v-table-arow-row {
+       background-color: #0091d0;
+       color: #fff;
+  }
+
+  .button-grin {
+    background: #008000;
+    color: #fff;
+  }
+
+  .button-blue {
+    background: #0000FF;
+    color: #fff;
+  }
+
+
+}
+
+
+
+
+
+
+
+
+

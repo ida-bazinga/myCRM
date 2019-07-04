@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.cashdocument.CashDocumentBrowser" focusComponent="documentsTable" lookupComponent="documentsTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.cashdocument">
+    <dsContext>
+        <groupDatasource id="documentsDs" class="com.haulmont.thesis.crm.entity.CashDocument" view="browse">
+            <query>
+                <![CDATA[select e from crm$CashDocument e order by e.receiptCreationDateTime desc]]>
+            </query>
+            <collectionDatasource id="docPositionsDs" property="positions"/>
+        </groupDatasource>
+    </dsContext>
+    <layout expand="split" spacing="true">
+        <hbox spacing="true" width="100%">
+            <filter id="genericFilter" applyTo="documentsTable" datasource="documentsDs" stylename="edit-area">
+                <properties exclude="createdBy|createTs|id|deleteTs|deletedBy" include=".*"/>
+            </filter>
+        </hbox>
+        <split id="split" orientation="vertical" pos="60" width="100%">
+            <vbox id="tablePanel" expand="documentsTable" height="100%" spacing="true">
+                <groupTable id="documentsTable" presentations="true" width="100%">
+                    <actions>
+                        <!--<action id="edit" openType="DIALOG"/>-->
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <group>
+                            <column id="receiptCreationDate">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yyyy"/>
+                            </column>
+                            <column id="docType"/>
+                        </group>
+                        <column id="exhibitSpace"/>
+                        <column id="cashMachine"/>
+                        <column id="receiptNumber"/>
+                        <column id="receiptCreationDateTime"/>
+                        <column id="receiptSum"/>
+                        <column id="cardPaymentSum"/>
+                        <column id="cashPaymentSum"/>
+                        <column id="sessionNumber"/>
+                        <column id="couponNumber"/>
+                        <column id="quantityPosition"/>
+                        <column id="clientName" collapsed="true"/>
+                        <column id="clientPhone" collapsed="true"/>
+                        <column id="openUserUuid" collapsed="true"/>
+                    </columns>
+                    <rows datasource="documentsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="importBtn" caption="msg://getFromCloud" invoke="importDoc"/>
+                        <!--<button action="documentsTable.edit" icon="icons/edit.png"/>-->
+                        <button action="documentsTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+            <vbox id="PositionPanel" expand="docPositionsTable" height="100%" spacing="true">
+                <table id="docPositionsTable" presentations="true" width="100%">
+                    <columns>
+                        <column id="commodityCode" caption="msg://code"/>
+                        <!--<column id="commodityName"/>
+                        <column id="cost"/>-->
+                        <column id="product"/>
+                        <column id="quantity"/>
+                        <column id="unit"/>
+                        <column id="currency"/>
+                        <column id="resultPrice"/>
+                        <column id="tax"/>
+                        <column id="resultTaxSum"/>
+                        <column id="resultSum"/>
+                        <column id="barcode"/>
+                    </columns>
+                    <rows datasource="docPositionsDs"/>
+                    <rowsCount/>
+                </table>
+            </vbox>
+        </split>
+    </layout>
+</window>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption" class="com.haulmont.thesis.crm.web.cost.CostEditor"
+        datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.cost">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Cost" view="edit"/>
+        <collectionDatasource id="productDs" class="com.haulmont.thesis.crm.entity.Product" view="edit-with-costs">
+            <query>
+                <![CDATA[select e from crm$Product e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="extProjectDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="pCurrencyDs" class="com.haulmont.thesis.crm.entity.Currency" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Currency e where e.code = "643"]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="sCurrencyDs" class="com.haulmont.thesis.crm.entity.Currency" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Currency e where e.code = "978"]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="tCurrencyDs" class="com.haulmont.thesis.crm.entity.Currency" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Currency e where e.code = "840"]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabsheet" height="100%" spacing="true" width="100%">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab" caption="msg://mainTab" margin="true">
+                <groupBox id="docInfoGroupBox" height="100%" stylename="edit-area">
+                    <scrollBox id="scrollBox58" height="100%" scrollBars="both">
+                        <vbox id="infoVBox">
+                            <hbox spacing="true">
+                                <label id="integrationStateLabel" align="MIDDLE_CENTER" stylename="thesis-green-bold"/>
+                            </hbox>
+                            <vbox id="docInfo" margin="true,false,true,false" stylename="thesis-top-separator">
+                                <hbox spacing="true">
+                                    <label value="msg://code" width="140px"/>
+                                    <textField id="code" datasource="mainDs" enable="false" property="code" width="100%"/>
+                                </hbox>
+                                <flowBox spacing="true">
+                                    <hbox expand="startDate" spacing="true" width="450px">
+                                        <label value="msg://startDate" width="140px"/>
+                                        <dateField id="startDate" datasource="mainDs" dateFormat="dd.MM.yyyy" property="startDate"/>
+                                    </hbox>
+                                    <hbox expand="costType" spacing="true" width="450px">
+                                        <label value="msg://costType" width="140px"/>
+                                        <lookupField id="costType" datasource="mainDs" property="costType" required="true"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="product" spacing="true" width="450px">
+                                        <label value="msg://product" width="140px"/>
+                                        <lookupPickerField id="product" datasource="mainDs" optionsDatasource="productDs" property="product">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </hbox>
+                                    <hbox expand="project" spacing="true" width="450px">
+                                        <label value="msg://project" width="140px"/>
+                                        <lookupPickerField id="project" datasource="mainDs" enable="false" optionsDatasource="extProjectDs"
+                                                           property="project">
+                                            <actions>
+                                                <action id="lookup"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="unit" spacing="true" width="450px">
+                                        <label value="msg://unit" width="140px"/>
+                                        <textField id="unit" enable="false"/>
+                                    </hbox>
+                                    <hbox expand="secondaryUnit" spacing="true" width="450px">
+                                        <label value="msg://secondaryUnit" width="140px"/>
+                                        <textField id="secondaryUnit" enable="false"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="primaryCost" spacing="true" width="450px">
+                                        <label value="msg://primaryCost" width="140px"/>
+                                        <textField id="primaryCost" datasource="mainDs" property="primaryCost"/>
+                                    </hbox>
+                                    <hbox expand="primaryCurrency" spacing="true" width="450px">
+                                        <label value="msg://primaryCurrency" width="140px"/>
+                                        <lookupField id="primaryCurrency" datasource="mainDs" enable="false" optionsDatasource="pCurrencyDs"
+                                                     property="primaryCurrency"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="secondaryCost" spacing="true" width="450px">
+                                        <label value="msg://secondaryCost" width="140px"/>
+                                        <textField id="secondaryCost" datasource="mainDs" property="secondaryCost"/>
+                                    </hbox>
+                                    <hbox expand="secondaryCurrency" spacing="true" width="450px">
+                                        <label value="msg://secondaryCurrency" width="140px"/>
+                                        <lookupField id="secondaryCurrency" datasource="mainDs" enable="false" optionsDatasource="sCurrencyDs"
+                                                     property="secondaryCurrency"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="terniaryCost" spacing="true" width="450px">
+                                        <label value="msg://terniaryCost" width="140px"/>
+                                        <textField id="terniaryCost" datasource="mainDs" property="terniaryCost"/>
+                                    </hbox>
+                                    <hbox expand="terniaryCurrency" spacing="true" width="450px">
+                                        <label value="msg://terniaryCurrency" width="140px"/>
+                                        <lookupField id="terniaryCurrency" datasource="mainDs" enable="false" optionsDatasource="tCurrencyDs"
+                                                     property="terniaryCurrency"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="commentRub_ru" spacing="true" width="450px">
+                                        <label value="msg://commentRub_ru" width="140px"/>
+                                        <textArea id="commentRub_ru" datasource="mainDs" height="200px" property="comment2_ru"/>
+                                    </hbox>
+                                    <hbox expand="commentEur_ru" spacing="true" width="450px">
+                                        <label value="msg://commentEur_ru" width="140px"/>
+                                        <textArea id="commentEur_ru" datasource="mainDs" height="200px" property="comment_ru"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="commentEur_en" spacing="true" width="450px">
+                                        <label value="msg://commentEur_en" width="140px"/>
+                                        <textArea id="commentEur_en" datasource="mainDs" height="200px" property="comment_en"/>
+                                    </hbox>
+                                    <hbox expand="comment3" spacing="true" width="450px">
+                                        <label value="msg://comment3" width="140px"/>
+                                        <textArea id="comment3" datasource="mainDs" height="200px" property="comment3"/>
+                                    </hbox>
+                                </flowBox>
+                                <hbox spacing="true">
+                                    <label/>
+                                    <button id="enqueueToExportBtn" caption="msg://enqueueToExport" invoke="enqueueToExport"/>
+                                </hbox>
+                            </vbox>
+                        </vbox>
+                    </scrollBox>
+                </groupBox>
+            </tab>
+            <tab id="costLogTab" caption="msg://costLogTab" lazy="true">
+                <iframe id="costLogFrame" height="100%" screen="entityLogFrame"/>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions" screen="extendedEditWindowActions"/>
+    </layout>
+</window>

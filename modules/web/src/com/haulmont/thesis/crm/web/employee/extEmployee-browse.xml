@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" class="com.haulmont.thesis.crm.web.employee.ExtEmployeeBrowser"
+        extends="com/haulmont/thesis/web/ui/employee/employee-browse.xml" focusComponent="employeesTable"
+        messagesPack="com.haulmont.thesis.crm.web.employee" xmlns:ext="http://schemas.haulmont.com/cuba/4.1/window-ext.xsd">
+    <layout>
+        <groupTable id="employeesTable">
+            <columns>
+                <column id="number" collapsed="true"/>
+                <column id="phoneNumExtnesion" caption="msg://com.haulmont.thesis.crm.entity/ExtEmployee.phoneNumExtnesion" ext:index="9"/>
+                <column id="mobilePhone" caption="msg://mobilePhone" ext:index="10"/>
+                <column id="location" caption="msg://com.haulmont.thesis.crm.entity/ExtEmployee.location" ext:index="11"/>
+                <column id="fax" collapsed="true"/>
+                <column id="room"/>
+            </columns>
+        </groupTable>
+    </layout>
+</window>

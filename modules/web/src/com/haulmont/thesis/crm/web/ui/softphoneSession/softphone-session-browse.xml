@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption"
+        class="com.haulmont.thesis.crm.web.ui.softphoneSession.SoftphoneSessionBrowser"
+        messagesPack="com.haulmont.thesis.crm.web.ui.softphoneSession">
+    <dsContext>
+        <collectionDatasource id="sessionsDs" allowCommit="false" class="com.haulmont.thesis.crm.entity.SoftPhoneSession"
+                              datasourceClass="com.haulmont.thesis.crm.web.ui.softphoneSession.datasource.SoftphoneSessionCollectionDatasource"/>
+        <collectionDatasource id="eventsDs" class="com.haulmont.thesis.crm.entity.SoftPhoneEvent" view="_local">
+            <query>
+                <![CDATA[select e from crm$SoftPhoneEvent e where e.session.id = :ds$sessionsDs order by e.createTs desc]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="operatorsDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="split" spacing="true">
+        <split id="split" orientation="vertical" pos="60" width="100%">
+            <vbox id="tablePanel" expand="softPhoneSessionTable" height="100%" spacing="true">
+                <table id="softPhoneSessionTable" editable="false" presentations="true" width="100%">
+                    <actions>
+                        <action id="edit"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="lineNumber"/>
+                        <column id="lastName"/>
+                        <column id="firstName"/>
+                        <column id="activeProfile"/>
+                        <column id="campaignEnabled"/>
+                        <column id="operator"/>
+                        <column id="status" collapsed="true"/>
+                        <column id="softphoneVendor" collapsed="true"/>
+                    </columns>
+                    <rows datasource="sessionsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="softPhoneSessionTable.edit" icon="icons/edit.png"/>
+                        <button action="softPhoneSessionTable.remove" icon="icons/remove.png"/>
+                        <button action="softPhoneSessionTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+            <tabSheet id="sessionDetailsTabSheet" height="100%">
+                <tab id="eventsTab" caption="msg://events" margin="true">
+                    <table id="eventsTable" height="100%" presentations="true" reorderingAllowed="false" sortable="false" width="100%">
+                        <columns>
+                            <column id="createTs" width="120"/>
+                            <column id="name" width="120"/>
+                            <column id="description"/>
+                        </columns>
+                        <rows datasource="eventsDs"/>
+                    </table>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

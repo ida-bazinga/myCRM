@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://projectGroupEditor.caption"
+        class="com.haulmont.thesis.crm.web.project.ProjectGroupEditor" focusComponent="vBox"
+        datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.project">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="group"/>
+        <collectionDatasource id="parentGroupDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where e.isGroup = true order by e.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox" height="100%" spacing="true">
+        <vbox id="vBox" spacing="true">
+            <hbox spacing="true">
+                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.code" width="${lWidth}"/>
+                <textField id="code" datasource="mainDs" property="code" required="true" width="100px"/>
+            </hbox>
+            <hbox spacing="true" expand="parentGroup" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.parentProject" width="${lWidth}"/>
+                <lookupPickerField id="parentGroup" datasource="mainDs" optionsDatasource="parentGroupDs" property="parentProject">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="clear"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox spacing="true" expand="name" width="100%">
+                <label value="msg://com.haulmont.thesis.core.entity/Project.name" width="${lWidth}"/>
+                <textField id="name" datasource="mainDs" property="name" required="true"/>
+            </hbox>
+            <hbox spacing="true" expand="name_en" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/ExtProject.name_en" width="${lWidth}"/>
+                <textField id="name_en" datasource="mainDs" property="name_en"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="100px"/>
+</window>

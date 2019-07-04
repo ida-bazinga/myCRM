@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.projectRoom.ProjectRoomEditor" datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.projectRoom">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.ProjectRoom" view="edit"/>
+        <collectionDatasource id="resourceRoomDs" class="com.haulmont.thesis.crm.entity.Room" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Room e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout margin="true" spacing="true" width="100%">
+        <groupBox id="groupFirst" caption="Главная" collapsable="true" collapsed="false" orientation="vertical" spacing="true">
+            <hbox expand="resourceRoom" spacing="true" width="100%">
+                <label id="resourceLabel" value="msg://room" width="135px"/>
+                <lookupPickerField id="resourceRoom" datasource="mainDs" optionsDatasource="resourceRoomDs" property="room" required="true">
+                    <actions>
+                        <action id="clear"/>
+                        <action id="lookup" openType="DIALOG"/>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox id="hboxRoomVariant" expand="roomVariant" width="100%">
+                <label id="roomVariantLabel" value="msg://roomVariant" width="140px"/>
+                <lookupField id="roomVariant" datasource="mainDs" property="variant"/>
+            </hbox>
+            <hbox id="hboxRoomStatus" expand="roomStatus" width="100%">
+                <label id="roomStatusLabel" value="msg://roomStatus" width="140px"/>
+                <lookupField id="roomStatus" datasource="mainDs" property="status"/>
+            </hbox>
+            <hbox id="hboxOption" width="100%">
+                <label id="optionLabel" value="msg://com.haulmont.thesis.crm.entity/RoomResourceLoadingsInfo.isOption" width="140px"/>
+                <checkBox id="isOption"/>
+                <label id="optionDateLabel" value="msg://com.haulmont.thesis.crm.entity/RoomResourceLoadingsInfo.optionDate" width="140px"/>
+                <dateField id="optionDate" datasource="mainDs" property="optionDate" dateFormat="dd.MM.yyyy" visible="false" width="120px"/>
+            </hbox>
+            <hbox id="hboxArea" expand="area" width="100%">
+                <label id="areaLabel" value="msg://area" width="140px"/>
+                <textField id="area" datasource="mainDs" property="area"/>
+            </hbox>
+        </groupBox>
+        <groupBox id="groupDates" caption="msg://dates" collapsable="true" collapsed="false" orientation="vertical" spacing="true">
+            <hbox expand="installationDate" spacing="true">
+                    <label value="msg://installationDate" width="125px"/>
+                    <dateField id="installationDate" datasource="mainDs" dateFormat="dd.MM.yyyy HH:mm" property="installationDate" resolution="MIN"/>
+                </hbox>
+                <hbox expand="dateFinishPlan" spacing="true">
+                    <label value="msg://startDate" width="125px"/>
+                    <dateField id="dateFinishPlan" datasource="mainDs" dateFormat="dd.MM.yyyy HH:mm" property="startDate" resolution="MIN"/>
+                </hbox>
+                <hbox expand="deinstallationDatePlan" spacing="true">
+                    <label value="msg://endDate" width="125px"/>
+                    <dateField id="deinstallationDatePlan" datasource="mainDs" dateFormat="dd.MM.yyyy HH:mm" property="endDate" resolution="MIN"/>
+                </hbox>
+                <hbox expand="deinstallationDate" spacing="true">
+                    <label value="msg://deinstallationDate" width="125px"/>
+                    <dateField id="deinstallationDate" datasource="mainDs" dateFormat="dd.MM.yyyy HH:mm" property="deinstallationDate"
+                               resolution="MIN"/>
+                </hbox>
+                <hbox expand="isEarlyInstallation" spacing="true">
+                    <label value="msg://com.haulmont.thesis.crm.entity/RoomResourceLoadingsInfo.isEarlyInstallation" width="125px"/>
+                    <checkBox id="isEarlyInstallation" datasource="mainDs" property="isEarlyInstallation"/>
+                </hbox>
+                <hbox expand="isLateDeinstallation" spacing="true">
+                    <label value="msg://com.haulmont.thesis.crm.entity/RoomResourceLoadingsInfo.isLateDeinstallation" width="125px"/>
+                    <checkBox id="isLateDeinstallation" datasource="mainDs" property="isLateDeinstallation"/>
+                </hbox>
+        </groupBox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

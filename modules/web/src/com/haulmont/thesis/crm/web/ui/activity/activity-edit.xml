@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://EditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.activity.ActivityEditor" datasource="activityDs" messagesPack="com.haulmont.thesis.crm.web.ui.activity">
+    <dsContext>
+        <datasource id="activityDs" class="com.haulmont.thesis.crm.entity.Activity" view="edit"/>
+        <!--
+        <collectionDatasource id="projectDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select p from crm$Project p where p.name like :(?i)custom$searchString order by p.name]]>
+            </query>
+        </collectionDatasource>
+        -->
+        <collectionDatasource id="projectDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select p from crm$Project p where @between(p.deinstallationDatePlan, now-6, now+60, month) order by p.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="campaignDs" class="com.haulmont.thesis.crm.entity.OutboundCampaign" view="activity-edit">
+            <query>
+                <![CDATA[select e from crm$OutboundCampaign e where e.docKind.code = 'OCC' ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="activityResultDs" class="com.haulmont.thesis.crm.entity.ActivityResult" view="edit">
+            <query>
+                <![CDATA[select e from crm$ActivityResult e where e.docCategory is null or e.docCategory.id = :ds$campaignDs.docCategory]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contactPersonsDs" class="com.haulmont.thesis.crm.entity.ExtContactPerson" view="with-communication">
+            <query>
+                <![CDATA[select e from df$ContactPerson e where e.company.id = :ds$activityDs.company]]>
+                <filter>
+                    <or>
+                        <c join=", crm$Communication co">
+                            co.contactPerson.id = e.id and co.mainPart = :param$phone
+                            and co.commKind.communicationType = @enum(com.haulmont.thesis.crm.entity.CommunicationTypeEnum.phone)
+                        </c>
+                    </or>
+                </filter>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="communicationsDs" class="com.haulmont.thesis.crm.entity.Communication" view="edit">
+            <query>
+                <![CDATA[select e from crm$Communication e where e.contactPerson.id = :ds$activityDs.contact
+                 and e.commKind.communicationType = @enum(com.haulmont.thesis.crm.entity.CommunicationTypeEnum.phone)]]>
+                <filter>
+                    <or>
+                        <c>
+                            <![CDATA[e.mainPart = :param$phone]]>
+                        </c>
+                    </or>
+                </filter>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="mainBox" spacing="true">
+            <vbox id="header" spacing="true">
+                <hbox align="TOP_CENTER" spacing="true">
+                    <vbox>
+                        <label align="TOP_CENTER" value="msg://startTime"/>
+                        <hbox spacing="true" width="100%">
+                            <label id="startTime" datasource="activityDs" property="createTs" stylename="thesis-bold" width="100%">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm:ss"/>
+                            </label>
+                        </hbox>
+                    </vbox>
+                    <vbox>
+                        <label align="TOP_CENTER" value="msg://connectionStartTime"/>
+                        <hbox spacing="true" width="100%">
+                            <label value="   |   " width="AUTO"/>
+                            <label id="connStartTime" datasource="activityDs" property="connectionStartTime" stylename="thesis-bold">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm:ss"/>
+                            </label>
+                        </hbox>
+                    </vbox>
+                    <vbox>
+                        <label align="TOP_CENTER" value="msg://connectionEndTime"/>
+                        <hbox spacing="true" width="100%">
+                            <label value="   |   " width="AUTO"/>
+                            <label id="endTime" datasource="activityDs" property="connectionEndTime" stylename="thesis-bold">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm:ss"/>
+                            </label>
+                        </hbox>
+                    </vbox>
+                    <vbox>
+                        <label align="TOP_CENTER" value="msg://endTime"/>
+                        <hbox spacing="true" width="100%">
+                            <label value="   |   " width="AUTO"/>
+                            <label id="EndTime" datasource="activityDs" property="endTime" stylename="thesis-bold">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yy HH:mm:ss"/>
+                            </label>
+                        </hbox>
+                    </vbox>
+                </hbox>
+                <hbox align="TOP_CENTER" spacing="true">
+                    <label stylename="thesis-bold" value="msg://preparationSeconds"/>
+                    <label id="prepSeconds" datasource="activityDs" property="preparationSeconds">
+                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                    </label>
+                    <label stylename="thesis-bold" value="msg://connectingSeconds"/>
+                    <label id="connSeconds" datasource="activityDs" property="connectingSeconds">
+                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                    </label>
+                    <label stylename="thesis-bold" value="msg://editingSeconds"/>
+                    <label id="editingSeconds" datasource="activityDs" property="editingSeconds">
+                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                    </label>
+                    <label stylename="thesis-bold" value="msg://totalSeconds"/>
+                    <label id="totalSeconds" datasource="activityDs" property="totalSeconds">
+                        <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="mm:ss"/>
+                    </label>
+                </hbox>
+            </vbox>
+            <vbox id="separator" stylename="thesis-top-separator" margin="false,false,true,false"/>
+            <vbox id="mainBox" expand="detailsBox" spacing="true" width="100%">
+                <hbox id="directionBox" expand="direction" width="100%" spacing="true">
+                    <label value="msg://direction" width="${lWidth}"/>
+                    <lookupField id="direction" datasource="activityDs" property="direction" required="true" editable="false"/>
+                </hbox>
+                <hbox id="campaignBox" expand="campaign" margin="false,true,false,false" width="100%" spacing="true">
+                    <label value="msg://callCampaign" width="${lWidth}"/>
+                    <lookupPickerField id="campaign" optionsDatasource="campaignDs" editable="false"
+                                       datasource="activityDs" property="campaign">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="lookup"/>
+                            <action id="open"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox id="projectBox" expand="project" width="100%" spacing="true">
+                    <label value="msg://project" width="${lWidth}"/>
+                    <!--
+                    <searchPickerField id="project" optionsDatasource="projectDs" editable="false"
+                                       datasource="activityDs" property="project" required="true">
+                        <actions>
+                            <action id="clear"/>
+                            <action id="lookup"/>
+                            <action id="open"/>
+                        </actions>
+                    </searchPickerField>
+                    -->
+                    <lookupPickerField id="project" datasource="activityDs" optionsDatasource="projectDs" property="project" editable="false" required="true">
+                        <actions>
+                            <action id="clear"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox id="companyBox" expand="company" width="100%" spacing="true">
+                    <label value="msg://company" width="${lWidth}"/>
+                    <lookupPickerField id="company" datasource="activityDs" property="company" editable="false" required="true">
+                        <actions>
+                            <action id="clear"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox id="contactBox" expand="contact" width="100%" spacing="true">
+                    <label value="msg://contact" width="${lWidth}"/>
+                    <lookupPickerField id="contact" datasource="activityDs" optionsDatasource="contactPersonsDs" editable="false" required="true"
+                                       property="contact" captionProperty="name">
+                        <actions>
+                            <action id="clear"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox id="commBox" expand="communication" width="100%" margin="false,true,false,false" spacing="true" visible="false">
+                    <label value="msg://communication" width="${lWidth}"/>
+                    <lookupPickerField id="communication" optionsDatasource="communicationsDs" captionProperty="mainPart">
+                        <actions>
+                            <action id="clear"/>
+                        </actions>
+                    </lookupPickerField>
+                </hbox>
+                <hbox id="phoneBox" expand="phone" width="100%" spacing="true" visible="false">
+                    <label value="msg://phone" width="${lWidth}"/>
+                    <label id="phone" datasource="activityDs" property="phone" stylename="thesis-bold"/>
+                </hbox>
+                <hbox id="resultBox" expand="result" width="100%" spacing="true" margin="false,true,false,false">
+                    <label value="msg://result" width="${lWidth}"/>
+                    <lookupField id="result" datasource="activityDs" optionsDatasource="activityResultDs" property="result" editable="false"/>
+                </hbox>
+                <hbox id="scheduleCallDateBox" expand="scheduleCallDate" width="100%" spacing="true" margin="false,true,false,false" visible="false">
+                    <label value="msg://scheduleCallDate" width="${lWidth}"/>
+                    <dateField id="scheduleCallDate"/>
+                </hbox>
+                <hbox id="redirectedBox" spacing="true" expand="redirectedTo" visible="false" width="100%" margin="false,true,false,false">
+                    <label value="msg://redirectedTo" width="${lWidth}"/>
+                    <textField id="redirectedTo" datasource="activityDs" property="redirectedTo"/>
+                    <label value="msg://redirectedToNumber" width="AUTO"/>
+                    <textField id="redirectedToNumber" datasource="activityDs" property="redirectedToNumber" width="120px"/>
+                </hbox>
+                <vbox id="recallBox" spacing="true" visible="false" width="100%">
+                    <hbox id="contactToRecallBox" expand="nextContact" spacing="true" width="100%">
+                        <label value="msg://nextContact" width="${lWidth}"/>
+                        <lookupPickerField id="nextContact" optionsDatasource="contactPersonsDs">
+                            <actions>
+                                <action id="lookup" openType="DIALOG"/>
+                                <action id="open" openType="DIALOG"/>
+                            </actions>
+                        </lookupPickerField>
+                    </hbox>
+                    <hbox id="phoneToRecallBox" expand="phoneToRecall" spacing="true" width="100%">
+                        <label value="msg://ByPhoneNumber" width="${lWidth}"/>
+                        <lookupField id="phoneToRecall" optionsDatasource="communicationsDs" captionProperty="mainPart"/>
+                    </hbox>
+                    <hbox id="timeToRecallBox" expand="timeToRecall" spacing="true" width="100%">
+                        <label value="msg://ByTime" width="${lWidth}"/>
+                        <dateField id="timeToRecall"/>
+                    </hbox>
+                </vbox>
+
+                <hbox id="detailsBox" expand="details" margin="false,true,false,false" width="100%" spacing="true">
+                    <label value="msg://details" width="${lWidth}"/>
+                    <textArea id="details" datasource="activityDs" property="resultDetails" rows="5" editable="false"/>
+                </hbox>
+            </vbox>
+        </vbox>
+        <hbox expand="windowActions" spacing="true" width="100%">
+            <iframe id="windowActions" screen="editWindowActions"/>
+            <label id="owner" align="BOTTOM_CENTER" datasource="activityDs" property="owner.name" stylename="thesis-bold"/>
+            <label align="BOTTOM_CENTER" value="   |   " width="AUTO"/>
+            <label align="BOTTOM_CENTER" datasource="activityDs" property="callId"/>
+        </hbox>
+    </layout>
+    <assign name="lWidth" value="95px"/>
+    <assign name="width_separator" value="5px"/>
+</window>

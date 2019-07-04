@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        datasource="mainDs"
+        class="com.haulmont.thesis.crm.web.company.history.HistoryCompanyCellsEdit"
+        messagesPack="com.haulmont.thesis.crm.web.company.history">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.HistoryCompanyCells"
+                    view="historyCompanyCells"/>
+    </dsContext>
+    <layout expand="windowActions" spacing="true" width="100%">
+        <hbox expand="startDate" spacing="true" width="100%">
+            <label value="msg://startDate" width="70px"/>
+            <dateField id="startDate"
+                       datasource="mainDs"
+                       dateFormat="dd.MM.yyyy"
+                       property="startDate"
+                       resolution="MIN"/>
+
+        </hbox>
+        <hbox expand="item" spacing="true" width="100%">
+            <label value="msg://item" width="70px"/>
+            <textField id="item"
+                       datasource="mainDs"
+                       property="item"/>
+            <button id="lookupAddressButton" caption=""
+                    icon="icons/search.png"/>
+            <button id="createAddressButton" caption=""
+                    icon="icons/plus-btn.png"/>
+        </hbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

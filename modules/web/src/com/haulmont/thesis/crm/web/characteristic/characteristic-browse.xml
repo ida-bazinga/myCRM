@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.characteristic.CharacteristicBrowser" focusComponent="genericFilter" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.characteristic">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.Characteristic" view="edit">
+            <query>
+                <![CDATA[select e from crm$Characteristic e order by e.name_ru]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="mainTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <groupTable id="mainTable" multiselect="true" presentations="true" width="100%">
+                <actions>
+                    <action id="create"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                </actions>
+                <columns>
+                    <group>
+                        <column id="characteristicType"/>
+                    </group>
+                    <column id="code"/>
+                    <column id="name_ru"/>
+                    <column id="duration"/>
+                    <column id="comment_ru" collapsed="true"/>
+                    <column id="name_en"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button id="createButton" action="mainTable.create"/>
+                    <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                    <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

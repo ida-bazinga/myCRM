@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.emailCampaignTarget.EmailCampaignTargetEditor"
+        datasource="targetDs"
+        messagesPack="com.haulmont.thesis.crm.web.emailCampaignTarget">
+    <dsContext>
+        <datasource id="targetDs"
+                    class="com.haulmont.thesis.crm.entity.EmailCampaignTarget"
+                    view="edit"/>
+    </dsContext>
+    <assign name="lWidth"
+            value="80px"/>
+    <layout expand="vBox">
+        <vbox id="vBox"
+              spacing="true">
+            <grid id="mainPane"
+                  spacing="true"
+                  width="100%">
+                <columns>
+                    <column/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row id="companyRow">
+                        <label id="companyLabel"
+                               value="msg://ExtCompany"
+                               width="80px"/>
+                        <pickerField id="company"
+                                     datasource="targetDs"
+                                     editable="false"
+                                     property="communication.contactPerson.company"
+                                     width="100%">
+                            <actions>
+                                <action id="open"/>
+                            </actions>
+                        </pickerField>
+                    </row>
+                    <row id="contactRow">
+                        <label id="contactLabel"
+                               value="msg://contact"
+                               width="80px"/>
+                        <pickerField id="contact"
+                                     captionProperty="fullName"
+                                     datasource="targetDs"
+                                     editable="false"
+                                     property="communication.contactPerson"
+                                     width="100%"/>
+                    </row>
+                    <row id="addressRow">
+                        <label id="contactPhoneLabel"
+                               value="msg://emailAddress"
+                               width="80px"/>
+                        <pickerField id="contactEmail"
+                                     captionProperty="maskedAddress"
+                                     datasource="targetDs"
+                                     editable="false"
+                                     property="communication"
+                                     width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="editWindowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

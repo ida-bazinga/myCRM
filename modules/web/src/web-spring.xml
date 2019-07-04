@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task">
+    <!-- Annotation-based beans -->
+    <context:component-scan base-package="com.haulmont.thesis.crm"/>
+    <!-- Background Tasks -->
+    <!--<bean id="backgroundWorkerScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">-->
+    <!--<property name="daemon" value="true"/>-->
+    <!--<property name="poolSize" value="1"/>-->
+    <!--</bean>-->
+    <!--<task:scheduled-tasks scheduler="backgroundWorkerScheduler">-->
+    <!--<task:scheduled ref="cuba_BackgroundWorker_WatchDog" method="cleanupTasks" fixed-delay="2000"/>-->
+    <!--</task:scheduled-tasks>-->
+    <!-- <bean id="thesis_CardDeadlineDatasource" scope="prototype" class="com.haulmont.thesis.crm.web.ui.ExtCardDeadlineDatasource"/>-->
+
+    <!--Fix list docTypeSelect excludedMetaClasses-->
+    <bean id="thesis_CreateSubCardAction" class="com.haulmont.thesis.crm.web.ui.common.ExtCreateSubCardAction" scope="prototype"/>
+
+
+    <bean class="com.haulmont.cuba.web.sys.remoting.WebRemoteProxyBeanCreator">
+        <property name="clusterInvocationSupport" ref="cuba_clusterInvocationSupport"/>
+        <property name="remoteServices">
+            <map>
+                <entry key="crm_OperatorQueueService" value="com.haulmont.thesis.crm.core.app.contactcenter.OperatorQueueService"/>
+                <entry key="crm_CallerIdService" value="com.haulmont.thesis.crm.core.app.contactcenter.CallerIdService"/>
+                <entry key="crm_ActivityService" value="com.haulmont.thesis.crm.core.app.service.ActivityService"/>
+                <entry key="crm_CampaignService" value="com.haulmont.thesis.crm.core.app.service.CampaignService"/>
+                <entry key="crm_MyUtilsService" value="com.haulmont.thesis.crm.core.app.MyUtilsService"/>
+                <entry key="crm_EvotorService" value="com.haulmont.thesis.crm.core.app.cashmachine.evotor.EvotorService"/>
+                <entry key="crm_UnisenderMailingService" value="com.haulmont.thesis.crm.core.app.UnisenderMailingService"/>
+                <entry key="crm_ConfigurationSectionService" value="com.haulmont.thesis.crm.core.app.restApiService.ConfigurationSectionService"/>
+                <entry key="crm_CreateRoomRequestService" value="com.haulmont.thesis.crm.core.app.restApiService.CreateRoomRequestService"/>
+                <entry key="crm_CampaignTargetService" value="com.haulmont.thesis.crm.core.app.service.CampaignTargetService"/>
+                <entry key="crm_ContactPersonService" value="com.haulmont.thesis.crm.core.app.service.ContactPersonService"/>
+                <entry key="crm_CallCampaignOperatorQueueService" value="com.haulmont.thesis.crm.core.app.contactcenter.CallCampaignOperatorQueueService"/>
+                <entry key="crm_CallCampaignTargetService" value="com.haulmont.thesis.crm.core.app.contactcenter.CallCampaignTargetService"/>
+                <entry key="crm_CallCampaignOperatorQueueService"
+                       value="com.haulmont.thesis.crm.core.app.contactcenter.CallCampaignOperatorQueueService"/>
+                <entry key="crm_ResourceLoadingService" value="com.haulmont.thesis.crm.core.app.loadingInfo.ResourceLoadingService"/>
+                <entry key="ts_cardDeadlineInfoService" value="com.haulmont.thesis.crm.core.app.ExtCardDeadlineInfoService"/>
+            </map>
+        </property>
+    </bean>
+</beans>

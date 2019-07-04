@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.territorialClassifier.TerritorialClassifierBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="territorialClassifierTable"
+        messagesPack="com.haulmont.thesis.crm.web.territorialClassifier">
+    <dsContext>
+        <collectionDatasource id="territorialClassifierDs"
+                              class="com.haulmont.thesis.crm.entity.TerritorialClassifier"
+                              view="_local">
+            <query>
+                <![CDATA[select distinct p from crm$TerritorialClassifier p order by p.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="territorialClassifierTable"
+                    datasource="territorialClassifierDs"
+                    stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <table id="territorialClassifierTable"
+                       height="100%"
+                       width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="comment_ru"/>
+                    </columns>
+                    <rows datasource="territorialClassifierDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="territorialClassifierTable.create"/>
+                        <button action="territorialClassifierTable.edit"
+                                icon="icons/edit.png"/>
+                        <button action="territorialClassifierTable.remove"
+                                icon="icons/remove.png"/>
+                        <button action="territorialClassifierTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

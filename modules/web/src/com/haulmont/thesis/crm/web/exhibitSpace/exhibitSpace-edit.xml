@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.exhibitSpace.ExhibitSpaceEditor" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.exhibitSpace">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.ExhibitSpace" view="edit"/>
+        <collectionDatasource id="addressDs" class="com.haulmont.thesis.crm.entity.Address" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Address e where e.name_ru like :(?i)custom$searchString]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="unitDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Unit e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabsheet" height="100%" spacing="true" width="100%">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab" caption="msg://mainTab" margin="true">
+                <scrollBox id="scrollBox" height="100%">
+                    <grid id="grid" margin="true,false,false,false" spacing="true" stylename="edit-area" width="60%">
+                        <columns>
+                            <column/>
+                            <column flex="2.0"/>
+                            <column/>
+                            <column flex="2.0"/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="msg://code"/>
+                                <textField id="code" colspan="3" datasource="mainDs" property="code" required="true" width="100%"/>
+                            </row>
+                            <row>
+                                <label value="msg://name_ru"/>
+                                <textField id="name_ru" colspan="3" datasource="mainDs" property="name_ru" required="true" width="100%"/>
+                            </row>
+                            <row>
+                                <label value="msg://name_en"/>
+                                <textField id="name_en" colspan="3" datasource="mainDs" property="name_en" required="true" width="100%"/>
+                            </row>
+                            <row>
+                                <label value="msg://operator"/>
+                                <pickerField id="operator" colspan="3" datasource="mainDs" property="operator" width="100%">
+                                    <actions>
+                                        <action id="clear"/>
+                                        <action id="lookup"/>
+                                        <action id="open"/>
+                                    </actions>
+                                </pickerField>
+                            </row>
+                            <row>
+                                <label value="msg://area"/>
+                                <textField id="area" datasource="mainDs" property="area" width="100%"/>
+                                <label value="msg://unit"/>
+                                <lookupField id="unit" datasource="mainDs" optionsDatasource="unitDs" property="unit" width="100%"/>
+                            </row>
+                            <row>
+                                <label value="msg://Address"/>
+                                <searchPickerField id="extLegalAddress" colspan="3" datasource="mainDs" optionsDatasource="addressDs"
+                                                   property="extAddress" width="100%">
+                                    <actions>
+                                        <action id="clear"/>
+                                        <action id="lookup"/>
+                                        <action id="open"/>
+                                    </actions>
+                                </searchPickerField>
+                            </row>
+                            <row>
+                                <label value="msg://evotorStoreId"/>
+                                <textField id="evotorStoreId" colspan="3" datasource="mainDs" property="evotorStoreId" width="100%"/>
+                            </row>
+                            <row>
+                                <label value="msg://comment_ru"/>
+                                <textArea id="comment_ruField" colspan="3" datasource="mainDs" property="comment_ru" width="100%"/>
+                            </row>
+                            <row>
+                                <label value="msg://comment_en"/>
+                                <textArea id="comment_enField" colspan="3" datasource="mainDs" property="comment_en" width="100%"/>
+                            </row>
+                        </rows>
+                    </grid>
+                </scrollBox>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

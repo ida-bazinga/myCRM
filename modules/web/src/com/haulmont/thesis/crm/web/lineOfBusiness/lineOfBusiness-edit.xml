@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.lineOfBusiness.LineOfBusinessEditor" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.lineOfBusiness">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.LineOfBusiness" view="browse"/>
+        <collectionDatasource id="parentDs" class="com.haulmont.thesis.crm.entity.LineOfBusiness" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$LineOfBusiness e where e.isGroup = true order by e.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" spacing="true">
+            <hbox expand="parentPicker" spacing="true" width="100%">
+                <label value="msg://code" width="100px"/>
+                <textField id="code" datasource="mainDs" property="code" required="true" width="100px"/>
+                <label value="msg://parent" width="100px"/>
+                <lookupPickerField id="parentPicker" datasource="mainDs" optionsDatasource="parentDs" property="parentLine">
+                    <actions>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox expand="name_ru" spacing="true" width="100%">
+                <label value="msg://name_ru" width="100px"/>
+                <textField id="name_ru" datasource="mainDs" property="name_ru" required="true"/>
+            </hbox>
+            <hbox expand="comment_ru" spacing="true" width="100%">
+                <label value="msg://comment_ru" width="100px"/>
+                <textArea id="comment_ru" datasource="mainDs" property="comment_ru" rows="10"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

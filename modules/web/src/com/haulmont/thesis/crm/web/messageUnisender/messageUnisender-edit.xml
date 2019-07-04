@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.messageUnisender.MessageUnisenderEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.messageUnisender">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.MessageUnisender"
+                    view="_local"/>
+    </dsContext>
+    <layout expand="mainScrollBox"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <scrollBox id="mainScrollBox">
+            <grid id="grid"
+                  margin="true,false,false,false"
+                  spacing="true"
+                  stylename="edit-area"
+                  width="800px">
+                <columns>
+                    <column flex="0.1"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code"
+                                   datasource="mainDs"
+                                   property="code"
+                                   width="100px"/>
+                    </row>
+                    <row>
+                        <label value="msg://list_id"/>
+                        <textField id="list_id"
+                                   datasource="mainDs"
+                                   property="list_id"
+                                   width="100px"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru"
+                                   datasource="mainDs"
+                                   property="name_ru"
+                                   width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </scrollBox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

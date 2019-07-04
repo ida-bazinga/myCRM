@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.basic.edit.BaseLookupEditor" datasource="lookupDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.basic">
+    <dsContext>
+        <datasource id="lookupDs" class="com.haulmont.thesis.crm.entity.BaseLookup" view="_local"/>
+    </dsContext>
+
+    <assign name="lWidth" value="90px"/>
+
+    <layout expand="windowActions" margin="true" spacing="true">
+        <vbox spacing="true">
+            <fieldGroup id="fieldGroup" height="100%" datasource="lookupDs" width="100%">
+                <column width="100%">
+                    <field id="code" required="true" requiredMessage="msg://validation.required.codeMsg" width="100px"/>
+                    <field id="name_ru" required="true" requiredMessage="msg://validation.required.nameMsg" width="100%"/>
+                    <field id="comment_ru" rows="3" width="100%"/>
+                </column>
+            </fieldGroup>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

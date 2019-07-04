@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.messageCampaignStatus.MessageCampaignStatusBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.messageCampaignStatus">
+    <dsContext>
+        <collectionDatasource id="mainDs"
+                              class="com.haulmont.thesis.crm.entity.MessageCampaignStatus"
+                              view="_local">
+            <query>
+                <![CDATA[select e from crm$MessageCampaignStatus e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="mainTable"
+                    datasource="mainDs"
+                    stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <table id="mainTable"
+                       height="100%"
+                       multiselect="true"
+                       width="100%">
+                    <actions>
+                        <action id="create"
+                                openType="DIALOG"/>
+                        <action id="edit"
+                                openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="comment_ru"
+                                collapsed="true"/>
+                        <column id="requestMessagesStatuses"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="createButton"
+                                action="mainTable.create"/>
+                        <button id="editBtn"
+                                action="mainTable.edit"
+                                icon="icons/edit.png"/>
+                        <button id="removeBtn"
+                                action="mainTable.remove"
+                                icon="icons/remove.png"/>
+                        <button id="refreshBtn"
+                                action="mainTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

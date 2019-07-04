@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://LookupCaption"
+        class="com.haulmont.thesis.crm.web.ui.contactperson.ContactPersonLookup"
+        lookupComponent="contactsTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.contactperson">
+    <dsContext>
+        <collectionDatasource id="contactsDs"
+                              class="com.haulmont.thesis.crm.entity.ExtContactPerson"
+                              maxResults="30"
+                              view="edit">
+            <query>
+                <![CDATA[select e from crm$ContactPerson e]]>
+                <filter>
+                    <or>
+                        <c>
+                            <![CDATA[e.company.id = :custom$company]]>
+                        </c>
+                    </or>
+                </filter>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="contactsTable"
+            spacing="true">
+        <filter id="filter"
+                datasource="contactsDs">
+            <properties include=".*"/>
+        </filter>
+        <table id="contactsTable"
+               presentations="true"
+               width="100%">
+            <actions>
+                <action id="create"
+                        openType="DIALOG"/>
+                <action id="edit"
+                        openType="DIALOG"/>
+                <action id="remove"/>
+                <action id="refresh"/>
+                <action id="expand"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="positionLong"/>
+                <column id="phone1"/>
+                <column id="phone2"/>
+                <column id="phone3"/>
+                <column id="email1"/>
+                <column id="sex"/>
+                <column id="comment"
+                        collapsed="true"/>
+                <column id="country"/>
+                <column id="city"/>
+                <column id="companyName"/>
+                <column id="isMail"/>
+                <column id="isProcessing"/>
+                <column id="region"/>
+                <column id="isLocked"/>
+                <column id="lerndAboutExhibition"/>
+            </columns>
+            <rows datasource="contactsDs"/>
+            <rowsCount/>
+            <buttonsPanel alwaysVisible="true">
+                <button action="contactsTable.create"/>
+                <button action="contactsTable.edit"
+                        icon="icons/edit.png"/>
+                <button action="contactsTable.remove"
+                        icon="icons/remove.png"/>
+                <button action="contactsTable.refresh"
+                        icon="icons/refresh.png"/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

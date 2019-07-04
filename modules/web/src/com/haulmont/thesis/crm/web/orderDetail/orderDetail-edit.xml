@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.orderDetail.OrderDetailEditor" datasource="detailDs"
+        messagesPack="com.haulmont.thesis.crm.web.orderDetail">
+    <dsContext>
+        <datasource id="detailDs" class="com.haulmont.thesis.crm.entity.OrderDetail" view="edit"/>
+        <collectionDatasource id="resourceDs" class="com.haulmont.thesis.crm.entity.OrdResource" view="edit">
+            <query>
+                <![CDATA[select p from crm$OrdResource p
+                 where p.orderDetail.id in (:ds$detailDs.id)]]>
+            </query>
+        </collectionDatasource>
+        <groupDatasource id="productDs" class="com.haulmont.thesis.crm.entity.Product" view="edit">
+            <query>
+                <![CDATA[select p from crm$Product p
+                 where exists (select c from crm$Cost c where c.product.id = p.id
+                 and (c.project.id = :custom$project or c.project.id IS NULL)
+                 and c.startDate <= CURRENT_DATE)
+                 and (p.exhibitSpace.id = :custom$exhibitSpace or p.exhibitSpace IS NULL)
+                 and (p.notInUse IS NULL or p.notInUse = false)
+                 and (p.nomenclature.notInUse is null or p.nomenclature.notInUse = false)
+                 and p.nomenclature.organization.id = :custom$organization
+                 order by p.title_ru]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="hotelDs" class="com.haulmont.thesis.crm.entity.Guesthouse" view="_local">
+            <query>
+                <![CDATA[select e from crm$Guesthouse e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="transferDs" class="com.haulmont.thesis.crm.entity.TransferType" view="_local">
+            <query>
+                <![CDATA[select e from crm$TransferType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="excursionDs" class="com.haulmont.thesis.crm.entity.TourType" view="_local">
+            <query>
+                <![CDATA[select e from crm$TourType e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout spacing="true">
+        <tabSheet id="tabsheet" height="100%">
+            <tab id="mainTab" caption="msg://mainTab" margin="true">
+                <vbox id="vBox" expand="buttonsPanel" height="100%" spacing="true">
+                    <hbox id="totalSumHBox" expand="taxSum" margin="true,false,true,false" spacing="true" width="600px">
+                        <label value="msg://totalSum"/>
+                        <label id="totalSum" datasource="detailDs" property="totalSum" stylename="thesis-bold"/>
+                        <label value="   |   "/>
+                        <label value="msg://sumWithoutNds" width="105px"/>
+                        <label id="sumWithoutNds" datasource="detailDs" datatype="decimal" property="sumWithoutNds"
+                               stylename="thesis-bold"/>
+                        <label value="   |   "/>
+                        <label value=" ("/>
+                        <label id="tax"/>
+                        <label value=") "/>
+                        <label id="taxSum" datasource="detailDs" property="taxSum" stylename="thesis-bold"/>
+                    </hbox>
+                    <vbox id="infoVBox" expand="commentHBox" margin="true,false,false,false" spacing="true"
+                          stylename="thesis-top-separator">
+                        <hbox expand="product" spacing="true" width="600px">
+                            <label value="msg://product" width="105px"/>
+                            <lookupPickerField id="product" datasource="detailDs" optionsDatasource="productDs"
+                                               property="product" required="true"/>
+                        </hbox>
+                        <hbox expand="break" spacing="true" width="600px">
+                            <label value="msg://amount" width="105px"/>
+                            <textField id="amount" datasource="detailDs" datatype="decimal" property="amount"
+                                       width="80px"/>
+                            <label id="unit" datasource="productDs" property="nomenclature.unit.name_ru"
+                                   stylename="thesis-bold"/>
+                            <label id="secondaryLabel" value="msg://for" width="30px"/>
+                            <textField id="secondaryAmount" datasource="detailDs" property="secondaryAmount"
+                                       width="80px"/>
+                            <label id="secondaryUnit" stylename="thesis-bold" width="30px"/>
+                            <label id="break" width="30px"/>
+                        </hbox>
+                        <hbox id="hboxDependentDetail" expand="dependentDetail" spacing="true" width="600px">
+                            <label value="msg://parentDetail" width="105px"/>
+                            <lookupField id="dependentDetail" datasource="detailDs" property="dependentDetail"/>
+                        </hbox>
+                        <hbox id="hboxOrderDetailGroup" expand="orderDetailGroup" spacing="true" width="600px">
+                            <label value="msg://orderDetailGroup" width="105px"/>
+                            <textField id="orderDetailGroup" datasource="detailDs" property="orderDetailGroup"/>
+                        </hbox>
+                        <hbox id="taxHBox" expand="cost" spacing="true" width="600px">
+                            <label value="msg://cost" width="105px"/>
+                            <textField id="costPerPiece" datasource="detailDs" editable="false" property="costPerPiece"
+                                       required="true" width="150px">
+                                <validator class="com.haulmont.thesis.crm.gui.components.validators.PositiveBigDecimalValidator"/>
+                            </textField>
+                            <label value="msg://costCalculated" width="170px"/>
+                            <label id="cost" datasource="detailDs" datatype="decimal" property="cost"
+                                   stylename="thesis-bold"/>
+                        </hbox>
+                        <vbox id="tourismBox" spacing="true" width="600px">
+                            <hbox id="clientNameBox" expand="clientName" spacing="true" visible="false" width="100%">
+                                <label id="clientNameLabel" value="msg://clientName" visible="false" width="90px"/>
+                                <textField id="clientName" datasource="detailDs" property="clientName" visible="false"/>
+                            </hbox>
+                            <hbox id="hotelBox" expand="hotel" spacing="true" visible="false" width="100%">
+                                <label id="hotelLabel" value="msg://hotel" visible="false" width="90px"/>
+                                <lookupPickerField id="hotel" datasource="detailDs" optionsDatasource="hotelDs"
+                                                   property="hotel" visible="false"/>
+                            </hbox>
+                            <hbox id="excursionBox" expand="excursion" spacing="true" visible="false" width="100%">
+                                <label id="excursionLabel" value="msg://excursion" visible="false" width="90px"/>
+                                <lookupPickerField id="excursion" datasource="detailDs" optionsDatasource="excursionDs"
+                                                   property="excursion" visible="false"/>
+                            </hbox>
+                            <hbox id="transferTypeBox" expand="transfer" spacing="true" visible="false" width="100%">
+                                <label id="transferLabel" value="msg://transfer" visible="false" width="90px"/>
+                                <lookupPickerField id="transfer" datasource="detailDs" optionsDatasource="transferDs"
+                                                   property="transferType" visible="false"/>
+                            </hbox>
+                        </vbox>
+                        <groupBox id="discountBox" caption="msg://discountBox" collapsable="true" collapsed="true"
+                                  spacing="true" width="600px">
+                            <hbox expand="discountType" spacing="true" width="100%">
+                                <label value="msg://discountType" width="90px"/>
+                                <lookupField id="discountType" datasource="detailDs" property="discountType"/>
+                            </hbox>
+                            <hbox id="HBDiscount" expand="discountSum" spacing="true" width="100%">
+                                <label value="msg://marginSum" width="90px"/>
+                                <textField id="marginSum" datasource="detailDs" property="marginSum" width="180px"/>
+                                <label value="msg://discountSum" width="90px"/>
+                                <textField id="discountSum" datasource="detailDs" property="discountSum"/>
+                            </hbox>
+                        </groupBox>
+                        <groupBox id="altNameBox" caption="msg://altNameBox" collapsable="true" collapsed="true"
+                                  spacing="true" width="600px">
+                            <hbox expand="alternativeName_ru" spacing="true" width="100%">
+                                <label value="msg://alternativeName_ru" width="90px"/>
+                                <textField id="alternativeName_ru" datasource="detailDs" property="alternativeName_ru"/>
+                            </hbox>
+                            <hbox expand="alternativeName_en" spacing="true" width="100%">
+                                <label value="msg://alternativeName_en" width="90px"/>
+                                <textField id="alternativeName_en" datasource="detailDs" property="alternativeName_en"/>
+                            </hbox>
+                        </groupBox>
+                        <hbox id="commentHBox" expand="comment_ru" spacing="true" width="600px">
+                            <label value="msg://comment_ru" width="105px"/>
+                            <textArea id="comment_ru" datasource="detailDs" property="comment_ru" rows="3"/>
+                        </hbox>
+                    </vbox>
+                    <buttonsPanel id="buttonsPanel" spacing="true">
+                        <button id="saveButton" caption="Сохранить и закрыть" invoke="saveButton" stylename="primary"/>
+                        <button id="closeButton" caption="Закрыть" invoke="closeButton" stylename="danger"/>
+                    </buttonsPanel>
+                </vbox>
+            </tab>
+        </tabSheet>
+    </layout>
+    <assign name="width" value="600px"/>
+    <assign name="lWidth" value="105px"/>
+    <assign name="lWidthGroup" value="90px"/>
+</window>

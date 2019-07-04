@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://captionBrowse"
+        class="com.haulmont.thesis.crm.web.facilityManagment.FacilityManagmentBrowser"
+        lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.facilityManagment">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.FacilityManagment" view="browse">
+            <query>
+                <![CDATA[select e from crm$FacilityManagment e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <groupTable id="mainTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="create" openType="DIALOG"/>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="facilityManagmentType"/>
+                        <column id="startDate"/>
+                        <column id="endDate"/>
+                        <column id="project"/>
+                        <column id="room"/>
+                        <column id="employee" collapsed="true"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel alwaysVisible="true">
+                        <button id="createButton" action="mainTable.create"/>
+                        <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                        <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

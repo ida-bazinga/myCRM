@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.addressPartType.AddressPartTypeBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="addressPartTypeTable"
+        messagesPack="com.haulmont.thesis.crm.web.addressPartType">
+    <dsContext>
+        <collectionDatasource id="addressPartTypeDs"
+                              class="com.haulmont.thesis.crm.entity.AddressPartType"
+                              view="_local">
+            <query>
+                <![CDATA[select distinct p from crm$AddressPartType p order by p.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="addressPartTypeTable"
+                    datasource="addressPartTypeDs"
+                    stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <table id="addressPartTypeTable"
+                       height="100%"
+                       width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="shortName_ru"/>
+                        <column id="name_en"/>
+                        <column id="shortName_en"/>
+                        <column id="layer"/>
+                        <column id="comment_ru"/>
+                    </columns>
+                    <rows datasource="addressPartTypeDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="addressPartTypeTable.create"/>
+                        <button action="addressPartTypeTable.edit"
+                                icon="icons/edit.png"/>
+                        <button action="addressPartTypeTable.remove"
+                                icon="icons/remove.png"/>
+                        <button action="addressPartTypeTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

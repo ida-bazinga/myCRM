@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://captionCompanyMergingDup"
+        class="com.haulmont.thesis.crm.web.company.ExtCompanyMergingdup" messagesPack="com.haulmont.thesis.crm.web.company">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="edit-crm">
+            <query>
+                <![CDATA[select e from df$Company e where e.id in (:custom$searchString)]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="split" height="100%" spacing="true">
+            <split id="split" orientation="vertical" pos="40" width="100%">
+                <scrollBox id="scrollBox" height="100%" width="98%">
+                    <vbox id="vBox" expand="groupBox" margin="true,false,false,false" spacing="true">
+                        <hbox id="hBoxShortName" expand="legalFormBox" margin="true,false,false,false" spacing="true" width="100%">
+                            <hbox id="companyTypeBox" spacing="true">
+                                <label id="companyTypeLabel" value="msg://companyType" width="125px"/>
+                                <lookupField id="companyType" required="true" width="230px"/>
+                            </hbox>
+                            <hbox id="legalFormBox" expand="legalForm" spacing="true">
+                                <label id="legalFormLabel" value="msg://legalForm"/>
+                                <lookupField id="legalForm"/>
+                            </hbox>
+                        </hbox>
+                        <hbox expand="name" spacing="true" width="100%">
+                            <label id="nameLabel" value="msg://name" width="125px"/>
+                            <textField id="name" required="true" requiredMessage="msg://nameMsg"/>
+                        </hbox>
+                        <hbox expand="fullName" spacing="true" width="100%">
+                            <label id="fullNameLabel" value="msg://fullName" width="125px"/>
+                            <textField id="fullName"/>
+                        </hbox>
+                        <hbox expand="extFactAddress" spacing="true" width="100%">
+                            <label id="extFactAddressLabel" value="msg://extFactAddress" width="125px"/>
+                            <pickerField id="extFactAddress" metaClass="crm$Address">
+                                <actions>
+                                    <action id="clear"/>
+                                    <action id="create" icon="icons/plus-btn.png" invoke="onCreateFact"/>
+                                    <action id="open"/>
+                                </actions>
+                            </pickerField>
+                        </hbox>
+                        <hbox expand="extLegalAddress" spacing="true" width="100%">
+                            <label id="extLegalAddressLabel" value="msg://legalAddress" width="125px"/>
+                            <pickerField id="extLegalAddress" metaClass="crm$Address">
+                                <actions>
+                                    <action id="clear"/>
+                                    <action id="create" icon="icons/plus-btn.png" invoke="onCreateLegal"/>
+                                    <action id="open"/>
+                                </actions>
+                            </pickerField>
+                        </hbox>
+                        <hbox expand="extPostalAddress" spacing="true" width="100%">
+                            <label id="extPostalAddressLabel" value="msg://postalAddress" width="125px"/>
+                            <pickerField id="extPostalAddress" metaClass="crm$Address">
+                                <actions>
+                                    <action id="clear"/>
+                                    <action id="create" icon="icons/plus-btn.png" invoke="onCreatePostal"/>
+                                    <action id="open"/>
+                                </actions>
+                            </pickerField>
+                        </hbox>
+                        <hbox id="webAddressBox" expand="webAddress" spacing="true" width="100%">
+                            <label id="webAddressLabel" value="msg://webAddress" width="125px"/>
+                            <textField id="webAddress">
+                                <validator class="com.haulmont.thesis.crm.gui.components.validators.WebAddressValidator"
+                                           message="msg://validWebAddress"/>
+                            </textField>
+                        </hbox>
+                        <hbox id="innogrnBox" spacing="true">
+                            <label id="innLabel" value="msg://innogrn" width="125px"/>
+                            <textField id="inn" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator" message="msg://validationINNMessage"/>
+                            </textField>
+                            <textField id="ogrn" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator"
+                                           message="msg://validationOGRNMessage"/>
+                            </textField>
+                        </hbox>
+                        <hbox id="kppokpoBox" spacing="true">
+                            <label id="kppLabel" value="msg://kppokpo" width="125px"/>
+                            <textField id="kpp" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator" message="msg://validatioKPPnMessage"/>
+                            </textField>
+                            <textField id="okpo" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator"
+                                           message="msg://validationOKPOMessage"/>
+                            </textField>
+                        </hbox>
+                        <hbox id="parentCompanyBox" expand="parentCompany" spacing="true" width="100%">
+                            <label id="parentCompanyLabel" value="msg://parentCompany" width="125px"/>
+                            <pickerField id="parentCompany" metaClass="crm$Company">
+                                <actions>
+                                    <action id="clear"/>
+                                    <action id="lookup" icon="components/pickerfield/images/lookup-btn.png" invoke="onSelectParentCompany"/>
+                                    <action id="open"/>
+                                </actions>
+                            </pickerField>
+                        </hbox>
+                        <hbox expand="companyScale" spacing="true" width="100%">
+                            <label id="companyScaleLabel" value="msg://companyScale" width="125px"/>
+                            <lookupField id="companyScale"/>
+                        </hbox>
+                        <groupBox id="groupBox" caption="Автоматическое объединеие реквизитов" collapsable="true" collapsed="true"
+                                  orientation="vertical" spacing="true">
+                            <hbox expand="alternativeName" spacing="true" width="100%">
+                                <label id="alternativeNameLabel" value="msg://alternativeName" width="125px"/>
+                                <textArea id="alternativeName" rows="2"/>
+                            </hbox>
+                            <hbox id="commentBox" expand="comment" spacing="true" width="100%">
+                                <label id="commentLabel" value="msg://comment" width="125px"/>
+                                <textArea id="comment"/>
+                            </hbox>
+                        </groupBox>
+                    </vbox>
+                </scrollBox>
+                <vbox height="100%" margin="true,false,false,false" spacing="true" width="100%">
+                    <groupTable id="mainTable" height="100%" width="100%">
+                        <actions>
+                            <action id="edit"/>
+                        </actions>
+                        <columns>
+                            <column id="name"/>
+                        </columns>
+                        <rows datasource="mainDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="onRemove" description="Не дубль" icon="icons/item-remove.png" invoke="onNonDuplicate"/>
+                            <button action="mainTable.edit" icon="icons/edit.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </split>
+            <buttonsPanel id="buttonsPanel">
+                <button id="closeButton" caption="Закрыть" invoke="closeButton"/>
+                <button id="mergingButton" caption="Объединить" invoke="mergingButton" stylename="button-grin"/>
+                <button id="nonDuplicateButton" caption="Все не дубли" invoke="nonDuplicateButton" stylename="button-blue"/>
+            </buttonsPanel>
+        </vbox>
+    </layout>
+</window>

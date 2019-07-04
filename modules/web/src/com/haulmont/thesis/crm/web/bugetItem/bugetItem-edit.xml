@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.bugetItem.BugetItemEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.bugetItem">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.BugetItem"
+                    view="edit"/>
+        <collectionDatasource id="cfcItemDs"
+                              class="com.haulmont.thesis.crm.entity.CfcItem"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$CfcItem e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="budgetItemDs"
+                              class="com.haulmont.thesis.crm.entity.BugetItem"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$BugetItem e where e.id <> :ds$mainDs order by e.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="width"
+            value="50%"/>
+    <layout expand="vBox"
+            margin="true"
+            spacing="true">
+        <vbox id="vBox"
+              stylename="edit-area">
+            <grid id="grid"
+                  spacing="true"
+                  width="100%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="6.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code"
+                                   datasource="mainDs"
+                                   property="code"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru"
+                                   datasource="mainDs"
+                                   property="name_ru"
+                                   required="true"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://bugetItemType"/>
+                        <lookupField id="bugetItemType"
+                                     datasource="mainDs"
+                                     property="bugetItemType"
+                                     width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://cfcItem"/>
+                        <lookupPickerField id="cfcItem"
+                                           datasource="mainDs"
+                                           optionsDatasource="cfcItemDs"
+                                           property="cfcItem"
+                                           width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru"
+                                  datasource="mainDs"
+                                  height="200px"
+                                  property="comment_ru"
+                                  width="100%"/>
+                    </row>
+                    <row>
+                        <label id="parentBudgetItemLabel"
+                               value="msg://com.haulmont.thesis.crm.entity/BugetItem.parentBudgetItem"/>
+                        <pickerField id="parentBudgetItem"
+                                     datasource="mainDs"
+                                     optionsDatasource="budgetItemDs"
+                                     property="parentBudgetItem"
+                                     width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </pickerField>
+                    </row>
+                    <!--
+                    <row>
+                        <label id="departmentLabel"
+                               value="msg://com.haulmont.thesis.crm.entity/BugetItem.department"/>
+                        <pickerField id="department"
+                                     datasource="mainDs"
+                                     property="department"
+                                     width="100%">
+                            <actions>
+                                <action id="lookup"/>
+                                <action id="clear"/>
+                            </actions>
+                        </pickerField>
+                    </row>
+                    -->
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

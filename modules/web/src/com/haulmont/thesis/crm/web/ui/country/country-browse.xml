@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://BrowserCaption"
+        class="com.haulmont.thesis.crm.web.ui.country.CountryBrowser" focusComponent="genericFilter" lookupComponent="countryTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.country">
+    <dsContext>
+        <collectionDatasource id="countryDs" class="com.haulmont.thesis.crm.entity.Country" view="edit">
+            <query>
+                <![CDATA[select distinct p from crm$Country p order by p.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="countryTable" datasource="countryDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <table id="countryTable" height="100%" width="100%">
+                    <actions>
+                        <action id="create" openType="DIALOG"/>
+                        <action id="edit" openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="alpha_2"/>
+                        <column id="name_ru"/>
+                        <column id="name_en"/>
+                    </columns>
+                    <rows datasource="countryDs"/>
+                    <rowsCount/>
+                    <buttonsPanel alwaysVisible="true">
+                        <button action="countryTable.create"/>
+                        <button action="countryTable.edit" icon="icons/edit.png"/>
+                        <button action="countryTable.remove" icon="icons/remove.png"/>
+                        <button action="countryTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

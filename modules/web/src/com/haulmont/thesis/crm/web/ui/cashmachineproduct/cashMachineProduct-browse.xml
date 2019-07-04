@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption" lookupComponent="productsTable"
+        class="com.haulmont.thesis.crm.web.ui.cashmachineproduct.CashMachineProductBrowser" messagesPack="com.haulmont.thesis.crm.web.ui.cashmachineproduct">
+    <dsContext>
+        <groupDatasource id="productsDs" class="com.haulmont.thesis.crm.entity.CashMachineProduct"
+                         datasourceClass="com.haulmont.thesis.crm.web.ui.CashMachineProductGroupDatasource"/>
+    </dsContext>
+    <layout expand="tablePanel">
+        <vbox id="tablePanel" expand="productsTable" spacing="true">
+            <groupTable id="productsTable" presentations="true" multiselect="true" width="100%">
+                <actions>
+                    <action id="refresh"/>
+                    <action id="expand"/>
+                </actions>
+                <columns>
+                    <group>
+                        <column id="exhibitSpace"/>
+                        <column id="project"/>
+                    </group>
+                    <column id="name"/>
+                    <column id="code"/>
+                    <column id="price"/>
+                    <column id="tax"/>
+                    <column id="unit"/>
+                    <column id="isGroup"/>
+                    <column id="barCodes"/>
+                    <column id="productId" collapsed="true"/>
+                </columns>
+                <rows datasource="productsDs"/>
+                <tableSettings id="tableSettings"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button action="productsTable.add" icon="theme://actions.Add.icon"/>
+                    <popupButton id="removeBtn" caption="msg://actions.Remove"/>
+                    <button action="productsTable.refresh" icon="icons/refresh.png"/>
+                    <button action="productsTable.expand"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

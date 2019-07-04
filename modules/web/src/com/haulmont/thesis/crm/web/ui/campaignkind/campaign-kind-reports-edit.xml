@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.campaignkind.CampaignKindReportsEditor"
+        datasource="campaignKindDs" messagesPack="com.haulmont.thesis.crm.web.ui.campaignkind">
+    <dsContext>
+        <datasource id="campaignKindDs" class="com.haulmont.thesis.crm.entity.CampaignKind" view="edit">
+            <collectionDatasource id="reportsDs" property="reports"/>
+        </datasource>
+        <collectionDatasource id="allReportsDs" class="com.haulmont.reports.entity.Report" view="_local">
+            <query>
+                select r from report$Report r where not exists (select d from crm$CampaignKind d left join d.reports rp
+                where d.id = :ds$campaignKindDs and rp.id = r.id) order by r.name
+            </query>
+        </collectionDatasource>
+    </dsContext>
+
+    <layout spacing="true">
+        <tokenList id="listReports" caption="msg://helpReports" datasource="reportsDs" captionProperty="locName"
+                   position="TOP" inline="false" editable="true" height="150px" simple="false">
+            <lookup optionsDatasource="allReportsDs" captionProperty="locName"/>
+        </tokenList>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

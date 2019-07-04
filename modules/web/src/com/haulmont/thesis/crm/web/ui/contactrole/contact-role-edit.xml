@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://EditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.contactrole.ContactRoleEditor" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.contactrole">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.ContactRole" view="_local"/>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="hBox3" spacing="true">
+            <hbox id="hBox1" expand="code" width="100%">
+                <label id="labelCode" value="msg://code" width="100px"/>
+                <textField id="code" datasource="mainDs" property="code"/>
+            </hbox>
+            <hbox id="hBox2" expand="nameRu" width="100%">
+                <label id="labelNameRu" value="msg://nameRu" width="100px"/>
+                <textField id="nameRu" datasource="mainDs" property="name_ru"/>
+            </hbox>
+            <hbox id="hBox3" expand="comment" width="100%">
+                <label id="labelComment" value="msg://comment" width="100px"/>
+                <textArea id="comment" datasource="mainDs" property="comment_ru"/>
+            </hbox>
+        </vbox>
+        <iframe id="editWindowActions" screen="editWindowActions"/>
+    </layout>
+</window>

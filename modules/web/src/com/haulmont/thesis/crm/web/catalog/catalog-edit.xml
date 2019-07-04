@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.catalog.CatalogEditor"
+        datasource="catalogDs"
+        messagesPack="com.haulmont.thesis.crm.web.catalog">
+    <dsContext>
+        <datasource id="catalogDs"
+                    class="com.haulmont.thesis.crm.entity.Catalog"
+                    view="edit"/>
+        <collectionDatasource id="catalogSectionsDs"
+                              class="com.haulmont.thesis.crm.entity.Catalog"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Catalog e where e.id <> :ds$catalogDs order by e.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabsheet"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab"
+                 caption="msg://mainTab"
+                 margin="true">
+                <scrollBox id="scrollBox"
+                           height="100%">
+                    <vbox spacing="true">
+                        <hbox expand="code"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://code"
+                                   width="125px"/>
+                            <textField id="code"
+                                       datasource="catalogDs"
+                                       property="code"/>
+                        </hbox>
+                        <hbox expand="fullName_ru"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://fullName_ru"
+                                   width="125px"/>
+                            <textField id="fullName_ru"
+                                       datasource="catalogDs"
+                                       editable="false"
+                                       property="fullName_ru"/>
+                        </hbox>
+                        <hbox expand="fullName_en"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://fullName_en"
+                                   width="125px"/>
+                            <textField id="fullName_en"
+                                       datasource="catalogDs"
+                                       editable="false"
+                                       property="fullName_en"/>
+                        </hbox>
+                        <hbox expand="name_ru"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://name_ru"
+                                   width="125px"/>
+                            <textField id="name_ru"
+                                       datasource="catalogDs"
+                                       property="name_ru"
+                                       required="true"/>
+                        </hbox>
+                        <hbox expand="name_en"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://name_en"
+                                   width="125px"/>
+                            <textField id="name_en"
+                                       datasource="catalogDs"
+                                       property="name_en"
+                                       required="true"/>
+                        </hbox>
+                        <hbox expand="notInUse"
+                              spacing="true"
+                              width="90%">
+                            <label id="notInUseLabel"
+                                   value="msg://com.haulmont.thesis.crm.entity/Catalog.notInUse"
+                                   width="125px"/>
+                            <checkBox id="notInUse"
+                                      datasource="catalogDs"
+                                      property="notInUse"/>
+                        </hbox>
+                        <hbox expand="comment_ru"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://comment1_ru"
+                                   width="125px"/>
+                            <richTextArea id="comment_ru"
+                                          align="TOP_CENTER"
+                                          datasource="catalogDs"
+                                          property="comment_ru"/>
+                        </hbox>
+                        <hbox expand="comment_en"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://comment1_en"
+                                   width="125px"/>
+                            <richTextArea id="comment_en"
+                                          datasource="catalogDs"
+                                          property="comment_en"/>
+                        </hbox>
+                        <hbox expand="comment2_ru"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://comment2_ru"
+                                   width="125px"/>
+                            <richTextArea id="comment2_ru"
+                                          datasource="catalogDs"
+                                          property="comment2_ru"/>
+                        </hbox>
+                        <hbox expand="comment2_en"
+                              spacing="true"
+                              width="90%">
+                            <label value="msg://comment2_en"
+                                   width="125px"/>
+                            <richTextArea id="comment2_en"
+                                          datasource="catalogDs"
+                                          property="comment2_en"/>
+                        </hbox>
+                    </vbox>
+                </scrollBox>
+            </tab>
+            <tab id="catalogLogTab"
+                 caption="msg://catalogLogTab"
+                 lazy="true">
+                <iframe id="catalogLogFrame"
+                        height="100%"
+                        screen="entityLogFrame"/>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth"
+            value="125px"/>
+    <assign name="width"
+            value="90%"/>
+</window>

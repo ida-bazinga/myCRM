@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://projectBrowser.caption"
+        class="com.haulmont.thesis.crm.web.project.ProjectLookup" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.project">
+    <dsContext>
+        <hierarchicalDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" hierarchyProperty="parentProject" maxResults="1000"
+                                view="browse">
+            <query>
+                <!--
+                <![CDATA[select e from crm$Project e where e.organization.id = :custom$organization order by e.name]]>
+                -->
+                <![CDATA[select e from crm$Project e where @between(e.deinstallationDatePlan, now-6, now+60, month) order by e.name]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="projectsDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs|isGroup" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <treeTable id="mainTable" height="100%" presentations="true" width="100%">
+                    <columns>
+                        <column id="code" collapsed="true"/>
+                        <column id="name"/>
+                        <column id="name_en" collapsed="true"/>
+                        <column id="fullName_ru"/>
+                        <column id="fullName_en" collapsed="true"/>
+                        <column id="responsible" collapsed="true"/>
+                        <column id="type"/>
+                        <column id="themes" collapsed="true"/>
+                        <column id="exhibitSpace"/>
+                        <column id="format" collapsed="true"/>
+                        <column id="organizer" collapsed="true"/>
+                        <column id="dateStartPlan"/>
+                        <column id="parentProject"/>
+                    </columns>
+                    <rows datasource="projectsDs"/>
+                    <rowsCount/>
+                </treeTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

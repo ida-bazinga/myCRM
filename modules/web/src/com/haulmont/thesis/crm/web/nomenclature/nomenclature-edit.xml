@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.nomenclature.NomenclatureEditor" datasource="nomenclatureDs"
+        focusComponent="mainTab"
+        messagesPack="com.haulmont.thesis.crm.web.nomenclature">
+    <dsContext>
+        <datasource id="nomenclatureDs" class="com.haulmont.thesis.crm.entity.Nomenclature" view="edit-with-products">
+            <collectionDatasource id="productsDs" property="products">
+                <collectionDatasource id="costsDs" property="costs"/>
+            </collectionDatasource>
+            <collectionDatasource id="nomenclatureResourceDs" property="nomenclatureResource"/>
+            <collectionDatasource id="nomenclatureCatalogDs"
+                                  property="catalog"/>
+        </datasource>
+        <collectionDatasource id="characteristicTypesDs" class="com.haulmont.thesis.crm.entity.CharacteristicType"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$CharacteristicType e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="catalogSectionsDs" class="com.haulmont.thesis.crm.entity.Catalog" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Catalog e order by e.code]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="taxesDs" class="com.haulmont.thesis.crm.entity.Tax" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Tax e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="unitsDs" class="com.haulmont.thesis.crm.entity.Unit" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Unit e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizationDs"
+                              class="com.haulmont.thesis.core.entity.Organization"
+                              view="_local">
+            <query>
+                <![CDATA[select o from df$Organization o order by o.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabSheet" spacing="true">
+        <tabSheet id="tabSheet">
+            <tab id="mainTab" expand="split" caption="msg://mainTab" margin="true">
+                <split id="split" orientation="vertical" pos="50" width="100%">
+                    <scrollBox id="scrollBox" height="100%">
+                        <vbox id="infoBox" spacing="true">
+                            <hbox id="header" spacing="true">
+                                <flowBox>
+                                    <hbox spacing="true" align="TOP_CENTER">
+                                        <label id="integrationStateLabel" align="MIDDLE_CENTER" stylename="thesis-bold"/>
+                                        <label value="   |   " align="MIDDLE_CENTER"/>
+                                        <label id="codeLabel" value="msg://code" align="MIDDLE_CENTER"/>
+                                        <label id="code" align="MIDDLE_CENTER" datasource="nomenclatureDs" property="code"
+                                               stylename="thesis-bold"/>
+                                        <label value="   |   " align="MIDDLE_CENTER"/>
+                                        <checkBox id="notInUse" datasource="nomenclatureDs" property="notInUse"
+                                                  caption="msg://notInUse" align="MIDDLE_CENTER"/>
+                                        <label value="   |   " align="MIDDLE_CENTER"/>
+                                        <linkButton id="export1cBtn" caption="msg://export1cBtn" invoke="export1cBtn"
+                                                    align="MIDDLE_CENTER"/>
+                                    </hbox>
+                                </flowBox>
+                            </hbox>
+                            <vbox id="fieldsBox" margin="true,false,false,false" stylename="thesis-top-separator">
+                                <flowBox spacing="true">
+                                    <hbox expand="type" spacing="true" width="${flowHboxWidth}">
+                                        <label id="typeLabel" value="msg://type" width="${lWidth}"/>
+                                        <lookupField id="type" datasource="nomenclatureDs" property="nomenclatureType"
+                                                     required="true"/>
+                                    </hbox>
+                                    <hbox expand="organization" spacing="true" width="${flowHboxWidth}">
+                                        <label id="organizationLabel" value="msg://organization" width="${lWidth}"/>
+                                        <lookupField id="organization" datasource="nomenclatureDs" optionsDatasource="organizationDs" property="organization"
+                                                     required="true"/>
+                                    </hbox>
+                                    <hbox expand="characteristicType" spacing="true" width="${flowHboxWidth}">
+                                        <label id="characteristicTypeLabel" value="msg://characteristicType"
+                                               width="${lWidth}"/>
+                                        <lookupField id="characteristicType" datasource="nomenclatureDs"
+                                                     property="characteristicType"
+                                                     optionsDatasource="characteristicTypesDs"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="nameRu" spacing="true" width="${flowHboxWidth}">
+                                        <label id="nameRuLabel" value="msg://nameRu" width="${lWidth}"/>
+                                        <textField id="nameRu" datasource="nomenclatureDs" maxLength="100" property="name_ru"
+                                                   required="true"/>
+                                    </hbox>
+                                    <!--
+                                    <hbox expand="catalogSection" spacing="true" width="${flowHboxWidth}">
+                                        <label id="catalogSectionLabel" value="msg://catalogSection" width="${lWidth}"/>
+                                        <lookupField id="catalogSection" datasource="nomenclatureDs"
+                                                     property="catalogSection"
+                                                     optionsDatasource="catalogSectionsDs"/>
+                                    </hbox>
+                                    -->
+                                    <hbox expand="catalogSection" spacing="true" width="${flowHboxWidth}">
+                                        <label id="catalogSectionLabel" value="msg://catalogSection" width="${lWidth}"/>
+                                        <tokenList id="catalogSection" datasource="nomenclatureCatalogDs"
+                                                   inline="true">
+                                            <lookup optionsDatasource="catalogSectionsDs"/>
+                                        </tokenList>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="unit" spacing="true" width="${flowHboxWidth}"
+                                          margin="false, true, false, false">
+                                        <label id="unitLabel" value="msg://unit" width="${lWidth}"/>
+                                        <lookupField id="unit" datasource="nomenclatureDs" property="unit"
+                                                     optionsDatasource="unitsDs" required="true"/>
+                                        <checkBox id="isFractional" datasource="nomenclatureDs" property="isFractional"
+                                                  caption="msg://isFractional" width="80px"/>
+                                    </hbox>
+                                    <hbox expand="tax" spacing="true" width="${flowHboxWidth}">
+                                        <label id="taxLabel" value="msg://tax" width="${lWidth}"/>
+                                        <lookupField id="tax" datasource="nomenclatureDs" property="tax"
+                                                     optionsDatasource="taxesDs" required="true"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="printNameRu" spacing="true" width="${flowHboxWidth}">
+                                        <label id="printNameRuLabel" value="msg://printNameRu" width="${lWidth}"/>
+                                        <textField id="printNameRu" datasource="nomenclatureDs" property="printName_ru"
+                                                   required="true"/>
+                                    </hbox>
+                                    <hbox expand="printNameEn" spacing="true" width="${flowHboxWidth}">
+                                        <label id="printNameEnLabel" value="msg://printNameEn" width="${lWidth}"/>
+                                        <textField id="printNameEn" datasource="nomenclatureDs"
+                                                   property="printName_en"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="publicNameRu" spacing="true" width="${flowHboxWidth}">
+                                        <label id="publicNameRuLabel" value="msg://publicNameRu" width="${lWidth}"/>
+                                        <textField id="publicNameRu" datasource="nomenclatureDs"
+                                                   property="publicName_ru"
+                                                   required="true"/>
+                                    </hbox>
+                                    <hbox expand="publicNameEn" spacing="true" width="${flowHboxWidth}">
+                                        <label id="publicNameEnLabel" value="msg://publicNameEn" width="${lWidth}"/>
+                                        <textField id="publicNameEn" datasource="nomenclatureDs"
+                                                   property="publicName_en"/>
+                                    </hbox>
+                                </flowBox>
+                                <flowBox spacing="true">
+                                    <hbox expand="commentRu" spacing="true" width="${flowHboxWidth}">
+                                        <label id="commentRuLabel" value="msg://commentRu" width="${lWidth}"/>
+                                        <textArea id="commentRu" datasource="nomenclatureDs" property="comment_ru"
+                                                  rows="3"/>
+                                    </hbox>
+                                    <hbox expand="commentEn" spacing="true" width="${flowHboxWidth}">
+                                        <label id="commentEnLabel" value="msg://commentEn" width="${lWidth}"/>
+                                        <textArea id="commentEn" datasource="nomenclatureDs" property="comment_en"
+                                                  rows="3"/>
+                                    </hbox>
+                                </flowBox>
+                            </vbox>
+                        </vbox>
+                    </scrollBox>
+                    <vbox spacing="true" expand="tablesSplit" height="100%">
+                        <split id="tablesSplit" orientation="vertical" pos="50" width="100%">
+                            <vbox id="productsVbox" expand="productsGroup" height="100%"
+                                  margin="true, false,true,false">
+                                <groupBox id="productsGroup" expand="productsTable" spacing="true"
+                                          caption="msg://products">
+                                    <table id="productsTable" width="100%" presentations="true" editable="true">
+                                        <columns>
+                                            <column id="productType"/>
+                                            <column id="code" align="CENTER" width="80px"/>
+                                            <column id="title_ru"/>
+                                            <column id="title_en"/>
+                                            <column id="minQuantity" caption="msg://minQuantity" align="CENTER"
+                                                    width="80px"/>
+                                            <column id="maxQuantity" caption="msg://maxQuantity" align="CENTER"
+                                                    width="80px"/>
+                                            <column id="characteristic"/>
+                                            <column id="exhibitSpace"/>
+                                            <column id="eventOrganizer"/>
+                                            <column id="project"/>
+                                            <column id="notInUse" caption="msg://browse.notInUse" editable="true" align="CENTER"
+                                                    width="60px"/>
+                                            <column id="comment_ru" collapsed="true"/>
+                                            <column id="comment_en" collapsed="true"/>
+                                        </columns>
+                                        <rows datasource="productsDs"/>
+                                        <buttonsPanel>
+                                            <button action="productsTable.create"/>
+                                            <button action="productsTable.edit" icon="icons/edit.png"/>
+                                            <button action="productsTable.remove" icon="icons/remove.png"/>
+                                        </buttonsPanel>
+                                    </table>
+                                </groupBox>
+                            </vbox>
+                            <vbox id="costsVbox" expand="costsGroup" height="100%" margin="true, false,false,false">
+                                <groupBox id="costsGroup" expand="costsTable" spacing="true" caption="msg://costs" >
+                                    <table id="costsTable" width="100%" presentations="true">
+                                        <columns>
+                                            <column id="code" align="CENTER" width="80px"/>
+                                            <column id="startDate" align="CENTER" width="120px"/>
+                                            <column id="primaryCost" align="RIGHT" width="${colCurWidth}">
+                                                <formatter
+                                                        class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                                            </column>
+                                            <column id="secondaryCost" align="RIGHT" width="${colCurWidth}">
+                                                <formatter
+                                                        class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                                            </column>
+                                            <column id="costType"/>
+                                            <column id="project"/>
+                                            <column id="comment_ru"/>
+                                        </columns>
+                                        <rows datasource="costsDs"/>
+                                        <buttonsPanel>
+                                            <button action="costsTable.create"/>
+                                            <button action="costsTable.edit" icon="icons/edit.png"/>
+                                            <button action="costsTable.remove" icon="icons/remove.png"/>
+                                        </buttonsPanel>
+                                    </table>
+                                </groupBox>
+                            </vbox>
+                        </split>
+                    </vbox>
+                </split>
+            </tab>
+            <tab id="nomenclatureResourcesTab" caption="msg://resourcesTabCaption" margin="true">
+                <vbox id="tablPanel" height="100%" spacing="true">
+                    <table id="nomenclatureResourcesTable" height="100%" width="100%">
+                        <actions>
+                            <action id="create" openType="DIALOG"/>
+                            <action id="edit" openType="DIALOG"/>
+                            <action id="remove"/>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="resource"/>
+                            <column id="quantity"/>
+                        </columns>
+                        <rows datasource="nomenclatureResourceDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button action="nomenclatureResourcesTable.create"/>
+                            <button action="nomenclatureResourcesTable.edit" icon="icons/edit.png"/>
+                            <button action="nomenclatureResourcesTable.remove" icon="icons/remove.png"/>
+                            <button action="nomenclatureResourcesTable.refresh" icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>
+            <tab id="nomenclatureLogTab" caption="msg://logTabCaption" lazy="true">
+                <iframe id="nomenclatureLogFrame" height="100%" screen="entityLogFrame"/>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions" screen="extendedEditWindowActions"/>
+    </layout>
+    <assign name="flowHboxWidth" value="600px"/>
+    <assign name="lWidth" value="140px"/>
+    <assign name="colCurWidth" value="120px"/>
+</window>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.bugetItem.BugetItemBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.bugetItem">
+    <dsContext>
+        <hierarchicalDatasource id="mainDs"
+                                class="com.haulmont.thesis.crm.entity.BugetItem"
+                                hierarchyProperty="parentBudgetItem"
+                                view="browse">
+            <query>
+                <![CDATA[select e from crm$BugetItem e order by e.code]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="mainTable"
+                    datasource="mainDs"
+                    stylename="edit-area">
+                <properties exclude="id|createdBy|createTs"
+                            include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <treeTable id="mainTable"
+                           height="100%"
+                           presentations="true"
+                           width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="bugetItemType"/>
+                        <column id="cfcItem"/>
+                        <column id="comment_ru"/>
+                        <column id="parentBudgetItem"/>
+                        <column id="fullName_ru"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="createButton"
+                                action="mainTable.create"/>
+                        <button id="editBtn"
+                                action="mainTable.edit"
+                                icon="icons/edit.png"/>
+                        <button id="removeBtn"
+                                action="mainTable.remove"
+                                icon="icons/remove.png"/>
+                        <button id="refreshBtn"
+                                action="mainTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </treeTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

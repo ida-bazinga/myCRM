@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.emailStatus.EmailstatusEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.emailStatus">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.EmailStatus"
+                    view="_local"/>
+    </dsContext>
+    <layout expand="vBox"
+            margin="true"
+            spacing="true">
+        <vbox id="vBox"
+              stylename="edit-area">
+            <grid id="grid"
+                  spacing="true"
+                  width="100%">
+                <columns>
+                    <column/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code"
+                                   datasource="mainDs"
+                                   property="code"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru"
+                                   datasource="mainDs"
+                                   property="name_ru"
+                                   required="true"
+                                   width="100%"/>
+                    </row>
+                    <row>
+                        <label id="unisenderValidLabel"
+                               value="msg://com.haulmont.thesis.crm.entity/EmailStatus.unisenderValid"/>
+                        <checkBox id="unisenderValid"
+                                  datasource="mainDs"
+                                  property="unisenderValid"
+                                  width="250px"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru"
+                                  datasource="mainDs"
+                                  height="200px"
+                                  property="comment_ru"
+                                  width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

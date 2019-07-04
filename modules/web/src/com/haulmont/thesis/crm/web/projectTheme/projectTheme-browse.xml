@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.projectTheme.ProjectThemeBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="projectThemeTable"
+        messagesPack="com.haulmont.thesis.crm.web.projectTheme">
+    <dsContext>
+        <collectionDatasource id="projectThemeDs"
+                              class="com.haulmont.thesis.crm.entity.ProjectTheme"
+                              view="_local">
+            <query>
+                <![CDATA[select distinct p from crm$ProjectTheme p order by p.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="projectThemeTable"
+                    datasource="projectThemeDs"
+                    stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <table id="projectThemeTable"
+                       height="100%"
+                       width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name_ru"/>
+                        <column id="comment_ru"/>
+                    </columns>
+                    <rows datasource="projectThemeDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="projectThemeTable.create"/>
+                        <button action="projectThemeTable.edit"
+                                icon="icons/edit.png"/>
+                        <button action="projectThemeTable.remove"
+                                icon="icons/remove.png"/>
+                        <button action="projectThemeTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

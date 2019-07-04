@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://companyEditor.caption"
+        class="com.haulmont.thesis.crm.web.company.ExtCompanyEditor" datasource="companyDs" focusComponent="mainTab"
+        messagesPack="com.haulmont.thesis.crm.web.company">
+    <dsContext>
+        <datasource id="companyDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="edit-crm">
+            <collectionDatasource id="attachmentsDs" property="correspondentAttachments"/>
+            <collectionDatasource id="accountsDs" property="accounts"/>
+            <collectionDatasource id="okvdsDs" property="okvds"/>
+            <collectionDatasource id="informationSourcesDs" property="informationSources"/>
+            <collectionDatasource id="projectsDs" property="projects"/>
+            <collectionDatasource id="activitiesDs" property="activities"/>
+            <collectionDatasource id="contactsDs" property="contactPersons">
+                <collectionDatasource id="communicationsDs" property="communications"/>
+            </collectionDatasource>
+        </datasource>
+        <!--
+        <collectionDatasource id="contactsDs"
+                              class="com.haulmont.thesis.crm.entity.ExtContactPerson"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ContactPerson e where e.company.id = :ds$companyDs]]>
+            </query>
+            <collectionDatasource id="communicationsDs"
+                                  property="communications"/>
+        </collectionDatasource>
+        -->
+        <collectionDatasource id="legalFormsDs" class="com.haulmont.thesis.crm.entity.FormOfIncorporation" view="_local">
+            <query>
+                <![CDATA[select e from crm$FormOfIncorporation e]]>
+            </query>
+        </collectionDatasource>
+        <groupDatasource id="tasksDs" class="com.haulmont.thesis.crm.entity.ExtTask" view="edit">
+            <query>
+                <![CDATA[select t from crm$Task t where t.extCompany.id = :ds$companyDs]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="parentDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Company e]]>
+            </query>
+        </collectionDatasource>
+        <groupDatasource id="paymentsDs" class="com.haulmont.thesis.crm.entity.PaymentDetail" view="company">
+            <query>
+                <![CDATA[select e from crm$PaymentDetail e where e.payment.company.id = :ds$companyDs.id]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e where e.name like :(?i)custom$searchString order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companyScaleDs" class="com.haulmont.thesis.crm.entity.CompanyScale" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$CompanyScale e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="linesOfBusinessDs" class="com.haulmont.thesis.crm.entity.LineOfBusinessCompaniesFlags" view="edit">
+            <query>
+                <![CDATA[select e from crm$LineOfBusinessCompaniesFlags e where e.company.id = :ds$companyDs.id]]>
+            </query>
+        </collectionDatasource>
+        <groupDatasource id="cardDS" class="com.haulmont.workflow.core.entity.Card" view="docs-company">
+            <query>
+                <![CDATA[select e from ts$Card e where e.id in (:custom$searchString)]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="emailActivitiesDs"
+                              class="com.haulmont.thesis.crm.entity.EmailActivity"
+                              view="browse">
+            <query>
+                <![CDATA[select e from crm$EmailActivity e where e.company.id = :ds$companyDs and e.address is not null order by e.createTs, e.address]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabsheet" height="100%" spacing="true">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab" caption="msg://mainTab" margin="true">
+                <split id="split" height="100%" orientation="vertical" pos="60" width="100%">
+                    <hbox id="mainPane" height="100%" width="100%">
+                        <scrollBox id="scrollBox58" height="100%" width="98%">
+                            <vbox id="infoBox" spacing="true">
+                                <hbox id="header" spacing="true">
+                                    <flowBox>
+                                        <hbox align="TOP_CENTER" spacing="true">
+                                            <hbox id="hBoxISL" align="TOP_CENTER" spacing="true" visible="false">
+                                                <label id="integrationStateLabel" align="MIDDLE_CENTER" stylename="thesis-green-bold" width="100%"/>
+                                            </hbox>
+                                            <hbox align="TOP_CENTER" spacing="true">
+                                                <label id="codeLabel" align="MIDDLE_CENTER" value="msg://code"/>
+                                                <label id="code" align="MIDDLE_CENTER" datasource="companyDs" property="code" stylename="thesis-bold"/>
+                                                <label align="MIDDLE_CENTER" value="   |   "/>
+                                                <label align="MIDDLE_CENTER" value="Статус"/>
+                                                <label id="integraStateLabel1" align="MIDDLE_CENTER" stylename="thesis-bold"/>
+                                                <label align="MIDDLE_CENTER" value="   |   "/>
+                                                <popupButton id="popupButtonAction" description="msg://actionCompanyBtnCaption" icon="icons/settings.png"/>
+                                                <popupButton id="popupButtonAction1С" icon="icons/1c.png" description="msg://export1C"/>
+                                            </hbox>
+                                        </hbox>
+                                    </flowBox>
+                                </hbox>
+                                <vbox id="vBox" expand="commentBox" margin="true,false,false,false" spacing="true">
+                                    <hbox id="hBoxShortName" expand="legalFormBox" margin="true,false,false,false" spacing="true"
+                                          stylename="thesis-top-separator" width="100%">
+                                        <hbox id="companyTypeBox" spacing="true">
+                                            <label id="companyTypeLabel" value="msg://companyType" width="125px"/>
+                                            <lookupField id="companyType" datasource="companyDs" property="companyType" required="true" width="230px"/>
+                                        </hbox>
+                                        <hbox id="legalFormBox" expand="legalForm" spacing="true">
+                                            <label id="legalFormLabel" value="msg://legalForm"/>
+                                            <lookupField id="legalForm" datasource="companyDs" optionsDatasource="legalFormsDs" property="legalForm"/>
+                                        </hbox>
+                                    </hbox>
+                                    <hbox expand="name" spacing="true" width="100%">
+                                        <label id="nameLabel" value="msg://name" width="125px"/>
+                                        <textField id="name" datasource="companyDs" maxLength="100" property="name" required="true"
+                                                   requiredMessage="msg://nameMsg"/>
+                                    </hbox>
+                                    <hbox expand="alternativeName" spacing="true" width="100%">
+                                        <label id="alternativeNameLabel" value="msg://alternativeName" width="125px"/>
+                                        <textArea id="alternativeName" datasource="companyDs" property="alternativeName" rows="2"/>
+                                    </hbox>
+                                    <hbox expand="extFactAddress" spacing="true" width="100%">
+                                        <label id="extFactAddressLabel" value="msg://extFactAddress" width="125px"/>
+                                        <pickerField id="extFactAddress" datasource="companyDs" property="extFactAddress">
+                                            <actions>
+                                                <action id="clear"/>
+                                                <action id="create" icon="icons/plus-btn.png" invoke="onCreateFact"/>
+                                                <action id="open"/>
+                                            </actions>
+                                        </pickerField>
+                                    </hbox>
+                                    <hbox id="webAddressBox" expand="webAddress" spacing="true" width="100%">
+                                        <label id="webAddressLabel" value="msg://webAddress" width="125px"/>
+                                        <textField id="webAddress" datasource="companyDs" property="webAddress">
+                                            <validator class="com.haulmont.thesis.crm.gui.components.validators.WebAddressValidator"
+                                                       message="msg://validWebAddress"/>
+                                        </textField>
+                                    </hbox>
+                                    <hbox expand="companyScale" spacing="true" width="100%">
+                                        <label id="companyScaleLabel" value="msg://companyScale" width="125px"/>
+                                        <lookupField id="companyScale" datasource="companyDs" optionsDatasource="companyScaleDs"
+                                                     property="companyScale"/>
+                                    </hbox>
+                                    <hbox id="commentBox" expand="comment" spacing="true" width="100%">
+                                        <label id="commentLabel" value="msg://comment" width="125px"/>
+                                        <textArea id="comment" datasource="companyDs" property="notes"/>
+                                    </hbox>
+                                </vbox>
+                            </vbox>
+                        </scrollBox>
+                    </hbox>
+                    <tabSheet id="detailsTabsheet" height="100%">
+                        <tab id="contactPersonsTab" caption="msg://contactPersons.caption" margin="true">
+                            <iframe id="contactPersonFrame" height="100%" screen="contactPersonFrame"/>
+                        </tab>
+                    </tabSheet>
+                </split>
+            </tab>
+            <tab id="accountsTab" caption="msg://accTab" lazy="true">
+                <vbox expand="accountsFrame" height="100%" margin="true,false,false,false" spacing="true">
+                    <hbox expand="actualizationDate" spacing="true" width="100%">
+                        <label id="inf" value="msg://infStatus"/>
+                        <label id="activityStatus" datasource="companyDs" property="activityStatus" stylename="thesis-bold" width="200px"/>
+                        <label value="msg://actualizationDate"/>
+                        <label id="actualizationDate" datasource="companyDs" property="actualizationDate" stylename="thesis-bold" width="100px"/>
+                    </hbox>
+                    <hbox expand="fullName" spacing="true" width="80%">
+                        <label id="fullNameLabel" value="msg://fullName" width="125px"/>
+                        <textField id="fullName" datasource="companyDs" maxLength="250" property="fullName" required="true"/>
+                        <linkButton id="openHistoryFullName" caption="msg://openHistory"/>
+                    </hbox>
+                    <hbox expand="legalAddressField" spacing="true" width="80%">
+                        <label id="legalAddressLabel" value="msg://legalAddress" width="125px"/>
+                        <pickerField id="legalAddressField" datasource="companyDs" property="extLegalAddress">
+                            <actions>
+                                <action id="clear"/>
+                                <action id="create" icon="icons/plus-btn.png" invoke="onCreateLegal"/>
+                                <action id="open"/>
+                            </actions>
+                        </pickerField>
+                        <linkButton id="openHistoryAddressFirstDoc" caption="msg://openHistory"/>
+                    </hbox>
+                    <hbox id="nonResidentBox" expand="regNo" spacing="true" visible="false" width="80%">
+                        <label id="regNoLabel" value="msg://regNo" width="125px"/>
+                        <textField id="regNo" datasource="companyDs" property="regNo"/>
+                    </hbox>
+                    <vbox id="residentBox" spacing="true" visible="false">
+                        <hbox id="innogrnBox" spacing="true">
+                            <label id="innLabel" value="msg://innogrn" width="125px"/>
+                            <textField id="inn" datasource="companyDs" property="inn" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator" message="msg://validationINNMessage"/>
+                            </textField>
+                            <textField id="ogrn" datasource="companyDs" property="ogrn" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator"
+                                           message="msg://validationOGRNMessage"/>
+                            </textField>
+                            <button id="validDadata" align="TOP_RIGHT" caption="msg://validDadata" invoke="companyByInn" width="250px"/>
+                        </hbox>
+                        <hbox id="kppokpoBox" spacing="true">
+                            <label id="kppLabel" value="msg://kppokpo" width="125px"/>
+                            <textField id="kpp" datasource="companyDs" description="msg://infoEdit" property="kpp" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator" message="msg://validatioKPPnMessage"/>
+                            </textField>
+                            <textField id="okpo" datasource="companyDs" property="okpo" width="210px">
+                                <validator class="com.haulmont.thesis.gui.components.validators.NumericValidator"
+                                           message="msg://validationOKPOMessage"/>
+                            </textField>
+                            <linkButton id="openHistoryKpp" caption="msg://openHistory"/>
+                        </hbox>
+                    </vbox>
+                    <hbox expand="postalAddressField" spacing="true" width="80%">
+                        <label id="postalAddressLabel" value="msg://postalAddress" width="125px"/>
+                        <pickerField id="postalAddressField" datasource="companyDs" property="extPostalAddress">
+                            <actions>
+                                <action id="clear"/>
+                                <action id="create" icon="icons/plus-btn.png" invoke="onCreatePostal"/>
+                                <action id="open"/>
+                            </actions>
+                        </pickerField>
+                    </hbox>
+                    <hbox width="100%">
+                        <label id="infoDadata" stylename="thesis-green-bold" width="80%"/>
+                    </hbox>
+                    <hbox id="parentCompanyBox" expand="parentCompany" spacing="true" width="80%">
+                        <label id="parentCompanyLabel" value="msg://parentCompany" width="125px"/>
+                        <searchPickerField id="parentCompany" datasource="companyDs" optionsDatasource="companiesDs" property="parentCompany">
+                            <actions>
+                                <action id="clear"/>
+                                <action id="lookup"/>
+                                <action id="open"/>
+                            </actions>
+                        </searchPickerField>
+                    </hbox>
+                    <iframe id="accountsFrame" screen="accountsCompanyFrame"/>
+                </vbox>
+            </tab>
+            <tab id="attachmentsTab" caption="msg://attachmentsTab" lazy="true">
+                <iframe id="attachmentsFrame" height="100%" screen="abstractReferenceAttachmentsFrame"/>
+            </tab>
+            <tab id="docsTab" caption="msg://docsTab" lazy="true" margin="true">
+                <vbox id="docsBox" height="100%" margin="true,false,false,false">
+                    <groupTable id="docsGroupTable" height="100%" width="100%">
+                        <actions>
+                            <action id="refresh"/>
+                            <action id="edit"/>
+                        </actions>
+                        <columns>
+                            <column id="category"/>
+                            <column id="description"/>
+                            <column id="createTs"/>
+                        </columns>
+                        <rows datasource="cardDS"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="docsRefreshBtn" action="docsGroupTable.refresh" icon="icons/refresh.png"/>
+                            <button id="docsEditBtn" icon="icons/edit.png" invoke="openEditWindow"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </tab>
+            <tab id="activitiesTab" caption="msg://activitiesTab" margin="true">
+                <vbox id="activitiesBox" height="100%" margin="true,false,false,false">
+                    <groupTable id="activitiesTable" height="100%" width="100%">
+                        <actions>
+                            <action id="create" openType="DIALOG"/>
+                            <action id="edit" openType="DIALOG"/>
+                            <action id="remove"/>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="project"/>
+                            <column id="phone"/>
+                            <column id="result"/>
+                            <column id="owner"/>
+                            <column id="createTs"/>
+                            <column id="resultDetails" collapsed="true"/>
+                        </columns>
+                        <rows datasource="activitiesDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="activitiesCreateBtn" action="activitiesTable.create" caption="msg://actions.Create" enable="false"
+                                    visible="false"/>
+                            <button id="activitiesAddBtn" action="activitiesTable.edit" enable="false" icon="icons/edit.png" visible="false"/>
+                            <button id="activitiesRemoveBtn" action="activitiesTable.remove" enable="false" icon="icons/remove.png" visible="false"/>
+                            <button id="activitiesRefreshBtn" action="activitiesTable.refresh" icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </tab>
+            <tab id="emailActivitiesTab" caption="msg://emailActivities" margin="true">
+                <vbox id="vbox_1" height="100%" spacing="true">
+                    <table id="emailActivitiesTable" height="100%" width="100%">
+                        <actions>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="address"/>
+                            <column id="endTimeFact"/>
+                            <column id="campaign"/>
+                            <column id="contactPerson"/>
+                            <column id="result"/>
+                        </columns>
+                        <rows datasource="emailActivitiesDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button action="emailActivitiesTable.refresh"
+                                    icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>-->
+            <tab id="tasksTab" caption="msg://tasksTab" margin="true">
+                <vbox id="tasksBox" height="100%" margin="true,false,false,false">
+                    <groupTable id="tasksTable" aggregatable="true" height="100%" multiselect="true" sortable="false" width="100%">
+                        <actions>
+                            <action id="create"/>
+                            <action id="edit"/>
+                            <action id="remove"/>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="createDate" width="100px">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="msg://dateFormat"/>
+                            </column>
+                            <column id="num"/>
+                            <column id="taskName" width="400px"/>
+                            <column id="fullDescr" collapsed="true" maxTextLength="40" width="400px"/>
+                            <column id="project"/>
+                            <column id="currentActorsString" caption="msg://currentActors"/>
+                            <column id="percentCompletion" collapsed="true"/>
+                            <column id="locState"/>
+                            <column id="finishDateTimePlan">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="msg://dateTimeFormat"/>
+                            </column>
+                            <column id="finishDateFact" caption="msg://finishDateFact" collapsed="true">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="msg://dateFormat"/>
+                            </column>
+                            <column id="priority.orderNo" caption="msg://priority" captionProperty="priority.name"/>
+                            <column id="initiator.name" caption="msg://initiator"/>
+                            <column id="executorsString" caption="msg://executors"/>
+                            <column id="parentCard" collapsed="true"/>
+                            <column id="labourHour" collapsed="true"/>
+                        </columns>
+                        <rows datasource="tasksDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="taskCreateBtn" action="tasksTable.create" caption="msg://actions.Create"/>
+                            <button id="taskAddBtn" action="tasksTable.edit" icon="icons/edit.png"/>
+                            <button id="taskRemoveBtn" action="tasksTable.remove" icon="icons/remove.png"/>
+                            <button id="taskRefreshBtn" action="tasksTable.refresh" icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </tab>
+            <tab id="okvdsTab" caption="msg://okvdsTab" margin="true">
+                <vbox id="okvdsBox" height="100%" margin="true,false,false,false">
+                    <table id="okvdsTable" height="100%" width="100%">
+                        <actions>
+                            <action id="add"/>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="code"/>
+                            <column id="fullName_ru"/>
+                        </columns>
+                        <rows datasource="okvdsDs"/>
+                        <buttonsPanel>
+                            <button id="okvdsCreateBtn" action="okvdsTable.add" icon="font-icon:PLUS"/>
+                            <button id="okvdsRemoveBtn" action="okvdsTable.remove" icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>
+            <tab id="lineOfBusinessCompaniesFlagsTab" caption="msg://linesOfBusinessTab" margin="true">
+                <vbox id="lineOfBusinessCompaniesFlagsBox" height="100%" margin="true,false,false,false">
+                    <table id="lineOfBusinessCompaniesFlagsTable" editable="true" height="100%" multiselect="true" width="100%">
+                        <actions>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="lineOfBusiness" caption="msg://LineOfBusiness" editable="false"/>
+                            <column id="wholesale" align="CENTER" caption="msg://Wholesale" editable="true"/>
+                            <column id="retail" align="CENTER" caption="msg://Retail" editable="true"/>
+                            <column id="internetStore" align="CENTER" caption="msg://InternetStore" editable="true"/>
+                            <column id="manufacturer" align="CENTER" caption="msg://Manufacturer" editable="true"/>
+                            <column id="dealer" align="CENTER" caption="msg://Dealer" editable="true"/>
+                            <column id="distributor" align="CENTER" caption="msg://Distributor" editable="true"/>
+                            <column id="chainStore" align="CENTER" caption="msg://ChainStore" editable="true"/>
+                            <column id="services" align="CENTER" caption="msg://Services" editable="true"/>
+                        </columns>
+                        <rows datasource="linesOfBusinessDs"/>
+                        <buttonsPanel>
+                            <button id="lineOfBusinessCompaniesFlagsCreateBtn" icon="font-icon:PLUS" invoke="createNewLine"/>
+                            <button id="lineOfBusinessCompaniesFlagsRemoveBtn" icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>
+            <tab id="informationSourcesTab" caption="msg://informationSourcesTab" lazy="true" margin="true">
+                <vbox id="informationSourcesBox" height="100%" spacing="true">
+                    <table id="informationSourcesTable" height="100%" width="100%">
+                        <actions>
+                            <action id="add"/>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="title"/>
+                        </columns>
+                        <rows datasource="informationSourcesDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button action="informationSourcesTable.add" icon="font-icon:PLUS"/>
+                            <button action="informationSourcesTable.remove" icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </table>
+                </vbox>
+            </tab>
+            <tab id="paymentsTab" caption="msg://paymentsTab" margin="true">
+                <vbox id="paymentsBox" height="100%" margin="true,false,false,false">
+                    <groupTable id="paymentsTable" aggregatable="true" height="100%" sortable="false" width="100%">
+                        <actions>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="code" collapsed="true"/>
+                            <column id="payment"/>
+                            <column id="invDoc" collapsed="true"/>
+                            <column id="operation"/>
+                            <column id="fullSum"/>
+                        </columns>
+                        <rows datasource="paymentsDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="paymentsRefreshBtn" action="paymentsTable.refresh" icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+            </tab>
+            <tab id="correspondenceHistoryTab" caption="msg://correspondenceHistoryTab" lazy="true">
+                <iframe id="correspondenceHistoryFrame" height="100%" screen="correspondentCorrespondenceHistoryFrame"/>
+            </tab>
+            <tab id="contractorLogTab" caption="msg://contractorLogTab" lazy="true">
+                <iframe id="contractorLogFrame" height="100%" screen="entityLogFrame"/>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions" screen="extendedEditWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="125px"/>
+    <assign name="width" value="280px"/>
+    <assign name="widthMin" value="100px"/>
+    <assign name="tWidth" value="400px"/>
+    <assign name="buttonWidth" value="115px"/>
+</window>

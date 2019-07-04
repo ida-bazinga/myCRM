@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+    <!-- Annotation-based beans -->
+    <context:component-scan base-package="com.haulmont.thesis.crm"/>
+
+    <bean id="thesis_DynamicListeners" class="com.haulmont.thesis.crm.core.sys.ExtDynamicListeners"/>
+
+    <!--Укажем свою реализацию бина report_ReportingApi-->
+    <bean id="report_ReportingApi" class="com.haulmont.thesis.crm.core.app.ExtThesisReportingBean"/>
+    <!--Временный фикс NumerationWorkerBean обещали в новой версии исправить-->
+    <bean id="docflow_NumerationWorker" class="com.haulmont.thesis.crm.core.app.ExtNumerationWorkerBean"/>
+
+
+    <!--core-->
+    <bean id="tExpoCRM_MBeanExporter" class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+        <property name="beans">
+            <map>
+                <entry key="${cuba.webContextName}:service=ExtDeployer" value-ref="tExpoCRM_ExtDeployer"/>
+                <entry key="${cuba.webContextName}:service=EvotorManager" value-ref="crm_EvotorManager" />
+            </map>
+        </property>
+        <property name="assembler">
+            <bean class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler">
+                <property name="interfaceMappings">
+                    <map>
+                        <entry key="tExpoCRM_ExtDeployer" value="com.haulmont.thesis.crm.core.app.ExtDeployerMBean"/>
+                        <entry key="crm_EvotorManager" value="com.haulmont.thesis.crm.core.app.cashmachine.evotor.ws.EvotorManager"/>
+                    </map>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!--core.bp-->
+    <bean id="bp_MBeanExporter" lazy-init="false" class="com.haulmont.cuba.core.sys.jmx.MBeanExporter">
+        <property name="beans">
+            <map>
+                <entry key="${cuba.webContextName}.bp:type=ProcessingServices1c" value-ref="IProcessingServices1c"/>
+                <entry key="${cuba.webContextName}.bp:type=NomenclatureGoTo1c" value-ref="INomenclatureGoTo1c"/>
+                <entry key="${cuba.webContextName}.bp:type=DocListService" value-ref="IDocMBean"/>
+                <entry key="${cuba.webContextName}.bp:type=AddressStandard" value-ref="AddressStandard"/>
+                <entry key="${cuba.webContextName}.bp:type=InnCheckSum" value-ref="InnCheckSum"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--core.dowonloadLog-->
+    <bean id="dowonloadLog_MBeanExporter" lazy-init="false" class="com.haulmont.cuba.core.sys.jmx.MBeanExporter">
+        <property name="beans">
+            <map>
+                <entry key="${cuba.webContextName}.dowonloadLog:type=FileDownloadLog" value-ref="IFileDowonloadLogMBean"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--core.mailigen-->
+    <bean id="mailigen_MBeanExporter" lazy-init="false" class="com.haulmont.cuba.core.sys.jmx.MBeanExporter">
+        <property name="beans">
+            <map>
+                <entry key="${cuba.webContextName}.mailigen:type=Mailigen" value-ref="IMailigen"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--core.test-->
+    <bean id="test_MBeanExporter" lazy-init="false" class="com.haulmont.cuba.core.sys.jmx.MBeanExporter">
+        <property name="beans">
+            <map>
+                <entry key="${cuba.webContextName}.test:type=TestService" value-ref="ITestServiceMBean"/>
+            </map>
+        </property>
+    </bean>
+
+     <!--
+    <bean id="thesis_AssignmentCalendarEventListener" class="com.haulmont.thesis.crm.core.listener.ExtAssignmentCalendarEventListener"/>
+    <bean id="psb_CalendarWorker" class="com.haulmont.thesis.crm.core.app.ExtCalendarWorkerBean"/>
+    -->
+</beans>

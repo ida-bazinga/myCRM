@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://employeeEditor.caption"
+        class="com.haulmont.thesis.crm.web.employee.ExtEmployeeEditor" datasource="employeeDs" messagesPack="com.haulmont.thesis.crm.web.employee">
+    <dsContext>
+        <datasource id="employeeDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="ext-edit">
+            <collectionDatasource id="attachmentsDs" property="correspondentAttachments"/>
+            <collectionDatasource id="employeeDepartmentPositionDs" property="employeeDepartmentPositionRelations"/>
+        </datasource>
+        <collectionDatasource id="usersDs" class="com.haulmont.thesis.core.entity.TsUser" view="_local">
+            <query>
+                <![CDATA[select u from tm$User u where not exists(select e from df$Employee e where e.user.id = u.id and e.id <> :ds$employeeDs and e.deleteTs is null)
+                order by u.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="departmentsDs" class="com.haulmont.thesis.core.entity.Department" view="employee-edit"/>
+        <collectionDatasource id="positionsDs" class="com.haulmont.thesis.core.entity.Position" view="_local">
+            <query>
+                <![CDATA[select e from df$Position e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="width" value="300px"/>
+    <layout expand="tabsheet" spacing="true">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab" caption="msg://mainTab" margin="true,false,false,false">
+                <scrollBox id="scrollBox60" height="100%">
+                    <vbox id="vBox" spacing="true" expand="" width="676px">
+                        <hbox expand="vBox2" spacing="true" width="100%">
+                            <vbox id="vBox2" spacing="true">
+                                <hbox expand="user" spacing="true" width="100%">
+                                    <label value="msg://user" width="150px"/>
+                                    <lookupPickerField id="user" datasource="employeeDs" optionsDatasource="usersDs" property="user">
+                                        <actions>
+                                            <action id="open"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </hbox>
+                                <hbox expand="lastName" spacing="true" width="100%">
+                                    <label value="msg://lastName" width="150px"/>
+                                    <textField id="lastName" datasource="employeeDs" property="lastName" required="true"
+                                               requiredMessage="msg://lastNameMsg"/>
+                                </hbox>
+                                <hbox expand="accessCard" spacing="true" width="100%">
+                                    <label value="msg://accessCard" width="150px"/>
+                                    <textField id="accessCard" datasource="employeeDs" property="accessCard"/>
+                                </hbox>
+                                <groupBox id="groupLastName" align="TOP_CENTER" caption="msg://cases" spacing="true" collapsable="true" collapsed="true">
+                                    <hbox expand="lastNameLatin" spacing="true" width="100%">
+                                        <label value="msg://latin" width="130px"/>
+                                        <textField id="lastNameLatin" datasource="employeeDs" property="lastNameLat"/>
+                                    </hbox>
+                                    <hbox expand="genLastName" spacing="true" width="100%">
+                                        <label value="msg://genitive" width="130px"/>
+                                        <textField id="genLastName" datasource="employeeDs" property="genLastName"/>
+                                    </hbox>
+                                    <hbox expand="datLastName" spacing="true" width="100%">
+                                        <label value="msg://dative" width="130px"/>
+                                        <textField id="datLastName" datasource="employeeDs" property="datLastName"/>
+                                    </hbox>
+                                </groupBox>
+                                <hbox expand="firstName" spacing="true" width="100%">
+                                    <label value="msg://firstName" width="150px"/>
+                                    <textField id="firstName" datasource="employeeDs" property="firstName" required="true"
+                                               requiredMessage="msg://firstNameMsg"/>
+                                </hbox>
+                                <groupBox id="groupFirstName" align="TOP_CENTER" caption="msg://cases" spacing="true" collapsable="true" collapsed="true">
+                                    <hbox expand="firstNameLatin" spacing="true" width="100%">
+                                        <label value="msg://latin" width="130px"/>
+                                        <textField id="firstNameLatin" datasource="employeeDs" property="firstNameLat"/>
+                                    </hbox>
+                                    <hbox expand="genFirstName" spacing="true" width="100%">
+                                        <label value="msg://genitive" width="130px"/>
+                                        <textField id="genFirstName" datasource="employeeDs" property="genFirstName"/>
+                                    </hbox>
+                                    <hbox expand="datFirstName" spacing="true" width="100%">
+                                        <label value="msg://dative" width="130px"/>
+                                        <textField id="datFirstName" datasource="employeeDs" property="datFirstName"/>
+                                    </hbox>
+                                </groupBox>
+                                <hbox expand="middleName" spacing="true" width="100%">
+                                    <label value="msg://middleName" width="150px"/>
+                                    <textField id="middleName" datasource="employeeDs" property="middleName"/>
+                                </hbox>
+                                <groupBox id="groupMiddleName" align="TOP_CENTER" caption="msg://cases" spacing="true" collapsable="true" collapsed="true">
+                                    <hbox expand="genMiddleName" spacing="true" width="100%">
+                                        <label value="msg://genitive" width="130px"/>
+                                        <textField id="genMiddleName" datasource="employeeDs" property="genMiddleName"/>
+                                    </hbox>
+                                    <hbox expand="datMiddleName" spacing="true" width="100%">
+                                        <label value="msg://dative" width="130px"/>
+                                        <textField id="datMiddleName" datasource="employeeDs" property="datMiddleName"/>
+                                    </hbox>
+                                </groupBox>
+                                <hbox expand="name" spacing="true" width="100%">
+                                    <label value="msg://name" width="150px"/>
+                                    <textField id="name" datasource="employeeDs" property="name" required="true"
+                                               requiredMessage="msg://nameMsg" />
+                                </hbox>
+                                <hbox expand="date" spacing="true" width="100%">
+                                    <label id="dateLabel" value="msg://birthday" width="150px"/>
+                                    <dateField id="date" datasource="employeeDs" property="birthday" resolution="DAY"/>
+                                </hbox>
+                                <hbox expand="sex" spacing="true" width="100%">
+                                    <label value="msg://sex" width="150px"/>
+                                    <optionsGroup id="sex" datasource="employeeDs" orientation="horizontal" property="sex"/>
+                                </hbox>
+                                <grid id="grid" spacing="true" width="100%">
+                                    <columns>
+                                        <column flex="1.0"/>
+                                        <column flex="1.0"/>
+                                    </columns>
+                                    <rows>
+                                        <row id="departmentsRow">
+                                            <iframe id="employeeDepartmentFrame" colspan="2" screen="EmployeeDepartmentPositionListFrame"/>
+                                        </row>
+                                    </rows>
+                                </grid>
+                                <hbox expand="phone" spacing="true" width="100%">
+                                    <label value="msg://phone" width="150px"/>
+                                    <textField id="phone" datasource="employeeDs" property="phone"/>
+                                    <label value="msg://ext"/>
+                                    <textField id="phoneNumExtnesion" datasource="employeeDs" property="phoneNumExtnesion"
+                                               width="70px"/>
+                                </hbox>
+                                <hbox expand="mobilePhone" spacing="true" width="100%">
+                                    <label value="msg://mobilePhone" width="150px"/>
+                                    <textField id="mobilePhone" datasource="employeeDs" property="mobilePhone"/>
+                                </hbox>
+                                <hbox expand="email" spacing="true" width="100%">
+                                    <label value="msg://email" width="150px"/>
+                                    <textField id="email" datasource="employeeDs" property="email">
+                                        <validator class="com.haulmont.cuba.gui.components.validators.EmailValidator"
+                                                   message="msg://email.alert"/>
+                                    </textField>
+                                </hbox>
+                                <hbox expand="room" spacing="true" width="100%">
+                                    <label value="msg://room" width="150px"/>
+                                    <pickerField id="room" datasource="employeeDs" property="room">
+                                        <actions>
+                                            <action id="clear"/>
+                                            <action id="lookup"/>
+                                            <action id="open"/>
+                                        </actions>
+                                    </pickerField>
+                                </hbox>
+                                <hbox expand="location" spacing="true" width="100%">
+                                    <label value="msg://com.haulmont.thesis.crm.entity/ExtEmployee.location" width="150px"/>
+                                    <textField id="location" datasource="employeeDs" property="location"/>
+                                </hbox>
+                                <hbox expand="dismissalDate" spacing="true" width="100%">
+                                    <label value="msg://com.haulmont.thesis.crm.entity/ExtEmployee.dismissalDate"
+                                           width="150px"/>
+                                    <dateField id="dismissalDate" datasource="employeeDs" property="dismissalDate"
+                                               resolution="DAY"/>
+                                </hbox>
+                                <hbox id="commentBox" expand="comment" spacing="true" width="100%">
+                                    <label value="msg://comment" width="150px"/>
+                                    <textArea id="comment" datasource="employeeDs" property="comment" rows="5"/>
+                                </hbox>
+                            </vbox>
+                            <iframe id="embeddedImageFrame" screen="avatarImageFrame" width="210px"/>
+                        </hbox>
+                    </vbox>
+                </scrollBox>
+            </tab>
+            <tab id="facsimileTab" caption="msg://facsimileTab">
+                <iframe id="facsimileImageFrame" screen="facsimileImageFrame" colspan="2"/>
+            </tab>
+            <tab id="attachmentsTab" caption="msg://attachmentsTab" lazy="true">
+                <iframe id="attachmentsFrame" height="100%" screen="abstractReferenceAttachmentsFrame"/>
+            </tab>
+            <tab id="correspondenceHistoryTab" caption="msg://correspondenceHistoryTab" lazy="true">
+                <iframe id="correspondenceHistoryFrame" height="100%" screen="correspondentCorrespondenceHistoryFrame"/>
+            </tab>
+            <tab id="employeeLogTab" caption="msg://employeeLogTab" lazy="true">
+                <iframe id="employeeLogFrame" height="100%" screen="entityLogFrame"/>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

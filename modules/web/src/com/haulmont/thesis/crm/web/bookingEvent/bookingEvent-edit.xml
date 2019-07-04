@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.bookingEvent.BookingEventEditor"
+        datasource="cardDs"
+        messagesPack="com.haulmont.thesis.crm.web.bookingEvent">
+    <dsContext>
+        <datasource id="cardDs"
+                    class="com.haulmont.thesis.crm.entity.BookingEvent"
+                    view="edit">
+            <collectionDatasource id="cardProcDs"
+                                  property="procs"/>
+            <collectionDatasource id="cardRolesDs"
+                                  property="roles"/>
+            <collectionDatasource id="detailsDs"
+                                  property="bookingEventDetail"/>
+        </datasource>
+        <hierarchicalDatasource id="attachmentsDs"
+                                class="com.haulmont.workflow.core.entity.CardAttachment"
+                                datasourceClass="com.haulmont.thesis.web.ui.common.attachments.ThesisAttachmentsDataSource"
+                                hierarchyProperty="versionOf"
+                                view="card-edit">
+            <query>
+                <![CDATA[select a from wf$CardAttachment a where a.card.id = :ds$cardDs order by a.createTs desc]]>
+            </query>
+        </hierarchicalDatasource>
+        <collectionDatasource id="cardRelationsDs"
+                              class="com.haulmont.workflow.core.entity.CardRelation"
+                              view="card-relation">
+            <query>
+                <![CDATA[select c from wf$CardRelation c where (c.card.id = :ds$cardDs or c.relatedCard.id = :ds$cardDs)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="versionsDs"
+                              class="com.haulmont.thesis.crm.entity.BookingEvent"
+                              view="_local">
+            <query>
+                <![CDATA[select d from crm$BookingEvent d where d.versionOf.id = :ds$cardDs order by d.createTs]]>
+            </query>
+        </collectionDatasource>
+        <runtimePropsDatasource id="runtimePropsDs"
+                                mainDs="cardDs"/>
+        <collectionDatasource id="categoriesDs"
+                              class="com.haulmont.cuba.core.entity.Category"
+                              view="_local">
+            <query>
+                <![CDATA[select c from sys$Category c where c.entityType='crm$BookingEvent']]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="categoryDs"
+                              class="com.haulmont.thesis.core.entity.DocCategory"
+                              view="_local">
+            <query>
+                <![CDATA[select c from df$Category c where c.docType.id = :ds$cardDs.docKind.docType order by c.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="exhibitSpaceDs"
+                              class="com.haulmont.thesis.crm.entity.ExhibitSpace"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ExhibitSpace e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <datasource id="docOfficeDataDs"
+                    class="com.haulmont.thesis.core.entity.DocOfficeData"
+                    view="edit">
+            <collectionDatasource id="docOfficeDataAddresseesDs"
+                                  property="docOfficeDataAddressees"/>
+            <collectionDatasource id="docTransferLogsDs"
+                                  property="docTransferLogs"/>
+        </datasource>
+        <collectionDatasource id="ownerDs"
+                              class="com.haulmont.thesis.crm.entity.ExtEmployee"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs"
+                              class="com.haulmont.thesis.core.entity.Company"
+                              view="_minimal">
+            <query>
+                <![CDATA[select c from df$Company c where c.name like :(?i)custom$searchString order by c.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="themesDs"
+                              class="com.haulmont.thesis.crm.entity.ProjectTheme"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ProjectTheme e order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizationDs"
+                              class="com.haulmont.thesis.core.entity.Organization"
+                              view="_local">
+            <query>
+                <![CDATA[select o from df$Organization o order by o.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectsDs"
+                              class="com.haulmont.thesis.crm.entity.ExtProject"
+                              view="_minimal">
+            <query>
+                <![CDATA[select p from crm$Project p where p.isGroup = false and p.name like :(?i)custom$searchString order by p.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="roomDs"
+                              class="com.haulmont.thesis.crm.entity.Room"
+                              view="_local">
+            <query>
+                <![CDATA[select e from crm$Room e where e.isGroup = false and e.useLoadingInfo = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="split"
+            spacing="true">
+        <iframe id="templateFrame"
+                screen="docTemplateFrame"/>
+        <split id="split"
+               orientation="vertical"
+               pos="70"
+               width="100%">
+            <hbox id="mainPane"
+                  expand="tabsheet"
+                  height="100%"
+                  width="100%">
+                <tabSheet id="tabsheet"
+                          height="100%">
+                    <tab id="mainTab"
+                         caption="msg://mainTab"
+                         margin="true">
+                        <groupBox id="docInfoGroupBox"
+                                  height="100%"
+                                  stylename="edit-area">
+                            <scrollBox id="infoScrollBox"
+                                       height="100%">
+                                <vbox id="infoVBox"
+                                      spacing="true">
+                                    <hbox spacing="true">
+                                        <iframe id="header"
+                                                align="MIDDLE_LEFT"
+                                                screen="docHeaderFrame"
+                                                stylename="thesis-star-left-margin"/>
+                                        <flowBox>
+                                            <hbox align="TOP_CENTER"
+                                                  spacing="true">
+                                                <label value="   |   "/>
+                                                <label value="msg://dateTime"/>
+                                                <label datasource="cardDs"
+                                                       property="dateTime"
+                                                       stylename="thesis-bold"/>
+                                                <label value="   |   "/>
+                                                <label value="msg://area"/>
+                                                <label id="areaLabel" datasource="cardDs"
+                                                       property="area"
+                                                       stylename="thesis-bold">
+                                                    <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                                                </label>
+                                                <label value="msg://areaUnit"/>
+                                            </hbox>
+                                        </flowBox>
+                                    </hbox>
+                                    <vbox id="docInfo"
+                                          margin="true,false,true,false"
+                                          spacing="true"
+                                          stylename="thesis-top-separator">
+                                        <hbox expand="project"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="projectLabel"
+                                                   value="msg://project"
+                                                   width="155px"/>
+                                            <searchPickerField id="project"
+                                                               datasource="cardDs"
+                                                               optionsDatasource="projectsDs"
+                                                               property="project" required="true">
+                                                <actions>
+                                                    <action id="clear"/>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </searchPickerField>
+                                        </hbox>
+                                        <hbox id="hOption"
+                                              expand="hOptionDate"
+                                              spacing="true"
+                                              width="590px">
+                                            <label value="msg://option"
+                                                   width="155px"/>
+                                            <checkBox id="option" width="155px"/>
+                                            <hbox id="hOptionDate"
+                                                  expand="optionDate"
+                                                  spacing="true">
+                                                <label id="optionDateLabel" value="msg://optionDate"
+                                                       width="120px"/>
+                                                <dateField id="optionDate"
+                                                           datasource="cardDs"
+                                                           dateFormat="dd.MM.yyyy"
+                                                           property="optionDate"
+                                                           resolution="MIN"/>
+                                            </hbox>
+                                        </hbox>
+                                        <hbox id="hPublishAllowed"
+                                              expand="hPublishAllowedDate"
+                                              spacing="true"
+                                              width="590px">
+                                            <label value="msg://publishAllowed"
+                                                   width="155px"/>
+                                            <checkBox id="publishAllowed" width="100px"/>
+                                            <hbox id="hPublishAllowedDate"
+                                                  expand="publishAllowedDate"
+                                                  spacing="true">
+                                                <label id="publishAllowedDateLabel" value="msg://publishAllowedDate"
+                                                       width="175px"/>
+                                                <dateField id="publishAllowedDate"
+                                                           datasource="cardDs"
+                                                           dateFormat="dd.MM.yyyy"
+                                                           property="publishAllowedDate"
+                                                           resolution="MIN"/>
+                                            </hbox>
+                                        </hbox>
+                                        <hbox expand="year" spacing="true" width="590px">
+                                            <label id="yearLabel" value="msg://year"
+                                                   width="155px"/>
+                                            <lookupField id="year"
+                                                         datasource="cardDs"
+                                                         property="year"/>
+                                        </hbox>
+                                        <!--
+                                        <hbox expand="publishAllowed"
+                                              spacing="true">
+                                            <label value="msg://year"
+                                                   width="155px"/>
+                                            <lookupField id="year"
+                                                         datasource="cardDs"
+                                                         property="year"
+                                                         width="155px"/>
+                                            <checkBox id="publishAllowed"
+                                                      caption="msg://publishAllowed"
+                                                      datasource="cardDs"
+                                                      property="publishAllowed"/>
+                                        </hbox>
+                                        -->
+                                        <hbox expand="owner"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="ownerLabel"
+                                                   value="msg://curator"
+                                                   width="155px"/>
+                                            <lookupPickerField id="owner"
+                                                               datasource="cardDs"
+                                                               optionsDatasource="ownerDs"
+                                                               property="owner">
+                                                <actions>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </lookupPickerField>
+                                        </hbox>
+                                        <hbox expand="company"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="companyLabel"
+                                                   value="msg://company"
+                                                   width="155px"/>
+                                            <searchPickerField id="company"
+                                                               datasource="cardDs"
+                                                               optionsDatasource="companiesDs"
+                                                               property="company">
+                                                <actions>
+                                                    <action id="clear"/>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </searchPickerField>
+                                        </hbox>
+                                        <hbox expand="themes"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="themesLabel" value="msg://themes"
+                                                   width="155px"/>
+                                            <lookupField id="themes"
+                                                         datasource="cardDs"
+                                                         optionsDatasource="themesDs"
+                                                         property="themes"/>
+                                        </hbox>
+                                        <hbox expand="exhibitSpace"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="exhibitSpaceLabel" value="msg://exhibitSpace"
+                                                   width="155px"/>
+                                            <lookupField id="exhibitSpace"
+                                                         datasource="cardDs"
+                                                         optionsDatasource="exhibitSpaceDs"
+                                                         property="exhibitSpace"/>
+                                        </hbox>
+                                        <hbox expand="name"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="nameLabel" value="msg://name"
+                                                   width="155px"/>
+                                            <textField id="name"
+                                                       datasource="cardDs"
+                                                       property="name"/>
+                                        </hbox>
+                                        <hbox expand="fullName_ru"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="fullName_ruLabel" value="msg://fullName_ru"
+                                                   width="155px"/>
+                                            <textField id="fullName_ru"
+                                                       datasource="cardDs"
+                                                       property="fullName_ru"/>
+                                        </hbox>
+                                        <hbox expand="fullName_en"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="fullName_enLabel" value="msg://fullName_en"
+                                                   width="155px"/>
+                                            <textField id="fullName_en"
+                                                       datasource="cardDs"
+                                                       property="fullName_en"/>
+                                        </hbox>
+                                        <hbox expand="hDateFinish">
+                                            <label value="msg://installationDate"
+                                                   width="165px"/>
+                                            <dateField id="installationDate"
+                                                       datasource="cardDs"
+                                                       dateFormat="dd.MM.yyyy"
+                                                       property="installationDate"
+                                                       resolution="MIN"/>
+                                            <hbox id="hDateFinish"
+                                                  expand="dateFinish">
+                                                <label value="msg://dateFinish"
+                                                       width="155px"/>
+                                                <dateField id="dateFinish"
+                                                           datasource="cardDs"
+                                                           dateFormat="dd.MM.yyyy"
+                                                           property="dateFinish"
+                                                           resolution="MIN"/>
+                                            </hbox>
+                                        </hbox>
+                                        <hbox expand="hDeinstallationDate">
+                                            <label value="msg://dateStart"
+                                                   width="165px"/>
+                                            <dateField id="dateStart"
+                                                       datasource="cardDs"
+                                                       dateFormat="dd.MM.yyyy"
+                                                       property="dateStart"
+                                                       resolution="MIN"/>
+                                            <hbox id="hDeinstallationDate"
+                                                  expand="deinstallationDate">
+                                                <label value="msg://deinstallationDate"
+                                                       width="155px"/>
+                                                <dateField id="deinstallationDate"
+                                                           datasource="cardDs"
+                                                           dateFormat="dd.MM.yyyy"
+                                                           property="deinstallationDate"
+                                                           resolution="MIN"/>
+                                            </hbox>
+                                        </hbox>
+                                        <hbox spacing="true"
+                                              width="590px">
+                                            <textArea id="description"
+                                                      caption="msg://description"
+                                                      datasource="cardDs"
+                                                      property="description"
+                                                      rows="3"
+                                                      width="100%"/>
+                                        </hbox>
+                                        <hbox expand="availableForAllCheckBox"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="availableForAllCheckBoxLabel"
+                                                   value="msg://availableForAll"
+                                                   visible="true"
+                                                   width="155px"/>
+                                            <checkBox id="availableForAllCheckBox"
+                                                      datasource="cardDs"
+                                                      property="availableForAll"
+                                                      visible="true"/>
+                                        </hbox>
+
+                                        <hbox expand="globalCheckBox" spacing="true" width="${width}">
+                                            <label id="globalLab"
+                                                   value="msg://global" visible="true" width="${lWidth}"/>
+                                            <checkBox id="globalCheckBox" datasource="cardDs"
+                                                      property="global"
+                                                      visible="true"/>
+                                        </hbox>
+
+                                        <hbox expand="parentCardAccess"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="parentCardAccessLabel"
+                                                   value="msg://parentCardAccess"
+                                                   visible="true"
+                                                   width="155px"/>
+                                            <checkBox id="parentCardAccess"
+                                                      datasource="cardDs"
+                                                      property="parentCardAccess"
+                                                      visible="true"/>
+                                        </hbox>
+                                        <hbox expand="parentCard"
+                                              spacing="true"
+                                              width="590px">
+                                            <label id="parentCardLabel"
+                                                   value="msg://parentCard"
+                                                   width="155px"/>
+                                            <pickerField id="parentCard"
+                                                         datasource="cardDs"
+                                                         property="parentCard">
+                                                <actions>
+                                                    <action id="open"/>
+                                                    <action id="clear"/>
+                                                </actions>
+                                            </pickerField>
+                                        </hbox>
+                                        <hbox expand="date"
+                                              spacing="true"
+                                              visible="false"
+                                              width="590px">
+                                            <label id="docNumberLabel"
+                                                   value="msg://number"
+                                                   width="155px"/>
+                                            <textField id="docNumber"
+                                                       datasource="cardDs"
+                                                       editable="false"
+                                                       property="number"
+                                                       width="155px"/>
+                                            <label id="dateLabel"
+                                                   value="msg://date"
+                                                   width="120"/>
+                                            <dateField id="date"
+                                                       datasource="cardDs"
+                                                       property="date"
+                                                       resolution="DAY"/>
+                                        </hbox>
+                                        <hbox spacing="true"
+                                              visible="false"
+                                              width="590px">
+                                            <label id="docKindLabel"
+                                                   value="msg://docKind"/>
+                                            <label id="docKind"
+                                                   datasource="cardDs"
+                                                   property="docKind"
+                                                   stylename="thesis-bold"/>
+                                        </hbox>
+                                        <hbox margin="false,false,true,false"
+                                              spacing="true"
+                                              visible="false"
+                                              width="100%">
+                                            <scrollBox height="100px"
+                                                       margin="true,false,true,false"
+                                                       scrollBars="both">
+                                                <runtimeProperties id="runtimePropertiesFrameMain"
+                                                                   categoriesDs="categoriesDs"
+                                                                   fieldWidth="200px"
+                                                                   rows="${thesis_countOfColumnsForAdditionalFields}"
+                                                                   runtimeDs="runtimePropsDs"/>
+                                            </scrollBox>
+                                        </hbox>
+                                    </vbox>
+                                </vbox>
+                            </scrollBox>
+                        </groupBox>
+                    </tab>
+                    <tab id="attachmentsTab"
+                         caption="msg://attachments"
+                         margin="true">
+                        <iframe id="cardAttachmentsFrame"
+                                height="100%"
+                                screen="cardAttachmentsFrame"/>
+                    </tab>
+                    <tab id="processTab"
+                         caption="msg://processTab"
+                         margin="true">
+                        <iframe id="cardProcFrame"
+                                height="100%"
+                                screen="docProcFrame"/>
+                    </tab>
+                    <!--
+                    <tab id="office"
+                         caption="msg://office"
+                         margin="true">
+                        <iframe id="docOfficeFrame"
+                                height="100%"
+                                screen="docOfficeFrame"/>
+                    </tab>
+                    <tab id="docTransferLogTab"
+                         caption="msg://docTransferLogTab">
+                        <iframe id="docTransferLogFrame"
+                                height="100%"
+                                screen="docTransferLogFrame"/>
+                    </tab>
+                    <tab id="correspondenceHistoryTab"
+                         caption="msg://correspondenceHistoryTab">
+                        <iframe id="correspondenceHistoryFrame"
+                                height="100%"
+                                screen="correspondenceHistoryFrame"/>
+                    </tab>
+                    -->
+                    <tab id="docTreeTab"
+                         caption="msg://hierarchy">
+                        <iframe id="cardTreeFrame"
+                                height="100%"
+                                screen="cardTreeFrame"/>
+                    </tab>
+                    <tab id="cardLinksTab"
+                         caption="msg://cardLinksTab"
+                         margin="true">
+                        <iframe id="cardLinksFrame"
+                                height="100%"
+                                screen="docLinksFrame"/>
+                    </tab>
+                    <tab id="cardCommentTab"
+                         caption="msg://cardCommentTab">
+                        <iframe id="cardCommentFrame"
+                                height="100%"
+                                screen="cardCommentFrame"/>
+                    </tab>
+                    <tab id="docLogTab"
+                         caption="msg://docLogTab"
+                         lazy="true">
+                        <iframe id="cardLogFrame"
+                                height="100%"
+                                screen="cardLogFrame"/>
+                    </tab>
+                    <tab id="openHistoryTab"
+                         caption="msg://openHistoryTab"
+                         margin="true">
+                        <iframe id="openHistoryFrame"
+                                height="100%"
+                                screen="openHistoryFrame"/>
+                    </tab>
+                    <tab id="versionsTab"
+                         caption="msg://versionsTab"
+                         margin="true">
+                        <table id="versionsTable"
+                               height="100%"
+                               width="100%">
+                            <columns>
+                                <column id="createTs"
+                                        caption="msg://createTs"/>
+                                <column id="docKind"
+                                        caption="msg://docKind"/>
+                                <column id="number"
+                                        caption="msg://number"/>
+                                <column id="date"
+                                        caption="msg://date"/>
+                            </columns>
+                            <rows datasource="versionsDs"/>
+                        </table>
+                    </tab>
+                    <tab id="securityTab"
+                         caption="msg://securityTab"
+                         lazy="true"
+                         margin="true">
+                        <iframe id="securityFrame"
+                                height="100%"
+                                screen="securityFrame"/>
+                    </tab>
+                    <tab id="runtimePropertiesTab"
+                         caption="msg://runtimePropsTab"
+                         margin="true">
+                        <scrollBox id="runtimeScrollBox"
+                                   height="100%"
+                                   margin="true,false,true,false"
+                                   scrollBars="both">
+                            <runtimeProperties id="runtimePropertiesFrameTab"
+                                               categoriesDs="categoriesDs"
+                                               fieldWidth="200px"
+                                               rows="${thesis_countOfColumnsForAdditionalFields}"
+                                               runtimeDs="runtimePropsDs"/>
+                        </scrollBox>
+                    </tab>
+                </tabSheet>
+                <vbox height="100%"
+                      margin="false,false,false,true"
+                      spacing="true"
+                      width="220px">
+                    <scrollBox id="actionsFrameScroll"
+                               height="100%"
+                               spacing="true">
+                        <vbox id="actionsPane"
+                              margin="true,true,true,false"
+                              stylename="edit-area"
+                              width="200px">
+                            <iframe id="actionsFrame"
+                                    screen="actionsFrame"/>
+                        </vbox>
+                        <vbox id="otherActions"
+                              margin="true,true,true,false"
+                              spacing="true"
+                              stylename="edit-area"
+                              width="200px">
+                            <iframe id="startProcessButtonsFrame"
+                                    screen="startProcessButtonsFrame"
+                                    width="200px"/>
+                            <button id="createFromPatternButton"
+                                    caption="msg://createFromPattern"
+                                    enable="false"
+                                    visible="false"
+                                    width="100%"/>
+                            <runReportPopupButton id="print"
+                                         caption="msg://print"
+                                         icon="icons/reports-print.png"
+                                         width="100%"/>
+                        </vbox>
+                    </scrollBox>
+                </vbox>
+            </hbox>
+            <tabSheet id="detailsTabsheet"
+                      height="100%">
+                <tab id="detailTab"
+                     caption="msg://detailTab"
+                     margin="true">
+                    <table id="detailTable"
+                           aggregatable="true"
+                           editable="true"
+                           height="100%"
+                           sortable="false"
+                           width="100%">
+                        <actions>
+                            <!--
+                            <action id="create"/>
+                            -->
+                        </actions>
+                        <columns>
+                            <column id="status" editable="false"/>
+                            <column id="room" optionsDatasource="roomDs" editable="true"/>
+                            <column id="area"
+                                    editable="true">
+                                <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            </column>
+                            <column id="installationDate"
+                                    editable="true"/>
+                            <column id="startDate"
+                                    editable="true"/>
+                            <column id="endDate"
+                                    editable="true"/>
+                            <column id="deinstallationDate"
+                                    editable="true"/>
+                            <column id="isEarlyInstallation" editable="true"/>
+                            <column id="isLateDeinstallation" editable="true"/>
+                            <column id="optionDate" editable="true"/>
+                            <column id="bookingEvent" collapsed="true"/>
+                        </columns>
+                        <rows datasource="detailsDs"/>
+                        <rowsCount/>
+                        <buttonsPanel id="detailBtnPnl">
+                            <button id="createBtn"
+                                    icon="font-icon:PLUS"
+                                    invoke="createDetailItem"/>
+                            <button id="removeBtn"
+                                    icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+                <tab id="resolutionsTab"
+                     caption="msg://resolutionsTab"
+                     margin="true">
+                    <vbox id="resolutionsPane"
+                          height="100%"
+                          spacing="true">
+                        <iframe id="resolutionsFrame"
+                                height="100%"
+                                screen="resolutionsFrame"/>
+                    </vbox>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+    <assign name="width"
+            value="590px"/>
+    <assign name="lWidth"
+            value="155px"/>
+    <assign name="thesis_countOfColumnsForAdditionalFields"
+            value="${thesis_countOfColumnsForAdditionalFields}"/>
+</window>

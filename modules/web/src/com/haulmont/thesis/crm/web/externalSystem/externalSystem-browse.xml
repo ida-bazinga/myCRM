@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.externalSystem.ExternalsystemBrowse" focusComponent="genericFilter" lookupComponent="externalSystemsTable"
+        messagesPack="com.haulmont.thesis.crm.web.externalSystem">
+    <dsContext>
+        <groupDatasource id="externalSystemCDs" class="com.haulmont.thesis.crm.entity.ExternalSystem" view="1c">
+            <query>
+                <![CDATA[select e from crm$ExternalSystem e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="externalSystemTable" datasource="externalSystemCDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel" spacing="true">
+                <groupTable id="externalSystemTable" height="100%" width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="code"/>
+                        <column id="name"/>
+                        <column id="connectionString"/>
+                        <column id="login"/>
+                        <column id="password"/>
+                        <column id="authenticationKey"/>
+                        <column id="activity"/>
+                    </columns>
+                    <rows datasource="externalSystemCDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button id="createButton" action="externalSystemTable.create"/>
+                        <button action="externalSystemTable.edit" icon="icons/edit.png"/>
+                        <button action="externalSystemTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+    <!-- scheduled-tasks -->
+    <task:scheduled-tasks scheduler="scheduler">
+
+        <!--
+        <task:scheduled ref="IProcessingServices1c" method="CatalogAndDocProcessing"
+                        cron="${scheduling.IProcessingServices1c.CatalogAndDocProcessing}"/>
+        <task:scheduled ref="IProcessingServices1c" method="PaymentProcessing"
+                        cron="${scheduling.IProcessingServices1c.PaymentProcessing}"/>
+        <task:scheduled ref="IProcessingServices1c" method="StatusProcessing"
+                        cron="${scheduling.IProcessingServices1c.StatusProcessing}"/>
+        <task:scheduled ref="IProcessingServices1c" method="CalculateSumPaymentProcessing"
+                        cron="${scheduling.IProcessingServices1c.CalculateSumPaymentProcessing}"/>
+        <task:scheduled ref="IProcessingServices1c" method="PKOProcessing"
+                        cron="${scheduling.IProcessingServices1c.PKOProcessing}"/>
+        -->
+
+        <task:scheduled ref="crm_OperatorQueueScheduler" method="queueProcessing"
+                        cron="${scheduling.crm_OperatorQueueScheduler.queueProcessing}"/>
+
+        <!--<task:scheduled ref="crm_CallCampaignTargetScheduler" method="queueProcessing" cron="${scheduling.CallCampaignTargetManager.queueProcessing}"/>
+        -->
+
+    </task:scheduled-tasks>
+
+</beans>

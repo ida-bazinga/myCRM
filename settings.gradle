@@ -1,0 +1,9 @@
+rootProject.name = 'tExpoCRM'
+include(':crm-global', ':crm-core', ':crm-gui', ':crm-web', ':crm-portal', ':crm-mobile', ':crm-mobile-rest')
+project(':crm-global').projectDir = new File(settingsDir, 'modules/global')
+project(':crm-core').projectDir = new File(settingsDir, 'modules/core')
+project(':crm-gui').projectDir = new File(settingsDir, 'modules/gui')
+project(':crm-web').projectDir = new File(settingsDir, 'modules/web')
+project(':crm-portal').projectDir = new File(settingsDir, 'modules/portal')
+project(':crm-mobile').projectDir = new File(settingsDir, 'modules/mobile')
+project(':crm-mobile-rest').projectDir = new File(settingsDir, 'modules/mobile-rest')

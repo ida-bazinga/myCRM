@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://groupEditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.callcampaigntarget.CallCampaignTargetGroupEditor" datasource="targetDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.callcampaigntarget">
+    <dsContext>
+        <datasource id="targetDs" class="com.haulmont.thesis.crm.entity.CallCampaignTrgt" view="edit-group">
+            <datasource id="lastActivityDs" property="lastActivity"/>
+            <datasource id="nextActivityDs" property="nextActivity"/>
+        </datasource>
+        <collectionDatasource id="allCompaniesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Company e order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companyContactsDs" class="com.haulmont.thesis.crm.entity.ExtContactPerson" view="_minimal">
+            <query>
+                <![CDATA[select e from df$ContactPerson e where e.company.id = :ds$allCompaniesDs.id order by e.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="allEmployeesDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e order by e.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="lWidth" value="100px"/>
+    <layout expand="vBox">
+        <vbox id="vBox" spacing="true">
+            <vbox id="mainFields" spacing="true">
+                <hbox id="hBox2" expand="numberOfTries" margin="false,true,false,true" spacing="true" width="100%">
+                    <label id="triesLabel" value="msg://tries" width="${lWidth}"/>
+                    <label id="successTriesLabel" value="msg://CallCampaignTrgt.countTries"/>
+                    <label value=":"/>
+                    <label id="numberOfTries" datasource="targetDs" property="countTries" stylename="thesis-bold"/>
+                    <label id="failedTriesLabel" value="msg://CallCampaignTrgt.countFailedTries"/>
+                    <label value=":"/>
+                    <label id="numberOfFailedTries" datasource="targetDs" property="countFailedTries" stylename="thesis-bold"/>
+                </hbox>
+                <hbox id="hBox1" expand="company" margin="false,true,false,true" spacing="true" width="100%">
+                    <label id="companyLabel" value="msg://ExtCompany" width="${lWidth}"/>
+                    <pickerField id="company" datasource="targetDs" editable="false" property="company">
+                        <actions>
+                            <action id="open"/>
+                        </actions>
+                    </pickerField>
+                </hbox>
+                <hbox id="hBox7" expand="status" margin="false,true,false,true" spacing="true" width="100%">
+                    <label id="statusLabel" value="msg://com.haulmont.thesis.crm.entity/CallCampaignTrgt.state" width="${lWidth}"/>
+                    <lookupField id="status" datasource="targetDs" property="state"/>
+                </hbox>
+                <hbox id="operatorBox" expand="operator" margin="false,true,false,true" spacing="true" width="100%">
+                    <label id="operatorLabel" value="msg://com.haulmont.thesis.crm.entity/CallCampaignTrgt.operator" width="${lWidth}"/>
+                    <pickerField id="operator" datasource="targetDs" property="operator">
+                        <actions>
+                            <action id="clear"/>
+                        </actions>
+                    </pickerField>
+                </hbox>
+                <hbox  id="scheduledActivityBox" expand="nextScheduledActivity" margin="false,true,false,true" spacing="true"  width="100%">
+                    <label id="nextScheduledActivityLabel" value="msg://scheduled" width="${lWidth}"/>
+                    <pickerField id="nextScheduledActivity" captionProperty="description" datasource="targetDs" property="nextActivity">
+                        <actions>
+                            <action id="clear"/>
+                        </actions>
+                    </pickerField>
+                </hbox>
+            </vbox>
+            <groupBox id="lastGroup" caption="msg://lastGroup" spacing="true">
+                <hbox id="hBox111" expand="lastContact" spacing="true" width="100%">
+                    <label id="lastContactLabel" value="msg://contact" width="${lWidth}"/>
+                    <pickerField id="lastContact" datasource="lastActivityDs" editable="false" property="contactPerson">
+                        <actions>
+                            <action id="open"/>
+                        </actions>
+                    </pickerField>
+                </hbox>
+                <hbox id="hBox3" expand="lastCallId" spacing="true" width="100%">
+                    <label id="lastPhoneLabel" value="msg://phoneNumber" width="${lWidth}"/>
+                    <label id="lastPhone" datasource="lastActivityDs" property="communication" stylename="thesis-bold" width="200px"/>
+                    <label id="lastCallIdLabel" value="msg://callId" width="${lWidth}"/>
+                    <label id="lastCallId" datasource="lastActivityDs" property="callId" stylename="thesis-bold"/>
+                </hbox>
+                <hbox id="hBox45" expand="lastCallDate" spacing="true" width="100%">
+                    <label id="lastOperatorLabel" value="msg://callOperator" width="${lWidth}"/>
+                    <label id="lastOperator" datasource="lastActivityDs" property="owner" stylename="thesis-bold" width="200px"/>
+                    <label id="lastCallDateLabel" value="msg://callTime" width="${lWidth}"/>
+                    <label id="lastCallDate" datasource="lastActivityDs" property="createTime" stylename="thesis-bold"/>
+                </hbox>
+                <hbox id="hBox5" expand="result" spacing="true" width="100%">
+                    <label id="resultLabel" value="msg://callResult" width="${lWidth}"/>
+                    <label id="result" datasource="lastActivityDs" property="result" stylename="thesis-bold"/>
+                </hbox>
+            </groupBox>
+            <groupBox id="nextGroup" caption="msg://nextGroup" spacing="true">
+                <vbox id="nextActivityBox" spacing="true">
+                    <hbox id="nextСontactBox" expand="nextСontact" spacing="true" width="100%">
+                        <label id="nextСontactLabel" value="msg://contact" width="${lWidth}"/>
+                        <lookupPickerField id="nextСontact" datasource="nextActivityDs" optionsDatasource="companyContactsDs" property="contactPerson">
+                            <actions>
+                                <action id="clear"/>
+                                <action id="open"/>
+                            </actions>
+                        </lookupPickerField>
+                    </hbox>
+                    <hbox id="nextCallDateBox" expand="nextCallDate" spacing="true" width="100%">
+                        <label id="nextCallPhoneLabel" value="msg://phoneNumber" width="${lWidth}"/>
+                        <textField id="nextCallPhone" datasource="nextActivityDs" property="communication" width="200px"/>
+                        <label id="nextCallDateLabel" align="MIDDLE_LEFT" value="msg://callTime"/>
+                        <dateField id="nextCallDate" datasource="nextActivityDs" dateFormat="dd.MM.yyyy HH:mm" property="endTimePlan" resolution="MIN"/>
+                    </hbox>
+                    <hbox id="nextOperatorBox" expand="nextOperator" spacing="true" width="100%">
+                        <label id="nextOperatorLabel" value="msg://callOperator" width="${lWidth}"/>
+                        <lookupPickerField id="nextOperator" datasource="nextActivityDs" optionsDatasource="allEmployeesDs" property="owner">
+                            <actions>
+                                <action id="clear"/>
+                            </actions>
+                        </lookupPickerField>
+                    </hbox>
+                </vbox>
+            </groupBox>
+        </vbox>
+        <iframe id="editWindowActions" screen="editWindowActions"/>
+    </layout>
+</window>

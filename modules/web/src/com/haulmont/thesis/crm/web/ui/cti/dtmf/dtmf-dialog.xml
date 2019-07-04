@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://dialogCaption" class="com.haulmont.thesis.crm.web.ui.cti.dtmf.DtmfDialog"
+        messagesPack="com.haulmont.thesis.crm.web.ui.cti.dtmf">
+    <layout>
+        <grid id="buttonPanel" spacing="true">
+            <columns count="3"/>
+            <rows>
+                <row/>
+                <row/>
+                <row/>
+                <row/>
+            </rows>
+        </grid>
+    </layout>
+</window>

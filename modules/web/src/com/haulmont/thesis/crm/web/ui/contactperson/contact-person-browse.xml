@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.ui.contactperson.ContactPersonBrowse"
+        focusComponent="mainTable"
+        lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.ui.contactperson">
+    <dsContext>
+        <collectionDatasource id="mainDs"
+                              class="com.haulmont.thesis.crm.entity.ExtContactPerson"
+
+                              view="browse"> <!--maxResults="30"-->
+            <query>
+                <![CDATA[select e from crm$ContactPerson e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="mainTable"
+            spacing="true">
+        <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+            <properties include=".*"/>
+        </filter>
+        <table id="mainTable"
+               width="100%"
+               multiselect="true">
+            <actions>
+                <action id="create"
+                        openType="DIALOG"/>
+                <action id="edit"
+                        openType="DIALOG"/>
+                <action id="remove"/>
+                <action id="refresh"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="company"/>
+                <column id="country" collapsed="true"/>
+                <column id="city" collapsed="true"/>
+                <column id="region" collapsed="true"/>
+                <column id="companyName" collapsed="true"/>
+                <column id="positionLong" collapsed="true"/>
+                <column id="sex" collapsed="true"/>
+                <column id="comment" collapsed="true"/>
+                <column id="isMail" collapsed="true"/>
+                <column id="isProcessing" collapsed="true"/>
+                <column id="isLocked" collapsed="true"/>
+                <column id="lerndAboutExhibition" collapsed="true"/>
+            </columns>
+            <rows datasource="mainDs"/>
+            <rowsCount/>
+            <buttonsPanel alwaysVisible="true">
+                <button action="mainTable.create"/>
+                <button action="mainTable.edit"
+                        icon="icons/edit.png"/>
+                <button action="mainTable.remove"
+                        icon="icons/remove.png"/>
+                <button action="mainTable.refresh"
+                        icon="icons/refresh.png"/>
+                <button id="addEmailTargetsBtn"
+                        caption="Добавить в кампанию рассылки"
+                        invoke="addEmailTargets"/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

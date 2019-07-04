@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="com.haulmont.thesis.crm.web.individual.ExtIndividualBrowse"
+        extends="com/haulmont/thesis/web/ui/individual/individual-browse.xml"
+        messagesPack="com.haulmont.thesis.crm.web.individual">
+    <layout>
+        <vbox>
+            <groupTable>
+                <buttonsPanel>
+                    <button id="addEmailTargetsBtn" caption="Добавить в кампанию рассылки"  invoke="addEmailTargets"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.emailCampaign.EmailCampaignBrowser"
+        focusComponent="cardsTable"
+        lookupComponent="cardsTable"
+        messagesPack="com.haulmont.thesis.crm.web.emailCampaign">
+    <dsContext>
+        <groupDatasource id="cardsDs"
+                         class="com.haulmont.thesis.crm.entity.EmailCampaign"
+                         view="browse">
+            <query>
+                <![CDATA[select e from crm$EmailCampaign e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout expand="split"
+            spacing="true">
+        <hbox spacing="true"
+              width="100%">
+            <filter id="genericFilter"
+                    applyTo="cardsTable"
+                    datasource="cardsDs">
+                <properties exclude="id|createTs|createdBy|deleteTs|deletedBy|updateTs|updatedBy|jbpmProcessId|procFamily||signatures|version|currentActors|currentActorsFullString|currentActorsString|substitutedCreator|creator|description|locState|important|                                 cardUserInfo|category|parentCardAccess|extraFields"
+                            include=".*"/>
+            </filter>
+        </hbox>
+        <split id="split"
+               orientation="vertical"
+               pos="60"
+               width="100%">
+            <vbox id="table-panel"
+                  height="100%"
+                  spacing="true">
+                <groupTable id="cardsTable"
+                            height="100%"
+                            presentations="true"
+                            width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                        <action id="deleteNotification"/>
+                        <action id="openNewTab"/>
+                        <action id="showLink"/>
+                        <action id="expand"/>
+                    </actions>
+                    <columns>
+                        <column id="hasAttachments"
+                                caption="msg://com.haulmont.workflow.core.entity/Card.hasAttachments"
+                                width="30">
+                            <formatter class="com.haulmont.thesis.gui.components.formatter.HasAttachmentsFormatter"/>
+                        </column>
+                        <column id="important"
+                                caption="msg://com.haulmont.thesis.core.entity/TsCard.important"
+                                width="30">
+                            <formatter class="com.haulmont.thesis.gui.components.formatter.ImportantDocFormatter"/>
+                        </column>
+                        <column id="number"/>
+                        <column id="name"
+                                caption="msg://com.haulmont.thesis.crm.entity/BaseCampaign.name"/>
+                        <column id="priority"/>
+                        <column id="startTimePlan"/>
+                        <column id="endTimePlan"/>
+                        <column id="endTimeFact"
+                                collapsed="true"/>
+                        <column id="comment"
+                                collapsed="true"/>
+                        <column id="organization"/>
+                        <column id="kind"/>
+                        <column id="owner"/>
+                        <column id="project"/>
+                        <column id="hasAttributes"
+                                caption="msg://hasAttributes"
+                                collapsed="true">
+                            <formatter class="com.haulmont.thesis.gui.components.formatter.HasAttributesFormatter"/>
+                        </column>
+                        <column id="list_id"/>
+                    </columns>
+                    <rows datasource="cardsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel"
+                                  alwaysVisible="true">
+                        <button id="createBtn"
+                                action="cardsTable.create"/>
+                        <button id="editBtn"
+                                action="cardsTable.edit"/>
+                        <button id="removeBtn"
+                                action="cardsTable.remove"/>
+                        <button id="refreshBtn"
+                                action="cardsTable.refresh"/>
+                        <button id="expandBtn"
+                                action="cardsTable.expand"/>
+                        <button id="sendListBtn"
+                                caption="msg://sendList"
+                                invoke="getSendList"/>
+                        <button id="addMailTargetsBtn"
+                                caption="msg://sendToUni"
+                                invoke="sendTargets"/>
+                        <button id="statusLettersBtn"
+                                caption="msg://statusLetters"
+                                invoke="getStatusLetters"/>
+                        <button id="statusContactsBtn"
+                                caption="msg://statusContacts"
+                                invoke="getStatusContacts"/>
+                        <runReportPopupButton id="printButton"
+                                              description="msg://print"
+                                              icon="icons/reports-print.png"/>
+                    </buttonsPanel>
+                    <tableSettings id="tableSettings"/>
+                </groupTable>
+            </vbox>
+            <tabSheet id="cardDetailsTabSheet"
+                      height="100%">
+                <tab id="resolutionsTab"
+                     caption="msg://resolutionsTab.name"
+                     margin="true">
+                    <iframe id="resolutionsFrame"
+                            height="100%"
+                            screen="resolutionsFrame"/>
+                </tab>
+                <tab id="hierarchyTab"
+                     caption="msg://hierarchyTab.name">
+                    <iframe id="cardTreeFrame"
+                            height="100%"
+                            screen="cardTreeFrame"/>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

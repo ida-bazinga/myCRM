@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.resourceHistory.ResourcehistoryEditor" datasource="mainDs" focusComponent="fields"
+        messagesPack="com.haulmont.thesis.crm.web.resourceHistory">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.ResourceHistory" view="edit"/>
+    </dsContext>
+    <layout expand="vbox" height="100%" spacing="true" width="100%">
+        <vbox id="vbox">
+            <fieldGroup id="fields" datasource="mainDs" width="100%">
+                <column width="100%">
+                    <field id="type"/>
+                    <field id="date"/>
+                    <field id="comment_ru" rows="5"/>
+                    <field id="owner"/>
+                    <field id="sender"/>
+                    <field id="addressee"/>
+                    <field id="sourceDestination"/>
+                    <field id="destination"/>
+                    <field id="informationDate"/>
+                    <field id="transferDate"/>
+                    <field id="card"/>
+                </column>
+            </fieldGroup>
+        </vbox>
+        <iframe screen="editWindowActions"/>
+    </layout>
+</window>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2008-2015 Haulmont. All rights reserved.
+  ~ Use is subject to license terms, see http://www.cuba-platform.com/license for details.
+  -->
+
+<services xmlns="http://schemas.haulmont.com/cuba/rest-services.xsd">
+
+
+    <!--Exposed for REST API functional tests-->
+    <service name="cuba_TestingService">
+        <method name="execute"/>
+    </service>
+
+    <service name="cuba_DynamicAttributesCacheService">
+        <method name="loadCache"/>
+    </service>
+
+    <service name="crm_ConfigurationSectionService">
+        <method name="configurationSearchService"/>
+    </service>
+
+    <service name="crm_CreateRoomRequestService">
+        <method name="createRoomRequestService"/>
+    </service>
+
+</services>

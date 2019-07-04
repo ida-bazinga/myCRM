@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.orderDetail.group.OrderDetailGroupEdit"
+        messagesPack="com.haulmont.thesis.crm.web.orderDetail.group">
+    <dsContext>
+        <collectionDatasource id="detailDs"
+                              class="com.haulmont.thesis.crm.entity.OrderDetail"
+                              view="browse">
+            <query>
+                <![CDATA[select d from crm$OrderDetail d where d.ordDoc.id = :custom$ordDocId]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox spacing="true" width="100%">
+            <vbox id="hboxDDetail" width="100%" spacing="true">
+                <groupBox id="gr1Box" caption="msg://gr1Box"  width="100%">
+                    <lookupField id="dependentDetail" caption="msg://installationGgroup" width="100%"/>
+                    <checkBox id="isDependentDetail" caption="msg://delGroup"/>
+                </groupBox>
+                <groupBox id="gr2Box" caption="msg://gr2Box" width="100%">
+                    <textField id="ordDocGroup" caption="msg://installationGgroup" width="100%"/>
+                    <checkBox id="isOrdDocGroup" caption="msg://delGroup"/>
+                </groupBox>
+            </vbox>
+
+            <buttonsPanel id="buttonsPanel"
+                          align="MIDDLE_LEFT"
+                          width="100%">
+                <button id="selectButton"
+                        caption="Выбрать"
+                        invoke="selectButton"
+                        width="100%"/>
+                <button id="closeButton"
+                        caption="Закрыть"
+                        invoke="closeButton"
+                        width="100%"/>
+            </buttonsPanel>
+        </vbox>
+    </layout>
+</window>

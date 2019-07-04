@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.resource.ResourceEditor" datasource="mainDs" focusComponent="fields"
+        messagesPack="com.haulmont.thesis.crm.web.resource">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Resource" view="edit">
+            <collectionDatasource id="attachmentsDs" property="resourceAttachments"/>
+        </datasource>
+
+        <collectionDatasource id="resourceGroupDs" class="com.haulmont.thesis.crm.entity.Resource" view="_local">
+            <query>
+                <![CDATA[select e from crm$Resource e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vbox" height="100%" spacing="true" width="100%">
+        <vbox id="vbox">
+            <tabSheet id="tabsheet">
+                <tab id="mainTab" caption="msg://mainTab" margin="true">
+                    <fieldGroup id="fields" datasource="mainDs" width="100%">
+                        <column width="100%">
+                            <field id="name_ru" required="true"/>
+                            <field id="name_en"/>
+                            <field id="serialNumber"/>
+                            <field id="parent" optionsDatasource="resourceGroupDs"/>
+                            <field id="reference"/>
+                            <field id="resourceType"/>
+                            <field id="inventoryNumber"/>
+                            <field id="state"/>
+                            <field id="unit"/>
+                            <field id="comment_ru" rows="5"/>
+                        </column>
+                    </fieldGroup>
+                </tab>
+                <tab id="attachmentsTab" caption="msg://attachmentsTab" lazy="true" margin="true">
+                    <iframe id="attachmentsFrame" height="100%" screen="abstractReferenceAttachmentsFrame"/>
+                </tab>
+            </tabSheet>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

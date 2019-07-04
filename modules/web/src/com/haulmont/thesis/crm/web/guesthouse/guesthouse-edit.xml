@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.guesthouse.guesthouseEdit" datasource="mainDs" messagesPack="com.haulmont.thesis.crm.web.guesthouse">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Guesthouse" view="edit"/>
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Company e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout height="100%" spacing="true" width="100%">
+        <vbox id="vBox" expand="commentHbox" height="100%" spacing="true">
+            <hbox expand="code" spacing="true" width="100%">
+                <label value="msg://code" width="120px"/>
+                <textField id="code" datasource="mainDs" property="code"/>
+            </hbox>
+            <hbox expand="name_ru" spacing="true" width="100%">
+                <label value="msg://name_ru" width="120px"/>
+                <textField id="name_ru" datasource="mainDs" property="name_ru" required="true"/>
+            </hbox>
+            <hbox expand="name_en" spacing="true" width="100%">
+                <label value="msg://name_en" width="120px"/>
+                <textField id="name_en" datasource="mainDs" property="name_en"/>
+            </hbox>
+            <hbox expand="company" spacing="true" width="100%">
+                <label value="msg://company" width="120px"/>
+                <pickerField id="company" datasource="mainDs" optionsDatasource="companiesDs" property="company">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </pickerField>
+            </hbox>
+            <hbox expand="lateCheckOutTime" spacing="true" width="545px">
+                <label value="msg://checkOutHour" width="180px"/>
+                <timeField id="checkOutHour" datasource="mainDs" property="checkOutHour" width="60px"/>
+                <label value="msg://lateCheckOutTime" width="220px"/>
+                <timeField id="lateCheckOutTime" datasource="mainDs" property="lateCheckOutTime" width="60px"/>
+            </hbox>
+            <hbox expand="afterCheckOutMarkup" spacing="true" width="545px">
+                <label value="msg://lateCheckOutMarkup" width="180px"/>
+                <textField id="lateCheckOutMarkup" datasource="mainDs" property="lateCheckOutMarkup" width="60px"/>
+                <label value="msg://afterCheckOutMarkup" width="220px"/>
+                <textField id="afterCheckOutMarkup" datasource="mainDs" property="afterCheckOutMarkup" width="60px"/>
+            </hbox>
+            <hbox id="commentHbox" expand="comment_ru" spacing="true" width="100%">
+                <label value="msg://comment_ru" width="120px"/>
+                <textArea id="comment_ru" datasource="mainDs" property="comment_ru"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

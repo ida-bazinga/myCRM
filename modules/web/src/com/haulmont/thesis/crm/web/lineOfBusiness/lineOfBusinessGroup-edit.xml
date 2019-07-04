@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://GroupEditorCaption"
+        class="com.haulmont.thesis.crm.web.lineOfBusiness.LineOfBusinessGroupEditor" datasource="mainDs" focusComponent="vBox"
+        messagesPack="com.haulmont.thesis.crm.web.lineOfBusiness">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.LineOfBusiness" view="group"/>
+        <collectionDatasource id="parentLineDs" class="com.haulmont.thesis.crm.entity.LineOfBusiness" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$LineOfBusiness e where e.isGroup = true order by e.code]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" spacing="true">
+            <hbox expand="parentGroup" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseLookup.code" width="100px"/>
+                <textField id="code" datasource="mainDs" property="code" required="true" width="100px"/>
+                <label value="msg://com.haulmont.thesis.crm.entity/LineOfBusiness.parentLine" width="100px"/>
+                <lookupPickerField id="parentGroup" datasource="mainDs" optionsDatasource="parentLineDs" property="parentLine">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox expand="name" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseLookup.name_ru" width="100px"/>
+                <textField id="name" datasource="mainDs" property="name_ru" required="true"/>
+            </hbox>
+            <hbox expand="comment" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/BaseLookup.comment_ru" width="100px"/>
+                <textArea id="comment" datasource="mainDs" property="comment_ru"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.product.ProductBrowser" focusComponent="genericFilter" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.product">
+    <dsContext>
+        <groupDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.Product" view="browse">
+            <query>
+                <![CDATA[select e from crm$Product e order by e.title_ru]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="mainTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs|project|extProject" include=".*"/>
+            </filter>
+            <groupTable id="mainTable" multiselect="true" presentations="true" width="100%">
+                <actions>
+                    <action id="create" openType="DIALOG"/>
+                    <action id="edit" openType="DIALOG"/>
+                    <action id="remove"/>
+                    <action id="refresh"/>
+                    <action id="expand"/>
+                </actions>
+                <columns>
+                    <group>
+                        <column id="nomenclature"/>
+                    </group>
+                    <column id="code"/>
+                    <column id="title_ru"/>
+                    <column id="nomenclature.catalogSection"/>
+                    <column id="minQuantity"/>
+                    <column id="maxQuantity"/>
+                    <column id="characteristic" collapsed="true"/>
+                    <column id="title_en" collapsed="true"/>
+                    <column id="productType" collapsed="true"/>
+                    <column id="exhibitSpace"/>
+                    <column id="eventOrganizer"/>
+                    <column id="notInUse" collapsed="true"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel id="buttonsPanel">
+                    <button id="createButton" action="mainTable.create"/>
+                    <button id="editBtn" action="mainTable.edit" icon="icons/edit.png"/>
+                    <button id="removeBtn" action="mainTable.remove" icon="icons/remove.png"/>
+                    <button id="excelBtn" description="msg://actions.Excel" icon="icons/excel.png"/>
+                    <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                    <button id="expandBtn" action="mainTable.expand"/>
+                    <runReportPopupButton id="printButton" description="msg://print" icon="icons/reports-print.png"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://BrowserCaption"
+        class="com.haulmont.thesis.crm.web.companyComTurnoverType.CompanyComTurnoverTypeBrowse"
+        messagesPack="com.haulmont.thesis.crm.web.companyComTurnoverType">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.CompanyComTurnoverType" view="edit">
+            <query>
+                <![CDATA[select e from crm$CompanyComTurnoverType e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="mainTable" spacing="true">
+        <filter id="filter" datasource="mainDs">
+            <properties include=".*"/>
+        </filter>
+        <table id="mainTable" width="100%">
+            <actions>
+                <action id="create" openType="DIALOG"/>
+                <action id="edit" openType="DIALOG"/>
+                <action id="remove"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="name_ru"/>
+                <column id="comment_ru" collapsed="true"/>
+            </columns>
+            <rows datasource="mainDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel" alwaysVisible="true">
+                <button id="createBtn" action="mainTable.create"/>
+                <button id="editBtn" action="mainTable.edit"/>
+                <button id="removeBtn" action="mainTable.remove"/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

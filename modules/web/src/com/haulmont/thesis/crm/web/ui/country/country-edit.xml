@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://EditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.country.CountryEditor" datasource="countryDs" messagesPack="com.haulmont.thesis.crm.web.ui.country">
+    <dsContext>
+        <datasource id="countryDs" class="com.haulmont.thesis.crm.entity.Country" view="_local"/>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="commentBox" spacing="true">
+            <hbox id="hBox1C" expand="id1c" width="100%" spacing="true">
+                <label value="msg://id1c" width="${lWidth}"/>
+                <textField id="id1c" datasource="countryDs" property="id1c" editable="false"/>
+            </hbox>
+            <hbox id="hBox1" expand="code" width="100%" spacing="true">
+                <label value="msg://code" width="${lWidth}"/>
+                <textField id="code" datasource="countryDs" property="code" required="true"/>
+            </hbox>
+            <hbox id="hBox2" expand="alpha_2" width="100%" spacing="true">
+                <label value="msg://alpha_2" width="${lWidth}"/>
+                <textField id="alpha_2" datasource="countryDs" property="alpha_2" required="true"/>
+            </hbox>
+            <hbox id="hBox3" expand="alpha_3" width="100%" spacing="true">
+                <label value="msg://alpha_3" width="${lWidth}"/>
+                <textField id="alpha_3" datasource="countryDs" property="alpha_3"/>
+            </hbox>
+            <hbox id="hBox4" expand="name_ru" width="100%" spacing="true">
+                <label value="msg://name_ru" width="${lWidth}"/>
+                <textField id="name_ru" datasource="countryDs" property="name_ru" required="true"/>
+            </hbox>
+            <hbox id="hBox5" expand="name_en" width="100%" spacing="true">
+                <label value="msg://name_en" width="${lWidth}"/>
+                <textField id="name_en" datasource="countryDs" property="name_en"/>
+            </hbox>
+            <hbox id="hBox6" expand="fullName_ru" width="100%" spacing="true">
+                <label value="msg://fullName_ru" width="${lWidth}"/>
+                <textField id="fullName_ru" datasource="countryDs" property="fullName_ru" />
+            </hbox>
+            <hbox id="hBox7" expand="fullName_en" width="100%" spacing="true">
+                <label value="msg://fullName_en" width="${lWidth}"/>
+                <textField id="fullName_en" datasource="countryDs" property="fullName_en" />
+            </hbox>
+            <hbox id="commentBox" expand="commentRu" width="100%" spacing="true">
+                <label value="msg://comment_ru" width="${lWidth}"/>
+                <textArea id="commentRu" datasource="countryDs" rows="5" property="comment_ru"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="140px"/>
+</window>

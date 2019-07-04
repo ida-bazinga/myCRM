@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.invoiceDoc.InvoiceDocBrowser"
+        focusComponent="genericFilter"
+        lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.invoiceDoc">
+    <dsContext>
+        <groupDatasource id="mainDs"
+                         class="com.haulmont.thesis.crm.entity.InvoiceDoc"
+                         view="browse_InvoiceDoc">
+            <query>
+                <![CDATA[select e from crm$InvoiceDoc e]]>
+            </query>
+        </groupDatasource>
+        <collectionDatasource id="log1cDs"
+                              class="com.haulmont.thesis.crm.entity.Log1C"
+                              view="edit">
+            <query>
+                <![CDATA[select e from crm$Log1C e where e.entityId = :ds$mainDs and e.entityName = 'crm$InvoiceDoc' order by e.startDate]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox height="100%"
+              spacing="true">
+            <split id="split"
+                   height="100%"
+                   orientation="vertical"
+                   pos="60"
+                   width="100%">
+                <vbox id="table-panel"
+                      expand="mainTable"
+                      height="100%"
+                      spacing="true">
+                    <filter id="genericFilter"
+                            applyTo="mainTable"
+                            datasource="mainDs"
+                            stylename="edit-area">
+                        <properties exclude="id|createdBy|createTs"
+                                    include=".*"/>
+                    </filter>
+                    <groupTable id="mainTable"
+                                presentations="true"
+                                width="100%">
+                        <actions>
+                            <action id="create"/>
+                            <action id="edit"/>
+                            <action id="remove"/>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="code"/>
+                            <column id="name_ru"/>
+                            <column id="outboundDate"/>
+                            <column id="orderDoc"/>
+                            <column id="company"/>
+                            <column id="status"/>
+                            <column id="taxSum"/>
+                            <column id="fullSum"/>
+                            <column id="contract"
+                                    collapsed="true"/>
+                            <column id="currency"
+                                    collapsed="true"/>
+                            <column id="organizationAccount"
+                                    collapsed="true"/>
+                            <column id="generalDirector"
+                                    collapsed="true"/>
+                            <column id="chifAccount"
+                                    collapsed="true"/>
+                            <column id="kassa"
+                                    collapsed="true"/>
+                            <column id="comment_ru"
+                                    collapsed="true"/>
+                            <column id="organization"
+                                    collapsed="true"/>
+                            <column id="owner"
+                                    collapsed="true"/>
+                            <column id="project"/>
+                            <column id="note"
+                                    collapsed="true"/>
+                        </columns>
+                        <rows datasource="mainDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button id="createButton"
+                                    action="mainTable.create"/>
+                            <button id="editBtn"
+                                    action="mainTable.edit"
+                                    icon="icons/edit.png"/>
+                            <button id="removeBtn"
+                                    action="mainTable.remove"
+                                    icon="icons/remove.png"/>
+                            <button id="refreshBtn"
+                                    action="mainTable.refresh"
+                                    icon="icons/refresh.png"/>
+                            <runReportPopupButton id="printButton"
+                                                  description="msg://print"
+                                                  icon="icons/reports-print.png"/>
+                        </buttonsPanel>
+                    </groupTable>
+                </vbox>
+                <tabSheet id="log1cSheet"
+                          height="100%">
+                    <tab id="log1cTab"
+                         caption="msg://tabCaption"
+                         margin="true">
+                        <vbox id="table-log1c"
+                              height="100%"
+                              spacing="true">
+                            <groupTable id="logTable1c"
+                                        height="100%"
+                                        presentations="true"
+                                        width="100%">
+                                <columns>
+                                    <column id="shortServiceOperationResults"/>
+                                    <column id="entityName"
+                                            collapsed="true"/>
+                                    <column id="entityId"
+                                            collapsed="true"/>
+                                    <column id="startDate"
+                                            collapsed="true"/>
+                                    <column id="extId"
+                                            collapsed="true"/>
+                                    <column id="error"
+                                            collapsed="true"/>
+                                    <column id="priority"/>
+                                </columns>
+                                <rows datasource="log1cDs"/>
+                            </groupTable>
+                        </vbox>
+                    </tab>
+                </tabSheet>
+            </split>
+        </vbox>
+    </layout>
+</window>

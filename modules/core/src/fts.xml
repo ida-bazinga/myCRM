@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fts-config>
+    <entities>
+        <entity class="com.haulmont.thesis.crm.entity.Catalog">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ProjectFormat">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ProjectTheme">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ProjectType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.TerritorialClassifier">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CompanyType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RuefClassifier">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ProductType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ProductState">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Tax">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Unit">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CharacteristicType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExhibitSpace">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Characteristic">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Nomenclature">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Product">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Cost">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Currency">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RuefClassifier">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Log1C">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Country">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.FormOfIncorporation">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.AddressPartType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Region">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OrderStatus">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RegionDistrict">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.City">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Address">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtProject">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OrderDoc">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OrderDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CfcItem">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.BugetItem">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.WebAddress">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.EmailAddress">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtEmployee">
+            <include re=".*"/>
+            <exclude re="photo"/>
+            <include name="correspondentAttachments.file"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtPosition">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtDepartment">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Okvd">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.LineOfBusiness">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtCompany">
+            <include re=".*"/>
+            <include name="correspondentAttachments.file"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.InvoiceDoc">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ActDoc">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.VatInvoiceDoc">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ActDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ProjectTeam">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.InvoiceDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RoleInProject">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Payment">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.PaymentDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.IntegrationResolver">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExternalSystem">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OrdDoc">
+            <include re=".*"/>
+            <include name="attachments.file"/>
+            <include name="assignments.attachments.file"/>
+            <exclude name="jbpmProcessId"/>
+            <exclude name="parentCard"/>
+            <exclude name="subCards"/>
+            <searchableIf>entity.versionOf == null</searchableIf>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.InvDoc">
+            <include re=".*"/>
+            <include name="attachments.file"/>
+            <include name="assignments.attachments.file"/>
+            <exclude name="jbpmProcessId"/>
+            <exclude name="parentCard"/>
+            <exclude name="subCards"/>
+            <searchableIf>entity.versionOf == null</searchableIf>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.AcDoc">
+            <include re=".*"/>
+            <include name="attachments.file"/>
+            <include name="assignments.attachments.file"/>
+            <exclude name="jbpmProcessId"/>
+            <exclude name="parentCard"/>
+            <exclude name="subCards"/>
+            <searchableIf>entity.versionOf == null</searchableIf>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.VatDoc">
+            <include re=".*"/>
+            <include name="attachments.file"/>
+            <include name="assignments.attachments.file"/>
+            <exclude name="jbpmProcessId"/>
+            <exclude name="parentCard"/>
+            <exclude name="subCards"/>
+            <searchableIf>entity.versionOf == null</searchableIf>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Operator">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CdrLog">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Activity">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CallCampaignTarget">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Qualification">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OperatorQualification">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ActivityResult">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CallCampaignStatus">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OutboundCampaign">
+            <include re=".*"/>
+            <include name="attachments.file"/>
+            <include name="assignments.attachments.file"/>
+            <exclude name="jbpmProcessId"/>
+            <exclude name="parentCard"/>
+            <exclude name="subCards"/>
+            <searchableIf>entity.versionOf == null</searchableIf>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OperatorSession">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OperatorSessionEvents">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CompanyProjects">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.InformationSource">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtContactPerson">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Communication">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CommKind">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ContactRole">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CompanyVerifiedState">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.InvDocBugetDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Resource">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Guesthouse">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.TransferType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.TourType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtTask">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.NomenclatureResource">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.EquipmentState">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ResourceType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Provider">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Room">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Workplace">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Equipment">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Staff">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ResourceProperty">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.OrdResource">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ResourceHistory">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ResourceAttachment">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CompanyComTurnoverType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CallActivity">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ActivityKind">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.FederalDistrict">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.UnloadingBuffer">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CompanyScale">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.NonDuplicateCompanies">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.DuplicateCompany">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.DuplicateCompanyDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.LineOfBusinessCompaniesFlags">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CashMachine">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CashDocument">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CashDocumentPosition">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ProjectRoom">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ExtContractorAccount">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.core.app.unisender.entity.UniContact">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.MessageCampaignUnisender">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CampaignUnisender">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.MessageUnisender">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.MessageCampaignStatus">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.PayOrd">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.HistoryCompanyCells">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.LineOfBusinessContactPerson">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.LearnedAboutExhibition">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.BookingEvent">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.BookingEventDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.EmailStatus">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RoomSeatingType">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RoomException">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RoomGeolocation">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.LogCatalog">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RoomSeatingTypeAttachment">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ActivityRes">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.BaseCampaign">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CallCampaign">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CallCampaignTrgt">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CampaignKind">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.SoftPhoneEvent">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.SoftPhoneSession">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.EmailActivity">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.EmailCampaign">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.EmailCampaignTarget">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.CategoryTask">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.Labour">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.AccessControlLog">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ReqDetail">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.ReqDocKind">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RoomResourceLoadingsInfo">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.RoomLoadingCollision">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.FacilityManagment">
+            <include re=".*"/>
+        </entity>
+        <entity class="com.haulmont.thesis.crm.entity.GuideLine">
+            <include re=".*"/>
+        </entity>
+    </entities>
+</fts-config>

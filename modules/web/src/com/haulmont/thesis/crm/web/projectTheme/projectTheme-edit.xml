@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.projectTheme.ProjectThemeEditor"
+        datasource="projectThemeDs"
+        messagesPack="com.haulmont.thesis.crm.web.projectTheme">
+    <dsContext>
+        <datasource id="projectThemeDs"
+                    class="com.haulmont.thesis.crm.entity.ProjectTheme"
+                    view="_local"/>
+    </dsContext>
+    <assign name="width"
+            value="300px"/>
+    <layout expand="vBox"
+            margin="true"
+            spacing="true">
+        <vbox id="vBox"
+              stylename="edit-area">
+            <grid id="grid"
+                  height="100%"
+                  spacing="true"
+                  width="50%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <fieldGroup id="fieldGroupMain"
+                                    colspan="2"
+                                    datasource="projectThemeDs"
+                                    width="100%">
+                            <column width="100%">
+                                <field id="code"/>
+                                <field id="name_ru"
+                                       required="true"/>
+                                <field id="comment_ru"/>
+                            </column>
+                        </fieldGroup>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

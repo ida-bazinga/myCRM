@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://EditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.communication.CommunicationEditor" datasource="communicationDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.communication">
+    <dsContext>
+        <datasource id="communicationDs" class="com.haulmont.thesis.crm.entity.Communication" view="edit"/>
+        <collectionDatasource id="kindsDs" class="com.haulmont.thesis.crm.entity.CommKind" view="_local">
+            <query>
+                <![CDATA[select e from crm$CommKind e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="emailStatusDs" class="com.haulmont.thesis.crm.entity.EmailStatus" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$EmailStatus e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="lWidth" value="80px"/>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="commentBox" spacing="true">
+            <hbox id="hBox1" expand="commKind" spacing="true" width="100%">
+                <label id="labelCode" value="msg://commKind" width="${lWidth}"/>
+                <lookupField id="commKind" datasource="communicationDs" optionsDatasource="kindsDs" property="commKind"/>
+                <checkBox id="pref" caption="msg://pref" datasource="communicationDs" property="pref" width="135px"/>
+            </hbox>
+            <hbox id="hBox2" expand="mainPart" spacing="true" width="100%">
+                <label id="labelMainPart" value="msg://numString" width="${lWidth}"/>
+                <textField id="mainPart" datasource="communicationDs" property="mainPart" required="true"/>
+                <hbox id="addPartBox" expand="addPart" spacing="true" width="135px">
+                    <label id="labelAddPart" value="msg://additional" width="30px"/>
+                    <textField id="addPart" datasource="communicationDs" property="additionalPart"/>
+                </hbox>
+            </hbox>
+            <hbox id="maskBox" expand="mask" spacing="true" width="100%">
+                <label id="l_mask" value="msg://mask" width="${lWidth}"/>
+                <textField id="mask" datasource="communicationDs" property="mask"/>
+            </hbox>
+            <hbox id="statusBox" expand="status" spacing="true" width="100%">
+                <label id="l_status" value="msg://status" width="${lWidth}"/>
+                <lookupField id="status" datasource="communicationDs" editable="false" optionsDatasource="emailStatusDs" property="emailStatus"/>
+            </hbox>
+            <hbox id="commentBox" expand="note" spacing="true" width="100%">
+                <label id="labelNoteRu" value="msg://noteRu" width="${lWidth}"/>
+                <textArea id="note" datasource="communicationDs" property="note_ru" rows="3"/>
+            </hbox>
+        </vbox>
+        <iframe id="editWindowActions" screen="editWindowActions"/>
+    </layout>
+
+</window>

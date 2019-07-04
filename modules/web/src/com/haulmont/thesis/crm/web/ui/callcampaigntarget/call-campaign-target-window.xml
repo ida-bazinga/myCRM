@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://windowCaption"
+        class="com.haulmont.thesis.crm.web.ui.callcampaigntarget.CallCampaignTargetWindow"
+        messagesPack="com.haulmont.thesis.crm.web.ui.callcampaigntarget">
+    <dsContext>
+        <hierarchicalDatasource id="targetsDs" class="com.haulmont.thesis.crm.entity.CallCampaignTrgt" hierarchyProperty="parent"
+                                maxResults="50" view="browse">
+            <query>
+                <![CDATA[select e from crm$CallCampaignTrgt e where e.campaign.state = @enum(com.haulmont.thesis.crm.enums.CampaignState.InWork)
+                 order by e.createTs, e.name]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.isGroup = :custom$hideGroup]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <iframe id="targetsFrame" height="100%" screen="callCampaignTargetsFrame"/>
+    </layout>
+</window>

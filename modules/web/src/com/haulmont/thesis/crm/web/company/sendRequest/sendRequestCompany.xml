@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.company.sendRequest.SendRequestCompany"
+        messagesPack="com.haulmont.thesis.crm.web.company.sendRequest">
+    <layout expand="vBoxComponent"
+            height="100%"
+            spacing="true"
+            width="100%">
+        <vbox id="vBoxComponent" spacing="true" expand="buttonsPanel">
+            <hbox id="commentBox"
+                  spacing="true"
+                  width="100%">
+                <textArea id="comment"
+                          inputPrompt="msg://messageInfo"
+                          rows="10"
+                          width="100%" resizable="true"/>
+            </hbox>
+            <buttonsPanel id="buttonsPanel"
+                          align="MIDDLE_LEFT"
+                          width="100%">
+                <button id="sendButton"
+                        caption="msg://send"
+                        invoke="send"
+                        stylename="friendly"
+                        width="100%"/>
+                <button id="cancelButton"
+                        caption="msg://cancel"
+                        invoke="cancel"
+                        stylename="danger"
+                        width="100%"/>
+            </buttonsPanel>
+        </vbox>
+    </layout>
+</window>

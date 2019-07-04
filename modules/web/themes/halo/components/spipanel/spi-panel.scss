@@ -1,0 +1,7 @@
+@mixin spi-button($primary-stylename: v-button) {
+  .#{$primary-stylename}.spi-icon-button {
+    padding: 0 4px;
+    border: none;
+    width: 30px;
+  }
+}

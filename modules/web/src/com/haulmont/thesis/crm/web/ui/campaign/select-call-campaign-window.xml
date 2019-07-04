@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://windowCaption"
+        class="com.haulmont.thesis.crm.web.ui.campaign.SelectCallCampaignWindow" messagesPack="com.haulmont.thesis.crm.web.ui.campaign">
+    <dsContext>
+        <groupDatasource id="campaignTargetsDs" allowCommit="false" class="com.haulmont.thesis.crm.entity.CampaignTarget"
+                         datasourceClass="com.haulmont.thesis.crm.web.ui.common.CampaignTargetCollectionGroupDatasource"/>
+        <collectionDatasource id="campaignsDs" class="com.haulmont.thesis.crm.entity.CallCampaign" view="minimal-with-kind">
+            <query>
+                <![CDATA[select c from crm$CallCampaign c
+                where c.kind.code not in ('IncomingCallCampaign', 'OutboundCallCampaign') and c.state not in (',Completed,', ',Canceled,')]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="targetsDs" class="com.haulmont.thesis.crm.entity.CallCampaignTrgt" view="browse">
+            <query>
+                <![CDATA[select t from crm$CallCampaignTrgt t where t.campaign.id = :ds$campaignsDs]]>
+            </query>
+            <collectionDatasource id="targetCommunicationsDs" property="communication"/>
+        </collectionDatasource>
+        <collectionDatasource id="rolesDs" class="com.haulmont.thesis.crm.entity.ContactRole" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ContactRole e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="labelWidth" value="120px"/>
+    <layout>
+        <vbox id="vBox" expand="targetsTable" height="100%" spacing="true">
+            <hbox id="campaignBox" expand="campaign" spacing="true" width="100%">
+                <label value="msg://com.haulmont.thesis.crm.entity/CallCampaign" width="${labelWidth}"/>
+                <lookupField id="campaign" captionProperty="name" optionsDatasource="campaignsDs" required="true"/>
+            </hbox>
+            <hbox id="roleBox" expand="role" spacing="true" width="50%">
+                <label value="msg://contactRole" width="${labelWidth}"/>
+                <lookupField id="role" optionsDatasource="rolesDs"/>
+            </hbox>
+            <vbox>
+                <label id="sizeLabel" stylename="thesis-green-bold"/>
+            </vbox>
+            <groupTable id="targetsTable" columnControlVisible="false" reorderingAllowed="false" width="100%">
+                <columns>
+                    <group>
+                        <column id="company" width="200px"/>
+                    </group>
+                    <column id="priority" align="CENTER" width="80px"/>
+                    <column id="contactPersonString" caption="msg://com.haulmont.thesis.crm.entity/CampaignTarget.contactPerson"/>
+                    <column id="communicationString" align="CENTER" caption="msg://com.haulmont.thesis.crm.entity/CampaignTarget.communication"
+                            width="110px"/>
+                    <column id="description" caption="msg://com.haulmont.thesis.crm.entity/CampaignTarget.description"/>
+                </columns>
+                <rows datasource="campaignTargetsDs"/>
+            </groupTable>
+            <hbox expand="btnBox" spacing="true" stylename="cuba-edit-window-actions" width="100%">
+                <hbox id="btnBox" expand="separator" spacing="true">
+                    <button id="windowCommit" action="windowCommit" icon="font-icon:PLUS"/>
+                    <button id="windowClose" action="windowClose" icon="icons/cancel.png"/>
+                    <label id="separator"/>
+                </hbox>
+                <label id="statusLabel" align="BOTTOM_CENTER" stylename="thesis-bold" width="AUTO"/>
+            </hbox>
+        </vbox>
+    </layout>
+</window>

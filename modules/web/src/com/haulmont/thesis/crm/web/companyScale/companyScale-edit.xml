@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.companyScale.CompanyscaleEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.companyScale">
+    <dsContext>
+        <datasource id="mainDs"
+                    class="com.haulmont.thesis.crm.entity.CompanyScale"
+                    view="_local"/>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox"
+              spacing="true">
+            <hbox id="codeBox">
+                <label value="msg://code"
+                       width="100px"/>
+                <textField id="code"
+                           datasource="mainDs"
+                           property="code"
+                           width="50px"/>
+            </hbox>
+            <hbox id="nameBox"
+                  expand="name_ru"
+                  width="100%">
+                <label value="msg://name_ru"
+                       width="100px"/>
+                <textField id="name_ru"
+                           datasource="mainDs"
+                           property="name_ru"
+                           required="true"/>
+            </hbox>
+            <hbox id="commentBox"
+                  expand="comment_ru"
+                  width="100%">
+                <label value="msg://comment_ru"
+                       width="100px"/>
+                <textArea id="comment_ru"
+                          datasource="mainDs"
+                          property="comment_ru"
+                          rows="3"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

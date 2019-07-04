@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.task.ExtTaskEditor"
+        extends="com/haulmont/thesis/web/ui/task/task-edit.xml" messagesPack="com.haulmont.thesis.crm.web.ui.task"
+        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
+    <dsContext>
+        <datasource id="cardDs" class="com.haulmont.thesis.crm.entity.ExtTask" view="edit-crm"/>
+        <collectionDatasource id="companiesDs" class="com.haulmont.thesis.core.entity.Company" view="_minimal">
+            <query>
+                <![CDATA[select c from df$Company c where c.name like :(?i)custom$searchString order by c.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select p from crm$Project p where @between(p.deinstallationDatePlan, now-6, now+60, month) and p.isGroup = false and p.name like :(?i)custom$searchString order by p.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="labourDs" class="com.haulmont.thesis.crm.entity.Labour" view="edit">
+            <query>
+                <![CDATA[select e from crm$Labour e where e.task.id = :ds$cardDs order by e.createTs]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="tasksDs" class="com.haulmont.thesis.crm.entity.ExtTask" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Task e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <split id="split" height="100%">
+            <hbox id="mainPane">
+                <tabSheet id="tabsheet">
+                    <tab id="mainTab">
+                        <groupBox id="taskInfoGroupBox">
+                            <scrollBox id="infoScrollBox" height="100%">
+                                <vbox id="infoVBox">
+                                    <hbox id="captionInfo" align="TOP_CENTER" margin="false" spacing="true"
+                                          stylename="thesis-star-left-margin grid-line-height">
+                                        <label value="   |   "/>
+                                        <label id="sumLabel" value="msg://sumLabourHour"/>
+                                        <label id="sumLabourHour" stylename="thesis-bold">
+                                            <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                                        </label>
+                                    </hbox>
+                                    <grid id="taskInfo">
+                                        <rows>
+                                            <row ext:index="2">
+                                                <label id="startDateTimeLabel" value="msg://com.haulmont.thesis.crm.entity/ExtTask.startDateTime"/>
+                                                <dateField id="startDateTime" datasource="cardDs" dateFormat="dd.MM.yyyy HH:mm"
+                                                           property="startDateTime" resolution="MIN" width="240px"/>
+                                            </row>
+                                            <row ext:index="4">
+                                                <label id="taskCompanyLabel" value="msg://taskCompany"/>
+                                                <searchPickerField id="taskCompany" datasource="cardDs" optionsDatasource="companiesDs"
+                                                                   property="extCompany" width="240px">
+                                                    <actions>
+                                                        <action id="clear"/>
+                                                        <action id="lookup"/>
+                                                        <action id="open"/>
+                                                    </actions>
+                                                </searchPickerField>
+                                            </row>
+                                            <row ext:index="5">
+                                                <label id="projectLabel" value="msg://project"/>
+                                                <searchPickerField id="project" datasource="cardDs" optionsDatasource="projectsDs"
+                                                                   property="project" width="240px">
+                                                    <actions>
+                                                        <action id="clear"/>
+                                                        <action id="lookup"/>
+                                                        <action id="open"/>
+                                                    </actions>
+                                                </searchPickerField>
+                                            </row>
+                                            <row ext:index="9">
+                                                <label id="categoryTaskLabel" value="msg://com.haulmont.thesis.crm.entity/ExtTask.categoryTask"/>
+                                                <lookupField id="categoryTask" datasource="cardDs" property="categoryTask" width="240px"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </vbox>
+                            </scrollBox>
+                        </groupBox>
+                    </tab>
+                    <tab id="labourTab" caption="msg://labourTab" expand="labourTable" lazy="true" margin="true">
+                        <table id="labourTable" editable="true" height="100%" width="100%">
+                            <actions>
+                                <action id="create" invoke="createLabour"/>
+                                <!--
+                                <action id="edit"/>
+                                -->
+                                <action id="remove"/>
+                            </actions>
+                            <columns>
+                                <column id="createTs" collapsed="true"/>
+                                <column id="createdBy" collapsed="true"/>
+                                <column id="executionDate" editable="true"/>
+                                <column id="duration" editable="true"/>
+                                <column id="timeUnit" editable="true"/>
+                                <column id="labourHour"/>
+                            </columns>
+                            <rows datasource="labourDs"/>
+                            <buttonsPanel>
+                                <button id="labourCreateButton" action="labourTable.create" icon="font-icon:PLUS"/>
+                                <!--
+                                <button id="labourEditBtn" action="labourTable.edit" icon="icons/edit.png"/>
+                                -->
+                                <button id="labourRemoveBtn" action="labourTable.remove" icon="icons/remove.png"/>
+                            </buttonsPanel>
+                        </table>
+                    </tab>
+                </tabSheet>
+            </hbox>
+        </split>
+    </layout>
+    <assign name="width" value="240px"/>
+</window>

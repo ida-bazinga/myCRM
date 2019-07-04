@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.informationSource.InformationSourceEditor" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.informationSource">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.InformationSource" view="edit"/>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where e.isGroup=false order by e.code]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="websDs" class="com.haulmont.thesis.crm.entity.WebAddress" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$WebAddress e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="hBox4" spacing="true">
+            <hbox id="hBox1" expand="lookupType" spacing="true" width="100%">
+                <label id="labelType" value="msg://infoType" width="100px"/>
+                <lookupField id="lookupType" datasource="mainDs" property="infoType"/>
+            </hbox>
+            <hbox id="hBox2" expand="pickerProject" spacing="true" width="100%">
+                <label id="labelProject" value="msg://project" width="100px"/>
+                <lookupPickerField id="pickerProject" datasource="mainDs" optionsDatasource="projectsDs" property="project">
+                    <actions>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox id="hBox3" expand="pickerWeb" spacing="true" width="100%">
+                <label id="labelWeb" value="msg://web" width="100px"/>
+                <lookupPickerField id="pickerWeb" datasource="mainDs" optionsDatasource="websDs" property="webAddress">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox id="hBox4" expand="textNote" spacing="true" width="100%">
+                <label id="labelNote" value="msg://note" width="100px"/>
+                <textArea id="textNote" datasource="mainDs" property="note"/>
+            </hbox>
+        </vbox>
+        <iframe id="editWindowActions" screen="editWindowActions"/>
+    </layout>
+</window>

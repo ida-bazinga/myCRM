@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://DuplicateCompany"
+        class="com.haulmont.thesis.crm.web.company.DuplicateCompanyBrowser" focusComponent="table-panel" lookupComponent="duplicateCompanyTable"
+        messagesPack="com.haulmont.thesis.crm.web.company">
+    <dsContext>
+        <groupDatasource id="duplicateCompanyDs" class="com.haulmont.thesis.crm.entity.DuplicateCompany" view="browse">
+            <query>
+                <![CDATA[select e from crm$DuplicateCompany e order by e.code]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="duplicateCompanyTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="duplicateCompanyTable" datasource="duplicateCompanyDs" stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <groupTable id="duplicateCompanyTable" width="100%">
+                <actions>
+                    <!--<action id="remove"/>-->
+                    <action id="refresh"/>
+                    <action id="edit"/>
+                </actions>
+                <columns>
+                    <column id="createTs" caption="Дата"/>
+                    <column id="createdBy" caption="Создал"/>
+                    <column id="updateTs" caption="Дата"/>
+                    <column id="updatedBy" caption="Изменил"/>
+                    <column id="code" maxTextLength="10"/>
+                    <column id="name" maxTextLength="200"/>
+                    <column id="countDuplicate"/>
+                    <column id="status"/>
+                    <column id="externalSystem"/>
+                </columns>
+                <rows datasource="duplicateCompanyDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button action="duplicateCompanyTable.refresh" icon="icons/refresh.png"/>
+                    <!--<button action="duplicateCompanyTable.remove" icon="icons/remove.png"/>-->
+                    <button icon="icons/edit.png" invoke="onEdit"/>
+                </buttonsPanel>
+            </groupTable>
+        </vbox>
+    </layout>
+</window>

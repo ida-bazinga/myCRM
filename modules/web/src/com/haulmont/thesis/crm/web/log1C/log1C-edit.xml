@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.log1C.Log1CEditor"
+        datasource="log1CDs"
+        messagesPack="com.haulmont.thesis.crm.web.log1C">
+    <dsContext>
+        <datasource id="log1CDs"
+                    class="com.haulmont.thesis.crm.entity.Log1C"
+                    view="edit"/>
+    </dsContext>
+    <layout expand="windowActions" spacing="true">
+            <hbox expand="shortServiceOperationResults" spacing="true" width="50%" enable="false">
+                <label value="msg://shortServiceOperationResults" width="250px"/>
+                <lookupField id="shortServiceOperationResults"
+                             datasource="log1CDs"
+                             property="shortServiceOperationResults"
+                             width="100%"/>
+            </hbox>
+            <hbox expand="startDate" spacing="true" width="50%" enable="false">
+                <label value="msg://startDate" width="250px"/>
+                <dateField id="startDate"
+                           datasource="log1CDs"
+                           dateFormat="dd.MM.yyyy HH:mm"
+                           property="startDate"
+                           resolution="MIN"/>
+
+            </hbox>
+            <hbox expand="openWinEdit" spacing="true" width="50%">
+                <label value="msg://entityName" width="250px"/>
+                <textField id="entityName"
+                           datasource="log1CDs"
+                           property="entityName" enable="false"/>
+                <linkButton id="openWinEdit" caption="msg://openWinEdit"/>
+            </hbox>
+            <hbox expand="entityId" spacing="true" width="50%" enable="false">
+                <label value="msg://entityId" width="250px"/>
+                <textField id="entityId"
+                           datasource="log1CDs"
+                           property="entityId"/>
+            </hbox>
+            <hbox expand="extId" spacing="true" width="50%" enable="false">
+                <label value="msg://extId" width="250px"/>
+                <textField id="extId"
+                           datasource="log1CDs"
+                           property="extId"/>
+            </hbox>
+            <hbox expand="priority" spacing="true" width="50%" enable="false">
+                <label id="priorityLabel" value="msg://com.haulmont.thesis.crm.entity/Log1C.priority" width="250px"/>
+                <textField id="priority"
+                           datasource="log1CDs"
+                           property="priority"/>
+            </hbox>
+            <hbox expand="error" spacing="true" width="50%" enable="false">
+                <label value="msg://error" width="250px"/>
+                <textArea id="error"
+                          datasource="log1CDs"
+                          height="200px"
+                          property="error"/>
+            </hbox>
+        <iframe id="windowActions"
+                screen="editWindowActions"/>
+    </layout>
+</window>

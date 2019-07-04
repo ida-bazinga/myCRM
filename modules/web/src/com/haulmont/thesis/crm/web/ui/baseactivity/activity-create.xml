@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.baseactivity.ActivityCreator"
+        messagesPack="com.haulmont.thesis.crm.web.ui.baseactivity">
+    <dsContext>
+        <collectionDatasource id="activityKindDs" class="com.haulmont.thesis.crm.entity.ActivityKind" view="browse">
+            <query>
+                <![CDATA[select e from crm$ActivityKind e order by e.name]]>
+                <filter>
+                    <and>
+                        <c>
+                            <![CDATA[e.entityType = :custom$entityType]]>
+                        </c>
+                        <c>
+                            <![CDATA[e.code not in :custom$excludeKindCodes]]>
+                        </c>
+                    </and>
+                </filter>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="mainPane">
+        <vbox id="mainPane" margin="true" spacing="true">
+            <grid id="fieldsGrid" spacing="true" width="100%">
+                <columns>
+                    <column/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row id="kindRow">
+                        <label id="activityKindLabel" align="MIDDLE_RIGHT" value="msg://com.haulmont.thesis.crm.entity/BaseActivity.kind"/>
+                        <lookupField id="activityKind" optionsDatasource="activityKindDs" width="100%"/>
+                    </row>
+                    <row id="descriptionRow">
+                        <label/>
+                        <label id="descriptionLabel" height="AUTO" datasource="activityKindDs" property="description" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

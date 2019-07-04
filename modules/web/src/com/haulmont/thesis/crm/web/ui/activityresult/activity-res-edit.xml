@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.ui.activityresult.ActivityResEditor"
+        extends="/com/haulmont/thesis/crm/web/ui/basic/edit/base-lookup-edit.xml" messagesPack="com.haulmont.thesis.crm.web.ui.activityresult"
+        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
+    <dsContext>
+        <datasource id="lookupDs" class="com.haulmont.thesis.crm.entity.ActivityRes" view="edit"/>
+        <collectionDatasource id="operatorsDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Employee e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="kindsDs" class="com.haulmont.thesis.crm.entity.CommKind" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$CommKind e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="commKindsDs" class="com.haulmont.thesis.crm.entity.CommKind" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$CommKind e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox>
+            <fieldGroup id="fieldGroup">
+                <column>
+                    <field id="code" width="150px"/>
+                    <field id="entityType" custom="true" ext:index="1" required="true" requiredMessage="msg://validation.required.typeMsg"
+                           width="100%"/>
+                    <field id="resultType" ext:index="3" width="100%"/>
+                    <field id="isNeedDetails" ext:index="4" width="100%"/>
+                    <field id="comment_ru" rows="5"/>
+                </column>
+            </fieldGroup>
+        </vbox>
+    </layout>
+</window>

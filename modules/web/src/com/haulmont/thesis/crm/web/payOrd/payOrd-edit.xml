@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.haulmont.thesis.crm.web.payOrd.PayOrdEditor"
+        datasource="cardDs"
+        messagesPack="com.haulmont.thesis.crm.web.payOrd">
+    <dsContext>
+        <datasource id="cardDs"
+                    class="com.haulmont.thesis.crm.entity.PayOrd"
+                    view="edit">
+            <collectionDatasource id="cardRolesDs"
+                                  property="roles"/>
+        </datasource>
+        <collectionDatasource id="invDocBugetDetailsDs"
+                              class="com.haulmont.thesis.crm.entity.InvDocBugetDetail"
+                              view="edit">
+            <query>
+                <![CDATA[select e from crm$InvDocBugetDetail e where e.invDoc.id = :ds$cardDs.parentCard.id]]>
+            </query>
+        </collectionDatasource>
+        <hierarchicalDatasource id="attachmentsDs"
+                                class="com.haulmont.workflow.core.entity.CardAttachment"
+                                datasourceClass="com.haulmont.thesis.web.ui.common.attachments.ThesisAttachmentsDataSource"
+                                hierarchyProperty="versionOf" view="card-edit">
+            <query>
+                <![CDATA[select a from wf$CardAttachment a where a.card.id = :ds$cardDs order by a.createTs desc]]>
+            </query>
+        </hierarchicalDatasource>
+        <collectionDatasource id="companiesDs"
+                              class="com.haulmont.thesis.core.entity.Company"
+                              view="_minimal">
+            <query>
+                <![CDATA[select c from df$Company c where c.name like :(?i)custom$searchString order by c.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companyAccountDs"
+                              class="com.haulmont.thesis.core.entity.ContractorAccount"
+                              view="_minimal">
+            <query>
+                <![CDATA[select c from crm$ExtContractorAccount c where c.contractor.id = :ds$cardDs.company order by c.no]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="taxDs"
+                              class="com.haulmont.thesis.crm.entity.Tax"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Tax e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizationDs"
+                              class="com.haulmont.thesis.core.entity.Organization"
+                              view="_local">
+            <query>
+                <![CDATA[select o from df$Organization o order by o.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="organizationAccountDs"
+                              class="com.haulmont.thesis.core.entity.OrganizationAccount"
+                              view="_minimal">
+            <query>
+                <![CDATA[select c from df$OrganizationAccount c where c.organization.id = :ds$cardDs.organization order by c.no]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="currencyDs"
+                              class="com.haulmont.thesis.crm.entity.Currency"
+                              view="_local">
+            <query>
+                <![CDATA[select e from crm$Currency e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="bugetItemsDs"
+                              class="com.haulmont.thesis.crm.entity.BugetItem"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$BugetItem e
+                where e.bugetItemType = 2 and e.department is not null and e.cfcItem is not null and
+                e.id not in (select b.parentBudgetItem from crm$BugetItem b where b.parentBudgetItem is not null)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="departmentDs"
+                              class="com.haulmont.thesis.core.entity.Department"
+                              view="_minimal">
+            <query>
+                <![CDATA[select d from crm$Department d where d.organization.id = :ds$cardDs.organization order by d.name]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="extProjectDs"
+                              class="com.haulmont.thesis.crm.entity.ExtProject"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where e.isGroup = false order by e.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <split id="split"
+               height="100%"
+               orientation="vertical"
+               pos="70"
+               width="100%">
+            <hbox id="mainPane"
+                  expand="tabsheet"
+                  height="100%"
+                  width="100%">
+                <tabSheet id="tabsheet"
+                          height="100%">
+                    <tab id="mainTab"
+                         caption="msg://mainTab"
+                         spacing="true">
+                        <groupBox id="taskInfoGroupBox"
+                                  height="100%"
+                                  stylename="edit-area">
+                            <scrollBox id="infoScrollBox"
+                                       height="100%"
+                                       margin="true"
+                                       scrollBars="both">
+                                <vbox id="infoVBox"
+                                      width="AUTO">
+                                    <hbox id="captionInfo"
+                                          spacing="true"
+                                          stylename="thesis-star-left-margin grid-line-height">
+                                        <label value="msg://number"/>
+                                        <label id="number"
+                                               datasource="cardDs"
+                                               property="number"
+                                               stylename="thesis-bold"/>
+                                        <label value="msg://date"/>
+                                        <label id="createTs"
+                                               datasource="cardDs"
+                                               property="createTs"
+                                               stylename="thesis-bold"/>
+                                        <label value="   |   "/>
+                                        <label value="msg://state"/>
+                                        <label id="state"
+                                               datasource="cardDs"
+                                               property="integrationResolver.stateDocSales"
+                                               stylename="thesis-bold"/>
+                                        <label value="   |   "/>
+                                        <label value="msg://posted"/>
+                                        <label id="posted"
+                                               datasource="cardDs"
+                                               property="integrationResolver.posted"
+                                               stylename="thesis-bold"/>
+                                    </hbox>
+                                    <vbox id="docInfo"
+                                          align="TOP_CENTER"
+                                          margin="true,false,true,false"
+                                          spacing="true"
+                                          stylename="thesis-top-separator">
+                                        <hbox expand="paymentDateFact"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="transactionTypeLabel"
+                                                   value="msg://transactionType"
+                                                   width="125px"/>
+                                            <lookupField id="transactionType"
+                                                         datasource="cardDs"
+                                                         property="typeTransaction"
+                                                         width="200px"/>
+                                            <label id="paymentDateFactLabel"
+                                                   value="msg://paymentDateFact"
+                                                   width="125px"/>
+                                            <dateField id="paymentDateFact"
+                                                       datasource="cardDs"
+                                                       dateFormat="dd.MM.yyyy"
+                                                       property="paymentDateFact"/>
+                                        </hbox>
+                                        <hbox expand="company"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="companyLabel"
+                                                   value="msg://company"
+                                                   width="125px"/>
+                                            <searchPickerField id="company"
+                                                               datasource="cardDs"
+                                                               optionsDatasource="companiesDs"
+                                                               property="company">
+                                                <actions>
+                                                    <action id="clear"/>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </searchPickerField>
+                                        </hbox>
+                                        <hbox expand="companyAccount"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="companyAcountLabel"
+                                                   value="msg://companyAccount"
+                                                   width="125px"/>
+                                            <lookupField id="companyAccount"
+                                                         datasource="cardDs"
+                                                         optionsDatasource="companyAccountDs"
+                                                         property="companyAccount"
+                                                         required="true"/>
+                                        </hbox>
+                                        <hbox id="paymentBudgetOrganization" expand="oktmo" spacing="true" width="635px" visible="false">
+                                            <label id="rbkLabel" value="msg://codeKBK" width="125px"/>
+                                            <label id="kbk" datasource="cardDs" property="invDoc.kbk" width="200px"/>
+                                            <label id="oktmoLabel" value="msg://codeOKTMO" width="100px"/>
+                                            <label id="oktmo" datasource="cardDs" property="invDoc.oktmo"/>
+                                        </hbox>
+                                        <hbox expand="contract"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="contractLabel"
+                                                   value="msg://contract"
+                                                   width="125px"/>
+                                            <pickerField id="contract"
+                                                         datasource="cardDs"
+                                                         property="contract">
+                                                <actions>
+                                                    <action id="clear"/>
+                                                    <action id="lookup"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </pickerField>
+                                        </hbox>
+                                        <hbox expand="parentCard"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="parentCardLabel"
+                                                   value="msg://parentCard"
+                                                   width="125px"/>
+                                            <pickerField id="parentCard"
+                                                         datasource="cardDs"
+                                                         property="parentCard">
+                                                <actions>
+                                                    <action id="clear"/>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </pickerField>
+                                            <label id="owner" datasource="cardDs" property="invDoc.owner"
+                                                   align="BOTTOM_CENTER"
+                                                   description="msg://owner"
+                                                   width="125px"/>
+                                        </hbox>
+                                        <hbox expand="organization"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="organizationLabel"
+                                                   value="msg://organization"
+                                                   width="125px"/>
+                                            <lookupPickerField id="organization"
+                                                               datasource="cardDs"
+                                                               optionsDatasource="organizationDs"
+                                                               property="organization">
+                                                <actions>
+                                                    <action id="open"/>
+                                                </actions>
+                                            </lookupPickerField>
+                                        </hbox>
+                                        <hbox expand="organizationAccount"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="organizationAccountLabel"
+                                                   value="msg://organizationAccount"
+                                                   width="125px"/>
+                                            <lookupField id="organizationAccount"
+                                                         datasource="cardDs"
+                                                         optionsDatasource="organizationAccountDs"
+                                                         property="organizationAccount"
+                                                         required="true"/>
+                                        </hbox>
+                                        <hbox expand="currency"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="currencyLabel"
+                                                   value="msg://currency"
+                                                   width="125px"/>
+                                            <lookupField id="currency"
+                                                         datasource="cardDs"
+                                                         optionsDatasource="currencyDs"
+                                                         property="currency"
+                                                         required="true"/>
+                                        </hbox>
+                                        <hbox expand="fullSum"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="paymentSumLabel"
+                                                   value="msg://fullSum"
+                                                   width="125px"/>
+                                            <textField id="fullSum"
+                                                       datasource="cardDs"
+                                                       property="fullSum"/>
+                                        </hbox>
+                                        <hbox expand="tax"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="taxLabel"
+                                                   value="msg://tax"
+                                                   width="125px"/>
+                                            <lookupField id="tax"
+                                                         datasource="cardDs"
+                                                         optionsDatasource="taxDs"
+                                                         property="tax"
+                                                         required="true"/>
+                                        </hbox>
+                                        <hbox expand="sumTax"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="taxSumLabel"
+                                                   value="msg://taxSum"
+                                                   width="125px"/>
+                                            <textField id="sumTax"
+                                                       datasource="cardDs"
+                                                       property="sumTax"/>
+                                        </hbox>
+                                        <hbox spacing="true"
+                                              width="635px">
+                                            <textArea id="paymentDestination"
+                                                      caption="msg://paymentDestination"
+                                                      datasource="cardDs"
+                                                      property="paymentDestination"
+                                                      rows="3"
+                                                      width="100%"/>
+                                        </hbox>
+                                        <hbox spacing="true"
+                                              width="635px">
+                                            <textArea id="description"
+                                                      caption="msg://description"
+                                                      datasource="cardDs"
+                                                      property="description"
+                                                      rows="3"
+                                                      width="100%"/>
+                                        </hbox>
+                                        <hbox expand="parentCardAccess"
+                                              spacing="true"
+                                              width="635px">
+                                            <label id="parentCardAccessLabel"
+                                                   width="125px"/>
+                                            <checkBox id="parentCardAccess"
+                                                      caption="msg://parentCardAccess"
+                                                      datasource="cardDs"
+                                                      property="parentCardAccess"/>
+                                        </hbox>
+                                    </vbox>
+                                </vbox>
+                            </scrollBox>
+                        </groupBox>
+                    </tab>
+                    <tab id="attachmentsTab"
+                         caption="msg://attachmentsTab"
+                         margin="true">
+                        <iframe id="cardAttachmentsFrame"
+                                height="100%"
+                                screen="cardAttachmentsFrame"/>
+                    </tab>
+                </tabSheet>
+                <vbox height="100%"
+                      margin="false,false,false,true"
+                      spacing="true"
+                      width="220px">
+                    <scrollBox id="actionsFrameScroll"
+                               height="100%"
+                               spacing="true">
+                        <vbox id="actionsPane"
+                              margin="true,true,true,false"
+                              stylename="edit-area"
+                              width="200px">
+                            <iframe id="actionsFrame"
+                                    screen="actionsFrame"/>
+                        </vbox>
+                        <vbox id="otherActions"
+                              margin="true,true,true,false"
+                              spacing="true"
+                              stylename="edit-area"
+                              width="200px">
+                            <button id="exportButton"
+                                    caption="msg://CaptionToExchange"
+                                    invoke="exportButton"
+                                    width="100%"/>
+                            <runReportPopupButton id="print"
+                                                  caption="msg://print"
+                                                  icon="icons/reports-print.png"
+                                                  width="100%"/>
+                        </vbox>
+                    </scrollBox>
+                </vbox>
+            </hbox>
+            <tabSheet id="detailsTabsheet"
+                      height="100%">
+                <tab id="budgetExpensesTab"
+                     caption="msg://budgetExpensesTab"
+                     margin="true">
+                    <table id="budgetExpensesTable"
+                           editable="true"
+                           height="100%"
+                           width="100%">
+                        <actions>
+                            <action id="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="bugetItem"
+                                    editable="true"
+                                    optionsDatasource="bugetItemsDs"/>
+                            <column id="bugetItem.cfcItem"/>
+                            <column id="fullSum"
+                                    align="RIGHT"
+                                    editable="true">
+                                <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            </column>
+                            <column id="department"
+                                    editable="true"
+                                    optionsDatasource="departmentDs"/>
+                            <column id="project"
+                                    editable="true"
+                                    optionsDatasource="extProjectDs"/>
+                            <column id="currency"
+                                    collapsed="true"/>
+                        </columns>
+                        <rows datasource="invDocBugetDetailsDs"/>
+                        <buttonsPanel>
+                            <button id="createBtn"
+                                    icon="icons/plus-btn.png"
+                                    invoke="budgetExpensesTableCreate"/>
+                            <button id="removeExpenseBtn"
+                                    action="budgetExpensesTable.remove"
+                                    icon="icons/remove.png"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+                <tab id="resolutionsTab"
+                     caption="msg://resolutionsTab"
+                     margin="true">
+                    <vbox id="resolutionsPane"
+                          height="100%"
+                          spacing="true">
+                        <iframe id="resolutionsFrame"
+                                height="100%"
+                                screen="resolutionsFrame"/>
+                    </vbox>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

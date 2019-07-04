@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://OperatorWindowCaption"
+        class="com.haulmont.thesis.crm.web.operatorSession.OperatorSessionWindow" messagesPack="com.haulmont.thesis.crm.web.operatorSession">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.OperatorSession" view="operatorWindow"/>
+        <datasource id="activityDs" class="com.haulmont.thesis.crm.entity.Activity" view="edit"/>
+        <collectionDatasource id="eventsDs" class="com.haulmont.thesis.crm.entity.OperatorSessionEvents" maxResults="30" view="edit">
+            <query>
+                <![CDATA[select e from crm$OperatorSessionEvents e where e.operatorSession.id = :ds$mainDs order by e.timeStamp desc ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="targetsDs" class="com.haulmont.thesis.crm.entity.CallCampaignTarget" view="operatorWindow-edit">
+            <query>
+                <![CDATA[select e from crm$CallCampaignTarget e where e.nextCallOperator.id = :ds$mainDs.operator.employee
+                and (e.status  is null or e.status <> @enum(com.haulmont.thesis.crm.entity.CampaignTargetStatusEnum.COMPLETED))
+                order by e.nextCallDate]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="activitiesDs" class="com.haulmont.thesis.crm.entity.Activity" view="edit">
+            <query>
+                <![CDATA[select e from crm$Activity e where e.operatorSession.id = :ds$mainDs order by e.startTime desc]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="resultsDs" class="com.haulmont.thesis.crm.entity.ActivityResult" view="edit">
+            <query>
+                <![CDATA[select e from crm$ActivityResult e where e.docCategory is null or e.docCategory.id = :ds$activityDs.campaign.docCategory ]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="contactPersonsDs" class="com.haulmont.thesis.crm.entity.ExtContactPerson" view="edit">
+            <query>
+                <![CDATA[select e from crm$ContactPerson e where e.company.id = :custom$company]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="commsDs" class="com.haulmont.thesis.crm.entity.Communication" view="edit">
+            <query>
+                <![CDATA[select e from crm$Communication e where e.contactPerson.id = :ds$contactPersonsDs
+                 and e.commKind.communicationType = @enum(com.haulmont.thesis.crm.entity.CommunicationTypeEnum.phone)]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="projectsDs" class="com.haulmont.thesis.crm.entity.ExtProject" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Project e where e.isGroup = false]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <timers>
+        <timer id="targetsTimer" delay="3000" onTimer="refreshTargets" repeating="true"/>
+        <timer id="checkSoftphoneConnection" autostart="false" delay="3000" onTimer="refreshSoftPhoneConnection" repeating="false"/>
+        <timer id="dropCallTimer" delay="30000" onTimer="dropCallByTimer" repeating="false"/>
+    </timers>
+    <layout expand="splitPanel" spacing="true">
+        <hbox id="topPanel" expand="topLeftPanel" spacing="true" width="100%">
+            <hbox id="topLeftPanel" expand="infoLabelsPanel" spacing="true">
+                <buttonsPanel margin="false,false,true,false" spacing="true">
+                    <button id="nextCallBtn" description="msg://NextCallButtonCaption" icon="font-icon:PLAY" invoke="NextCall"/>
+                    <button id="answerCallBtn" description="msg://AnswerCallButtonCaption" enable="false" icon="font-icon:PHONE" invoke="ActivateCall"/>
+                    <button id="dropCallBtn" description="msg://DropButtonCaption" enable="false" icon="font-icon:TIMES" invoke="DropCall"/>
+                    <button id="holdCallBtn" enable="false" icon="font-icon:PAUSE" visible="false"/>
+                    <button id="transferCallBtn" caption="msg://TransferCallButtonCaption" enable="false" icon="font-icon:RETWEET" visible="false"/>
+                    <button caption="fireIncoming" invoke="fireIncomingCall" visible="false"/>
+                </buttonsPanel>
+                <hbox id="infoLabelsPanel" expand="infoLabel" spacing="true">
+                    <label stylename="thesis-buttonspanel-vertical-separator"/>
+                    <label align="MIDDLE_RIGHT" height="100%" value="msg://countTargets"/>
+                    <label align="MIDDLE_CENTER" datasource="mainDs" height="100%" property="countTargets"/>
+                    <label stylename="thesis-buttonspanel-vertical-separator"/>
+                    <label align="MIDDLE_CENTER" datasource="mainDs" height="100%" property="activeCallId" width="100px"/>
+                    <label stylename="thesis-buttonspanel-vertical-separator"/>
+                    <label id="infoLabel" align="MIDDLE_CENTER" height="100%"/>
+                    <label stylename="thesis-buttonspanel-vertical-separator"/>
+                    <label align="MIDDLE_CENTER" datasource="mainDs" height="100%" property="id"/>
+                </hbox>
+            </hbox>
+            <hbox id="topRightPanel" spacing="true">
+                <hbox enable="false" expand="phoneNumber" spacing="true" visible="false" width="250px">
+                    <label value="msg://Number"/>
+                    <textField id="phoneNumber" datasource="mainDs" editable="false" property="currentPhoneNumber"/>
+                    <button id="makeCallBtn" enable="false" icon="font-icon:PHONE" invoke="MakeCall"/>
+                </hbox>
+                <hbox enable="false" expand="softPhoneProfileFld" spacing="true" width="300px">
+                    <label stylename="thesis-buttonspanel-vertical-separator"/>
+                    <checkBox align="MIDDLE_LEFT" caption="3CX" datasource="mainDs" enable="false" height="100%" property="softphoneConnected"/>
+                    <label stylename="thesis-buttonspanel-vertical-separator"/>
+                    <label value="msg://Status"/>
+                    <lookupField id="softPhoneProfileFld" datasource="mainDs" property="softphoneProfile" required="true"/>
+                </hbox>
+            </hbox>
+        </hbox>
+        <split id="splitPanel" orientation="vertical" pos="100" width="100%">
+            <hbox id="mainPane" height="100%" margin="false,false,true,false" width="100%">
+                <split id="splitPanel2" height="100%" orientation="horizontal" pos="70" width="100%">
+                    <vbox id="centerPanel" height="100%" margin="false,true,false,false" spacing="true">
+                        <groupBox expand="scrollBox1" height="100%" spacing="true">
+                            <hbox id="campaignNameBox" expand="outboundCampaignName" spacing="true" width="100%">
+                                <label spacing="true" value="msg://OutboundCampaignInfo"/>
+                                <textField id="outboundCampaignName" datasource="activityDs" editable="false" property="campaign.theme"/>
+                            </hbox>
+                            <scrollBox id="scrollBox1" spacing="true">
+                                <vbox id="campaignInfo" expand="campaignComment" spacing="true" visible="false">
+                                    <richTextArea id="campaignComment" datasource="activityDs" editable="false" property="campaign.comment"
+                                                  width="100%"/>
+                                </vbox>
+                            </scrollBox>
+                        </groupBox>
+                    </vbox>
+                    <vbox id="rightPanel" height="100%" margin="false,false,false,true" spacing="true">
+                        <groupBox id="postProcessingGroupBox" caption="msg://PostProcessingCaption" expand="scrollBox2" height="100%">
+                            <scrollBox id="scrollBox2" spacing="true">
+                                <vbox id="postProcessingBox" expand="resultBox" spacing="true" visible="false">
+                                    <hbox expand="activityCompany" spacing="true" width="100%">
+                                        <label value="msg://Company" width="80px"/>
+                                        <pickerField id="activityCompany" datasource="activityDs" editable="false" property="company">
+                                            <actions>
+                                                <action id="open" openType="NEW_TAB"/>
+                                            </actions>
+                                        </pickerField>
+                                    </hbox>
+                                    <hbox expand="activityContact" spacing="true" width="100%">
+                                        <label value="msg://Contact" width="80px"/>
+                                        <pickerField id="activityContact" captionProperty="name" datasource="activityDs" editable="false"
+                                                     property="contact">
+                                            <actions>
+                                                <action id="open" openType="DIALOG"/>
+                                            </actions>
+                                        </pickerField>
+                                    </hbox>
+                                    <hbox expand="resultPhone" spacing="true" width="100%">
+                                        <label value="msg://Number" width="80px"/>
+                                        <textField id="resultPhone" datasource="activityDs" editable="false" property="phone"/>
+                                    </hbox>
+                                    <hbox expand="projectLookup" spacing="true" width="100%">
+                                        <label value="msg://Project" width="80px"/>
+                                        <lookupField id="projectLookup" datasource="activityDs" optionsDatasource="projectsDs" property="project"
+                                                     required="true"/>
+                                    </hbox>
+                                    <hbox expand="activityResult" spacing="true" width="100%">
+                                        <label value="msg://Result" width="80px"/>
+                                        <lookupField id="activityResult" datasource="activityDs" optionsDatasource="resultsDs" property="result"
+                                                     required="true"/>
+                                    </hbox>
+                                    <hbox id="contactToRecallBox" expand="nextContact" spacing="true" visible="false" width="100%">
+                                        <label value="msg://nextContact" width="80px"/>
+                                        <lookupPickerField id="nextContact" optionsDatasource="contactPersonsDs">
+                                            <actions>
+                                                <action id="lookup" openType="DIALOG"/>
+                                                <action id="open" openType="DIALOG"/>
+                                            </actions>
+                                        </lookupPickerField>
+                                    </hbox>
+                                    <hbox id="phoneToRecallBox" expand="phoneToRecall" spacing="true" visible="false" width="100%">
+                                        <label value="msg://ByPhoneNumber" width="80px"/>
+                                        <lookupField id="phoneToRecall" optionsDatasource="commsDs"/>
+                                    </hbox>
+                                    <hbox id="timeToRecallBox" expand="timeToRecall" spacing="true" visible="false" width="100%">
+                                        <label value="msg://ByTime" width="80px"/>
+                                        <dateField id="timeToRecall"/>
+                                    </hbox>
+                                    <hbox id="resultBox" spacing="true" width="100%">
+                                        <textArea id="resultDetails" caption="msg://ResultDetail" datasource="activityDs" property="resultDetails"
+                                                  required="true" width="100%"/>
+                                    </hbox>
+                                </vbox>
+                            </scrollBox>
+                            <button id="commitActionBtn" caption="msg://CommitActionCaption" enable="false" invoke="saveActivity" width="100%"/>
+                        </groupBox>
+                    </vbox>
+                </split>
+            </hbox>
+            <tabSheet id="detailsTabSheet" height="100%" margin="true">
+                <tab id="eventsTab" caption="msg://EventsTabCaption" margin="true">
+                    <table id="eventsTable" height="100%" width="100%">
+                        <actions>
+                            <action id="refresh"/>
+                        </actions>
+                        <columns>
+                            <column id="timeStamp">
+                                <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="yyyy-MM-dd HH:mm:ss"/>
+                            </column>
+                            <column id="title"/>
+                            <column id="description" collapsed="true"/>
+                        </columns>
+                        <rows datasource="eventsDs"/>
+                        <rowsCount/>
+                        <buttonsPanel>
+                            <button action="eventsTable.refresh" icon="icons/refresh.png"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+            </tabSheet>
+        </split>
+    </layout>
+</window>

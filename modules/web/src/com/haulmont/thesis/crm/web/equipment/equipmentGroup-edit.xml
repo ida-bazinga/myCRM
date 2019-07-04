@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.equipment.EquipmentgroupEditor" datasource="mainDs" focusComponent="vBox"
+        messagesPack="com.haulmont.thesis.crm.web.equipment">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Equipment" view="edit"/>
+        <collectionDatasource id="resourceTypesDs" class="com.haulmont.thesis.crm.entity.ResourceType" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$ResourceType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="equipmentGroupDs" class="com.haulmont.thesis.crm.entity.Equipment" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Equipment e where e.isGroup = true order by e.name_ru]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox" height="100%" spacing="true">
+        <vbox id="vBox" spacing="true">
+            <hbox expand="name_ru" spacing="true" width="100%">
+                <label id="nameRuLabel" value="msg://name_ru" width="125px"/>
+                <textField id="name_ru" datasource="mainDs" property="name_ru" required="true"/>
+            </hbox>
+            <hbox expand="name_en" spacing="true" width="100%">
+                <label id="nameEnLabel" value="msg://name_en" width="125px"/>
+                <textField id="name_en" datasource="mainDs" property="name_en"/>
+            </hbox>
+            <hbox expand="resourceType" spacing="true" width="100%">
+                <label id="resourceTypeLabel" value="msg://resourceType" width="125px"/>
+                <lookupField id="resourceType" datasource="mainDs" optionsDatasource="resourceTypesDs" property="resourceType"/>
+            </hbox>
+            <hbox expand="parent" spacing="true" width="100%">
+                <label id="parentLabel" value="msg://parent" width="125px"/>
+                <lookupPickerField id="parent" datasource="mainDs" optionsDatasource="equipmentGroupDs" property="parent">
+                    <actions>
+                        <action id="clear"/>
+                        <action id="lookup"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox expand="comment_ru" spacing="true" width="100%">
+                <label id="commentRuLabel" value="msg://comment_ru" width="125px"/>
+                <textArea id="comment_ru" datasource="mainDs" property="comment_ru"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="100px"/>
+</window>

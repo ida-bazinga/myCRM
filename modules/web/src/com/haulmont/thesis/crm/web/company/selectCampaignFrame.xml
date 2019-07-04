@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://frameCaption"
+        class="com.haulmont.thesis.crm.web.company.SelectCampaignFrame" messagesPack="com.haulmont.thesis.crm.web.company">
+    <dsContext>
+        <collectionDatasource id="outboundCampaignDs" class="com.haulmont.thesis.crm.entity.OutboundCampaign" view="_minimal">
+            <query>
+                <![CDATA[select c from crm$OutboundCampaign c where c.docKind.code = 'OCC' and c.status.code in ('inProgress', 'planing')]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout height="100%" spacing="true">
+        <grid id="mainGrid" height="300px" margin="true" spacing="true" width="100%">
+            <columns>
+                <column/>
+                <column flex="2.0"/>
+            </columns>
+            <rows>
+                <row>
+                    <label id="sizeLabel" colspan="2"/>
+                </row>
+                <row>
+                    <label value="msg://companyCaption"/>
+                    <lookupField id="outboundCampaignLookup" optionsDatasource="outboundCampaignDs" required="true" width="100%"/>
+                </row>
+                <row>
+                    <label id="successPhoneCountLabel" colspan="2" stylename="thesis-green-bold"/>
+                </row>
+                <row>
+                    <label id="failedPhoneCountLabel" colspan="2" stylename="thesis-bold"/>
+                </row>
+                <row>
+                    <label id="notPhoneCountLabel" colspan="2" stylename="thesis-bold"/>
+                </row>
+            </rows>
+        </grid>
+        <hbox spacing="true" stylename="cuba-edit-window-actions">
+            <button id="windowCommit" action="windowCommit" icon="font-icon:PLUS"/>
+            <button id="windowClose" action="windowClose" icon="icons/cancel.png"/>
+        </hbox>
+    </layout>
+</window>

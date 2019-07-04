@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (c) YEAR PACKAGE_NAME
+  -->
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="Услуги"
+        class="com.haulmont.thesis.crm.web.cost.CostSelect"
+        focusComponent="mainTable"
+        lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.cost">
+    <dsContext>
+        <collectionDatasource id="mainDs"
+                              class="com.haulmont.thesis.crm.entity.Cost"
+                              view="browse">
+            <query>
+                <![CDATA[select e from crm$Cost e where e.id in (:custom$cost)]]>
+                <filter>
+                    <and>
+                        <or>
+                            <c>
+                                <![CDATA[lower(e.product.title_ru) like :(?i)component$searchSimpleText]]>
+                            </c>
+                        </or>
+                    </and>
+                </filter>
+            </query>
+        </collectionDatasource>
+        <groupDatasource id="selectDs"
+                              class="com.haulmont.thesis.crm.entity.OrderDetail"
+                              view="browse"/>
+    </dsContext>
+    <layout expand="split">
+        <split id="split"
+               orientation="horizontal"
+               width="100%" pos="30">
+            <vbox expand="mainTable"
+                  height="100%"
+                  margin="true"
+                  spacing="true">
+                <groupBox caption="Поиск"
+                          collapsed="false"
+                          spacing="true">
+                    <textField id="searchSimpleText"
+                               width="100%"/>
+                    <button id="searchSimple"/>
+                </groupBox>
+                <table id="mainTable"
+                            width="100%">
+                    <columns>
+                        <column id="product"/>
+                        <column id="product.nomenclature.unit"
+                                align="CENTER"
+                                width="60px"/>
+                        <!--
+                        <column id="product.minQuantity" align="CENTER" caption="кол-во" width="50px" editable="true" />
+                        -->
+                    </columns>
+                    <rows datasource="mainDs"/>
+                </table>
+            </vbox>
+            <vbox expand="mainTableSelect"
+                  height="100%"
+                  margin="true"
+                  spacing="true">
+                <label stylename="thesis-bold" value="Выбранные услуги для добавления в заказ"/>
+                <groupTable id="mainTableSelect" aggregatable="true" multiselect="true" editable = "true" width="100%">
+                    <columns>
+                        <column id="product"/>
+                        <column id="costPerPiece" align="RIGHT" caption="цена за ед.">
+                            <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                        </column>
+                        <column id="totalSum" align="RIGHT" caption="∑ с НДС">
+                            <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            <aggregation type="SUM">
+                                <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            </aggregation>
+                        </column>
+                        <column id="sumWithoutNds" align="RIGHT" caption="∑ без НДС">
+                            <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            <aggregation type="SUM">
+                                <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            </aggregation>
+                        </column>
+                        <column id="taxSum" align="RIGHT" caption="∑ налога">
+                            <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            <aggregation type="SUM">
+                                <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                            </aggregation>
+                        </column>
+                        <column id="amount" align="CENTER" caption="кол-во_1" editable="true"/>
+                        <column id="product.nomenclature.unit" align="CENTER" caption="Ед.изм_1"/>
+                        <column id="secondaryAmount" align="CENTER" caption="кол-во_2" editable="true"/>
+                        <column id="product.secondaryUnit" align="CENTER" caption="Ед.изм_2"/>
+                        <column id="cost" align="RIGHT" caption="цена, с учетом с/н">
+                            <formatter class="com.haulmont.thesis.crm.gui.components.formatters.CurrencyFormatter"/>
+                        </column>
+                        <column id="discountType" editable="true"/>
+                        <column id="discountSum" editable="true"/>
+                        <column id="marginSum" editable="true"/>
+                        <column id="alternativeName_ru" caption="название рус." editable="true"/>
+                        <column id="alternativeName_en" caption="название анг." editable="true"/>
+                        <column id="orderDetailGroup" editable="true" collapsed="true"/>
+                        <column id="dependentDetail" collapsed="true"/>
+                    </columns>
+                    <buttonsPanel>
+                        <button id="onRemove"
+                                description="Удалить"
+                                icon="icons/remove.png"
+                                invoke="onRemove"/>
+                        <button id="onCalc"
+                                caption="Пересчитать"
+                                invoke="onCalc" stylename="friendly"/>
+                        <button id="selectButton"
+                                caption="Добавить в заказ"
+                                invoke="selectButton"
+                                stylename="friendly"/>
+                        <button id="closeButton"
+                                caption="Закрыть"
+                                invoke="closeButton"
+                                stylename="danger"/>
+                    </buttonsPanel>
+                    <rows datasource="selectDs"/>
+                </groupTable>
+            </vbox>
+        </split>
+        <!--
+        <buttonsPanel id="buttonsPanel" align="MIDDLE_LEFT" spacing="true" width="100%">
+            <button id="closeButton" caption="Закрыть" invoke="closeButton" width="100%" stylename="danger"/>
+            <button id="selectButton" caption="Добавить в заказ" invoke="selectButton" width="100%" stylename="friendly"/>
+        </buttonsPanel>
+        -->
+    </layout>
+</window>

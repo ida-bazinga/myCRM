@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://accountEditor.caption"
+        class="com.haulmont.thesis.crm.web.ui.account.AccountEditor"
+        datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.ui.account">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.ExtContractorAccount" view="edit"/>
+        <collectionDatasource id="currenciesDs" class="com.haulmont.thesis.core.entity.Currency" view="_minimal"/>
+    </dsContext>
+    <layout expand="groupFirst" margin="true" height="100%" spacing="true" width="100%">
+        <groupBox id="groupSearch" caption="msg://findBikInn" collapsable="true" collapsed="true" orientation="vertical" spacing="true">
+            <textField id="searchBikSwift" width="100%"/>
+            <button id="searchBtn" align="TOP_RIGHT" caption="msg://find" width="250px"/>
+        </groupBox>
+        <groupBox id="groupFirst" caption="msg://groupFirst" orientation="vertical" spacing="true" collapsable="true" collapsed="false" height="800px">
+            <scrollBox width="100%" height="100%" spacing="true" margin="true">
+                <hbox expand="bik" width="100%" spacing="true">
+                    <label value="msg://bik" width="${width}"/>
+                    <textField id="bik" datasource="mainDs" property="bik" required="true" requiredMessage="msg://bikMsg"/>
+                </hbox>
+                <hbox expand="swift" width="100%" spacing="true">
+                    <label value="msg://swift" width="${width}"/>
+                    <textField id="swift" datasource="mainDs" property="swift"/>
+                </hbox>
+                <hbox expand="region" width="100%" spacing="true">
+                    <label value="msg://region" width="${width}"/>
+                    <textField id="region" datasource="mainDs" property="region"/>
+                </hbox>
+                <hbox expand="adress" width="100%" spacing="true">
+                    <label value="msg://adress" width="${width}"/>
+                    <textField id="adress" datasource="mainDs" property="adress" required="true" requiredMessage="msg://adressMsg"/>
+                </hbox>
+                <hbox expand="no" width="100%" spacing="true">
+                    <label value="msg://no" width="${width}"/>
+                    <textField id="no" datasource="mainDs" property="no" required="true" requiredMessage="msg://noMsg"/>
+                </hbox>
+                <hbox expand="name" width="100%" spacing="true">
+                    <label value="msg://nameBank" width="${width}"/>
+                    <textField id="name" datasource="mainDs" property="name" required="true" requiredMessage="msg://nameBankMsg"/>
+                </hbox>
+                <hbox expand="correspondent" width="100%" spacing="true">
+                    <label value="msg://correspondent" width="${width}"/>
+                    <textField id="correspondent" datasource="mainDs" property="correspondent"/>
+                </hbox>
+                <hbox expand="correspondentNo" width="100%" spacing="true">
+                    <label value="msg://correspondentNo" width="${width}"/>
+                    <textField id="correspondentNo" datasource="mainDs" property="correspondentNo"/>
+                </hbox>
+                <hbox expand="currency" width="100%" spacing="true">
+                    <label value="msg://currency" width="${width}"/>
+                    <lookupField id="currency" datasource="mainDs" property="currency" optionsDatasource="currenciesDs" required="true" requiredMessage="msg://currencyMsg"/>
+                </hbox>
+                <hbox expand="appointment" width="100%" spacing="true">
+                    <label value="msg://appointment" width="${width}"/>
+                    <textField id="appointment" datasource="mainDs" property="appointment"/>
+                </hbox>
+                <hbox expand="comment" width="100%" spacing="true">
+                    <label value="msg://comment" width="${width}"/>
+                    <textArea id="comment" datasource="mainDs" property="comment" rows="3"/>
+                </hbox>
+            </scrollBox>
+        </groupBox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="width" value="150px"/>
+</window>

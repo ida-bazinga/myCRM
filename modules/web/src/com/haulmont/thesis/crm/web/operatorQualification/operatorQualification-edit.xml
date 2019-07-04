@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.operatorQualification.OperatorQualificationEditor" datasource="mainDs" focusComponent="mainTab"
+        messagesPack="com.haulmont.thesis.crm.web.operatorQualification">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.OperatorQualification" view="edit"/>
+        <collectionDatasource id="operatorDs" class="com.haulmont.thesis.crm.entity.Operator" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Operator e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="operatorQualificationDs" class="com.haulmont.thesis.crm.entity.OperatorQualification" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$OperatorQualification e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tabsheet" height="100%" spacing="true" width="100%">
+        <tabSheet id="tabsheet">
+            <tab id="mainTab" margin="true">
+                <scrollBox id="scrollBox" height="100%">
+                    <grid id="grid" margin="true,false,false,false" spacing="true" stylename="edit-area" width="60%">
+                        <columns>
+                            <column/>
+                            <column flex="2.0"/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="msg://operator"/>
+                                <lookupPickerField id="operator" datasource="mainDs" optionsDatasource="operatorDs" property="operator"
+                                                   required="true" width="100%">
+                                    <actions>
+                                        <action id="lookup"/>
+                                        <action id="open"/>
+                                    </actions>
+                                </lookupPickerField>
+                            </row>
+                            <row>
+                                <label value="msg://qualifiction"/>
+                                <lookupPickerField id="qualifiction" datasource="mainDs" optionsDatasource="operatorQualificationDs"
+                                                   property="qualifiction" required="true" width="100%">
+                                    <actions>
+                                        <action id="lookup"/>
+                                        <action id="open"/>
+                                    </actions>
+                                </lookupPickerField>
+                            </row>
+                            <row>
+                                <label value="msg://comment_ru"/>
+                                <textArea id="comment_ru" datasource="mainDs" property="comment_ru" width="100%"/>
+                            </row>
+                        </rows>
+                    </grid>
+                </scrollBox>
+            </tab>
+        </tabSheet>
+        <iframe id="windowActions" screen="extendedEditWindowActions"/>
+    </layout>
+</window>

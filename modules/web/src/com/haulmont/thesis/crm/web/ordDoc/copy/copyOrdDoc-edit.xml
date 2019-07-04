@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.haulmont.thesis.crm.web.ordDoc.copy.CopyOrdDocEditor"
+        messagesPack="com.haulmont.thesis.crm.web.ordDoc.copy">
+    <layout>
+        <vbox spacing="true">
+            <vbox spacing="true">
+                <pickerField id="company" metaClass="crm$Company" caption="msg://msgCompany" required="true" width="100%"/>
+                <pickerField id="project" metaClass="crm$Project" caption="msg://msgProject" required="true" width="100%"/>
+                <label value="msg://msgCopyMessageInfo" width="100%"/>
+            </vbox>
+            <buttonsPanel id="buttonsPanel"
+                          align="MIDDLE_LEFT"
+                          width="100%">
+                <button id="selectButton"
+                        caption="Далее"
+                        width="100%"/>
+                <button id="closeButton"
+                        caption="Закрыть"
+                        width="100%"/>
+            </buttonsPanel>
+        </vbox>
+    </layout>
+</window>

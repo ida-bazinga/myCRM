@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.logCatalog.LogCatalogBrowser"
+        messagesPack="com.haulmont.thesis.crm.web.logCatalog">
+    <dsContext>
+        <groupDatasource id="logCatalogDs"
+                         class="com.haulmont.thesis.crm.entity.LogCatalog"
+                         view="browse">
+            <query>
+                <![CDATA[select distinct p from crm$LogCatalog p order by p.startDate DESC]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="table-panel"
+              height="100%"
+              spacing="true">
+            <filter id="genericFilter"
+                    applyTo="logCatalogTable"
+                    datasource="logCatalogDs"
+                    stylename="edit-area">
+                <properties include=".*"/>
+            </filter>
+            <vbox id="table-panel"
+                  spacing="true">
+                <groupTable id="logCatalogTable"
+                            height="100%"
+                            width="100%">
+                    <actions>
+                        <action id="edit"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="startDate"/>
+                        <column id="shortServiceOperationResults"/>
+                        <column id="entityName"/>
+                        <column id="entityId"/>
+                        <column id="extId"/>
+                        <column id="error" maxTextLength="100" collapsed="true"/>
+                    </columns>
+                    <rows datasource="logCatalogDs"/>
+                    <rowsCount/>
+                    <buttonsPanel>
+                        <button action="logCatalogTable.edit"
+                                icon="icons/edit.png"/>
+                        <button action="logCatalogTable.refresh"
+                                icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </groupTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

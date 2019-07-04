@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" caption="msg://browserCaption" lookupComponent="maсhinesTable"
+        focusComponent="maсhinesTable" class="com.haulmont.thesis.crm.web.ui.cashmachine.CashMachineBrowser"
+        messagesPack="com.haulmont.thesis.crm.web.ui.cashmachine">
+    <dsContext>
+        <collectionDatasource id="maсhinesDs" class="com.haulmont.thesis.crm.entity.CashMachine" view="browse">
+            <query>
+                <![CDATA[select e from crm$CashMachine e order by e.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="tablePanel" spacing="true">
+        <hbox spacing="true" width="100%">
+            <filter id="genericFilter" applyTo="maсhinesTable" datasource="maсhinesDs" stylename="edit-area">
+                <properties exclude="createdBy|createTs|id|deleteTs|deletedBy"
+                            include=".*"/>
+            </filter>
+        </hbox>
+        <vbox id="tablePanel" expand="maсhinesTable" spacing="true">
+            <table id="maсhinesTable" presentations="true" width="100%">
+                <actions>
+                    <action id="edit" openType="DIALOG"/>
+                </actions>
+                <columns>
+                    <column id="name"/>
+                    <column id="serialNumber"/>
+                    <column id="exhibitSpace"/>
+                    <column id="vendor"/>
+                    <column id="evotorId" collapsed="true"/>
+                </columns>
+                <rows datasource="maсhinesDs"/>
+                <buttonsPanel>
+                    <button action="maсhinesTable.edit" icon="icons/edit.png"/>
+                    <button action="maсhinesTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </table>
+        </vbox>
+    </layout>
+</window>

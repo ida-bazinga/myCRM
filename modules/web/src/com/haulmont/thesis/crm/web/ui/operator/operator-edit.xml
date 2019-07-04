@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://EditorCaption"
+        class="com.haulmont.thesis.crm.web.ui.operator.OperatorEditor" datasource="mainDs" focusComponent="vBox"
+        messagesPack="com.haulmont.thesis.crm.web.ui.operator">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.Operator" view="browse"/>
+        <collectionDatasource id="employeeDs" class="com.haulmont.thesis.crm.entity.ExtEmployee" view="_minimal">
+            <query>
+                <![CDATA[select e from crm$Employee e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="vBox">
+        <vbox id="vBox" expand="commentBox" spacing="true">
+            <hbox id="hBox1" expand="code" spacing="true" width="100%">
+                <label value="msg://code" width="120px"/>
+                <textField id="code" datasource="mainDs" property="code"/>
+            </hbox>
+            <hbox id="hBox2" expand="employee" spacing="true" width="100%">
+                <label value="msg://employee" width="120px"/>
+                <lookupPickerField id="employee" datasource="mainDs" optionsDatasource="employeeDs" property="employee" required="true">
+                    <actions>
+                        <action id="lookup"/>
+                        <action id="open"/>
+                    </actions>
+                </lookupPickerField>
+            </hbox>
+            <hbox id="commentBox" expand="commentRu" spacing="true" width="100%">
+                <label value="msg://comment_ru" width="120px"/>
+                <textArea id="commentRu" datasource="mainDs" property="comment_ru" rows="3"/>
+            </hbox>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+    <assign name="lWidth" value="120px"/>
+</window>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption" class="com.haulmont.thesis.crm.web.staff.StaffLookup"
+        messagesPack="com.haulmont.thesis.crm.web.staff">
+    <dsContext>
+        <hierarchicalDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.Staff" hierarchyProperty="parent" view="edit">
+            <query>
+                <![CDATA[select e from crm$Staff e]]>
+            </query>
+        </hierarchicalDatasource>
+    </dsContext>
+    <layout>
+        <vbox expand="tablePanel" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs" include=".*"/>
+            </filter>
+            <vbox id="tablePanel" spacing="true">
+                <treeTable id="mainTable" height="100%" presentations="true" width="100%">
+                    <actions>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="name_ru"/>
+                        <column id="name_en"/>
+                        <column id="comment_ru" collapsed="true"/>
+                        <column id="isGroup"/>
+                        <column id="resourceType"/>
+                        <column id="contractor"/>
+                        <column id="state"/>
+                        <column id="unit"/>
+                        <column id="card"/>
+                    </columns>
+                    <rows datasource="mainDs"/>
+                    <rowsCount/>
+                    <buttonsPanel alwaysVisible="true">
+                        <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                    </buttonsPanel>
+                </treeTable>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

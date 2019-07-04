@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.externalSystem.ExternalSystemEdit" datasource="externalSystemCDs"
+        messagesPack="com.haulmont.thesis.crm.web.externalSystem">
+    <dsContext>
+        <datasource id="externalSystemCDs" class="com.haulmont.thesis.crm.entity.ExternalSystem" view="1c"/>
+    </dsContext>
+    <assign name="width" value="50%"/>
+    <layout expand="vBox" margin="true" spacing="true">
+        <vbox id="vBox" stylename="edit-area">
+            <grid id="grid" spacing="true" width="50%">
+                <columns>
+                    <column flex="1.0"/>
+                    <column flex="6.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://activity"/>
+                        <checkBox id="activity" datasource="externalSystemCDs" property="activity" width="250px"/>
+                    </row>
+                    <row>
+                        <label value="msg://code"/>
+                        <textField id="code" datasource="externalSystemCDs" property="code" width="250px"/>
+                    </row>
+                    <row>
+                        <label value="msg://name"/>
+                        <textField id="name" datasource="externalSystemCDs" property="name" width="250px"/>
+                    </row>
+                    <row>
+                        <label value="msg://connectionString"/>
+                        <textField id="connectionString" datasource="externalSystemCDs" property="connectionString" width="250px"/>
+                    </row>
+                    <row>
+                        <label value="msg://login"/>
+                        <textField id="login" datasource="externalSystemCDs" property="login" width="250px"/>
+                    </row>
+                    <row>
+                        <label value="msg://password"/>
+                        <textField id="password" datasource="externalSystemCDs" property="password" width="250px"/>
+                    </row>
+                    <row>
+                        <label value="msg://authenticationKey"/>
+                        <textField id="authenticationKey" datasource="externalSystemCDs" property="authenticationKey" width="250px"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

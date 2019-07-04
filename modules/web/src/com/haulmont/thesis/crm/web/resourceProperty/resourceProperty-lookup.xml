@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://browseCaption"
+        class="com.haulmont.thesis.crm.web.resourceProperty.ResourcepropertyLookup" focusComponent="mainTable" lookupComponent="mainTable"
+        messagesPack="com.haulmont.thesis.crm.web.resourceProperty">
+    <dsContext>
+        <collectionDatasource id="mainDs" class="com.haulmont.thesis.crm.entity.ResourceProperty" view="edit">
+            <query>
+                <![CDATA[select e from crm$ResourceProperty e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout>
+        <vbox id="table-panel" expand="mainTable" height="100%" spacing="true">
+            <filter id="genericFilter" applyTo="mainTable" datasource="mainDs" stylename="edit-area">
+                <properties exclude="id|createdBy|createTs|isGroup" include=".*"/>
+            </filter>
+            <table id="mainTable" presentations="true" width="100%">
+                <actions>
+                    <action id="refresh"/>
+                </actions>
+                <columns>
+                    <column id="propName"/>
+                    <column id="propValue"/>
+                    <column id="resource"/>
+                </columns>
+                <rows datasource="mainDs"/>
+                <rowsCount/>
+                <buttonsPanel>
+                    <button id="refreshBtn" action="mainTable.refresh" icon="icons/refresh.png"/>
+                </buttonsPanel>
+            </table>
+        </vbox>
+    </layout>
+</window>

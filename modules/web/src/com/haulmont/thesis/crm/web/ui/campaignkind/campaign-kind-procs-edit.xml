@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd" class="com.haulmont.thesis.crm.web.ui.campaignkind.CampaignKindProcsEditor"
+        datasource="campaignKindDs" messagesPack="com.haulmont.thesis.crm.web.ui.campaignkind">
+    <dsContext>
+        <datasource id="campaignKindDs" class="com.haulmont.thesis.crm.entity.CampaignKind" view="edit">
+            <collectionDatasource id="procDs" property="procs"/>
+        </datasource>
+        <collectionDatasource id="processesDs" class="com.haulmont.workflow.core.entity.Proc" view="_local">
+            <query>
+                <![CDATA[select p from wf$Proc p where p.code not like 'TaskManagement'
+                and (p.cardTypes like :param$ckClass or p.cardTypes is null or p.cardTypes = '')
+                and not exists (select d from crm$CampaignKind d left join d.procs pp where d.id =:ds$campaignKindDs and (pp.id = p.id))
+                 order by p.name]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout spacing="true">
+        <hbox id="hboxOption" stylename="edit-area" width="362px">
+            <optionsGroup id="useAllProcsOption" orientation="horizontal"/>
+        </hbox>
+        <tokenList id="listProcs" caption="msg://helpProcs" datasource="procDs" position="TOP" inline="false" editable="true"
+                   height="150px" simple="false" visible="false">
+            <lookup optionsDatasource="processesDs" captionProperty="name"/>
+        </tokenList>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>

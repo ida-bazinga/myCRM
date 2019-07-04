@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/5.6/window.xsd" caption="msg://editCaption"
+        class="com.haulmont.thesis.crm.web.emailAddress.EmailAddressEditor" datasource="mainDs"
+        messagesPack="com.haulmont.thesis.crm.web.emailAddress">
+    <dsContext>
+        <datasource id="mainDs" class="com.haulmont.thesis.crm.entity.EmailAddress" view="edit"/>
+        <collectionDatasource id="companyDs" class="com.haulmont.thesis.crm.entity.ExtCompany" view="_minimal">
+            <query>
+                <![CDATA[select e from df$Company e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <assign name="width" value="50%"/>
+    <layout expand="vBox" margin="true" spacing="true">
+        <vbox id="vBox" stylename="edit-area">
+            <grid id="grid" spacing="true" width="100%">
+                <columns>
+                    <column/>
+                    <column flex="1.0"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="msg://name_ru"/>
+                        <textField id="name_ru" datasource="mainDs" property="name_ru" required="true" width="100%"/>
+                    </row>
+                    <row>
+                        <label value="msg://comment_ru"/>
+                        <textArea id="comment_ru" datasource="mainDs" height="200px" property="comment_ru" width="100%"/>
+                    </row>
+                </rows>
+            </grid>
+        </vbox>
+        <iframe id="windowActions" screen="editWindowActions"/>
+    </layout>
+</window>
