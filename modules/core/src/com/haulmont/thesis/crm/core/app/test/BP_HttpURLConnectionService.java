@@ -1,5 +1,6 @@
 /*
  * Copyright (c) ${YEAR} ${PACKAGE_NAME}
+ * d.ivanov
  */
 
 package com.haulmont.thesis.crm.core.app.test;
